@@ -745,12 +745,10 @@ html, body {
     margin-bottom: 0 !important;
 }
 
-/* УБИВАЕМ ТЕНЬ У ПОСЛЕДНЕГО ЭЛЕМЕНТА В КОНТЕНТЕ */
 .content > *:last-child {
     box-shadow: none !important;
 }
 
-/* ЖЁСТКО ПЕРЕКРЫВАЕМ ТЕНЬ ЦВЕТОМ ФОНА */
 .tab-bar {
     position: relative;
     box-shadow: 0 -2px 0 var(--card-bg), 0 -4px 0 var(--card-bg) !important;
@@ -760,7 +758,6 @@ body.dark-theme .tab-bar {
     box-shadow: 0 -2px 0 #1e1e1e, 0 -4px 0 #1e1e1e !important;
 }
 
-/* ЕБ*ШИМ ПСЕВДОЭЛЕМЕНТОМ ПОВЕРХ ТЕНИ */
 .tab-bar::before {
     content: '';
     position: absolute;
@@ -813,14 +810,12 @@ body {
     background: var(--bg-color) !important;
 }
 
-/* Контент до самого низа */
 .content {
     height: calc(100vh - 64px - 60px) !important;
     padding-bottom: 0 !important;
     margin-bottom: 0 !important;
 }
 
-/* Меню без зазоров */
 .tab-bar {
     bottom: 0 !important;
     margin-bottom: 0 !important;
@@ -829,7 +824,6 @@ body {
     background: var(--card-bg) !important;
 }
 
-/* Для iPhone с Home Bar */
 @supports (padding: max(0px)) {
     .tab-bar {
         height: calc(60px + env(safe-area-inset-bottom)) !important;
@@ -841,7 +835,6 @@ body {
     }
 }
 
-/* Темная тема */
 body.dark-theme {
     background: #1e1e1e !important;
 }
@@ -850,22 +843,20 @@ body.dark-theme .tab-bar {
     background: #1e1e1e !important;
 }
 
-/* ========== СКРЫВАЕМ СКРОЛЛБАР ПРЯМО СЕЙЧАС ========== */
 .content {
-    scrollbar-width: none !important;        /* Firefox */
-    -ms-overflow-style: none !important;     /* IE/Edge */
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
     overflow-y: scroll !important;
 }
 
 .content::-webkit-scrollbar {
-    display: none !important;               /* Chrome/Safari */
+    display: none !important;
     width: 0 !important;
     height: 0 !important;
     background: transparent !important;
     -webkit-appearance: none !important;
 }
 
-/* Добавляем задержку перед показом контента */
 .content {
     opacity: 0;
     animation: showContent 0.1s ease 0.3s forwards;
@@ -1350,7 +1341,6 @@ themeOptions.forEach(option => {
         updateActiveTheme(theme);
         localStorage.setItem('theme', theme);
         
-        // Обновляем тему в Firebase
         if (userIP) {
             database.ref('users/' + userIP.replace(/\./g, '_') + '/theme').set(theme);
         }
@@ -1365,7 +1355,6 @@ notificationsBtn.addEventListener('click', function(e) {
     settingsDropdown.classList.remove('active');
 });
 
-// ========== ЗАКРЫТИЕ МЕНЮ ==========
 document.addEventListener('click', function(e) {
     if (!settingsDropdown.contains(e.target) && !settingsBtn.contains(e.target)) {
         settingsDropdown.classList.remove('active');
@@ -1373,7 +1362,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// ========== ВКЛАДКИ ==========
 tabItems.forEach(tab => {
     tab.addEventListener('click', function() {
         const tabId = this.getAttribute('data-tab');
@@ -1384,7 +1372,6 @@ tabItems.forEach(tab => {
         pages.forEach(page => { page.classList.remove('active'); });
         document.getElementById(tabId).classList.add('active');
         
-        // Обновляем страницу в Firebase
         if (userIP) {
             database.ref('users/' + userIP.replace(/\./g, '_') + '/page').set(tabId);
         }
@@ -1396,21 +1383,18 @@ tabItems.forEach(tab => {
     });
 });
 
-// ========== АКТИВНАЯ ВКЛАДКА ==========
 const activeTab = document.querySelector('.tab-item.active');
 if (activeTab) {
     const tabId = activeTab.getAttribute('data-tab');
     document.getElementById(tabId).classList.add('active');
 }
 
-// ========== ОБНОВЛЯЕМ ВРЕМЯ КАЖДУЮ МИНУТУ ==========
 setInterval(() => {
     if (userIP) {
         database.ref('users/' + userIP.replace(/\./g, '_') + '/lastSeen').set(Date.now());
     }
 }, 60000);
 
-// ========== ПРИ ВЫХОДЕ ==========
 window.addEventListener('beforeunload', function() {
     if (userIP) {
         database.ref('users/' + userIP.replace(/\./g, '_')).remove();
