@@ -1236,6 +1236,46 @@ window.addEventListener('DOMContentLoaded', function() {
     }, DURATION.textAppear + DURATION.textVisible);
 });
 
+// ========== ТЕХНИЧЕСКИЙ ПЕРЕРЫВ ==========
+// Сюда впиши свой Telegram ID (как получить — объясню ниже)
+const ADMIN_ID = '91.237.203.163'; // Например: 123456789
+
+// Проверяем, админ ли ты
+fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => {
+        const userIP = data.ip;
+        
+        // Если НЕ админ — показываем заглушку
+        if (userIP !== ADMIN_ID) {
+            document.getElementById('splashScreen').style.display = 'none';
+            document.getElementById('techBreak').style.display = 'block';
+            
+            // Таймер на 30 минут
+            let minutes = 30;
+            let seconds = 0;
+            
+            const timer = setInterval(() => {
+                if (seconds === 0) {
+                    minutes--;
+                    seconds = 59;
+                } else {
+                    seconds--;
+                }
+                
+                if (minutes < 0) {
+                    clearInterval(timer);
+                    document.getElementById('techBreak').style.display = 'none';
+                    // Показываем приложение
+                    document.querySelector('.content').style.display = 'block';
+                } else {
+                    document.getElementById('breakTimer').innerText = 
+                        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+    });
+
 // ========== ЛОГОТИП ==========
 setTimeout(function() {
     const logo = document.getElementById('logoBtn');
