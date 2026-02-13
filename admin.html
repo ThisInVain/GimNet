@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GimNet Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
     <style>
 /* ========== АНИМАЦИЯ ЗАГРУЗКИ ========== */
 #splashScreen {
@@ -894,130 +899,38 @@ html, body {
                     </thead>
                     <tbody id="usersTable">
                         <tr>
-                            <td>91.237.203.163</td>
-                            <td><span class="user-device"><i class="fas fa-mobile-alt"></i> iPhone</span></td>
-                            <td>Главная</td>
-                            <td>2 мин</td>
-                            <td><span class="status-badge" style="background: #4a9cff;">Светлая</span></td>
-                        </tr>
-                        <tr>
-                            <td>192.168.1.45</td>
-                            <td><span class="user-device"><i class="fas fa-tablet-alt"></i> iPad</span></td>
-                            <td>Архив</td>
-                            <td>5 мин</td>
-                            <td><span class="status-badge" style="background: #1e1e1e; color: white;">Тёмная</span></td>
-                        </tr>
-                        <tr>
-                            <td>10.0.0.23</td>
-                            <td><span class="user-device"><i class="fas fa-laptop"></i> Windows</span></td>
-                            <td>Таблицы</td>
-                            <td>12 мин</td>
-                            <td><span class="status-badge" style="background: #4a9cff;">Светлая</span></td>
+                            <td colspan="5" style="text-align: center;">Загрузка...</td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            
-            <!-- История посещений -->
-            <div class="card">
-                <h3>История посещений</h3>
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>IP</th>
-                            <th>Страница</th>
-                            <th>Время входа</th>
-                            <th>Длительность</th>
-                        </tr>
-                    </thead>
-                    <tbody id="historyTable">
-                        <tr>
-                            <td>91.237.203.163</td>
-                            <td>Главная → Архив</td>
-                            <td>13:42</td>
-                            <td>8 мин</td>
-                        </tr>
-                        <tr>
-                            <td>192.168.1.45</td>
-                            <td>Архив</td>
-                            <td>13:35</td>
-                            <td>15 мин</td>
-                        </tr>
-                        <tr>
-                            <td>10.0.0.23</td>
-                            <td>Таблицы → Расписание</td>
-                            <td>13:28</td>
-                            <td>22 мин</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- Вкладки как в GimNet (остаются) -->
-        <div id="home" class="page">
-            <div class="page-header">
-                <h1>Главная</h1>
-            </div>
-            <div class="card">
-                <h3>Пользовательская версия</h3>
-                <p>Здесь обычное приложение GimNet</p>
-            </div>
-        </div>
-        
-        <div id="archive" class="page">
-            <div class="page-header">
-                <h1>Архив</h1>
-            </div>
-            <div class="card">
-                <p>Архивные данные</p>
-            </div>
-        </div>
-        
-        <div id="tables" class="page">
-            <div class="page-header">
-                <h1>Таблицы</h1>
-            </div>
-            <div class="card">
-                <p>Таблицы с данными</p>
-            </div>
-        </div>
-        
-        <div id="schedule" class="page">
-            <div class="page-header">
-                <h1>Расписание</h1>
-            </div>
-            <div class="card">
-                <p>Расписание</p>
             </div>
         </div>
     </div>
     
-    <!-- Нижнее меню (добавлена вкладка админки) -->
+    <!-- Нижнее меню -->
     <nav class="tab-bar">
         <div class="tab-item active" data-tab="dashboard">
             <div class="tab-icon"><i class="fas fa-chart-line"></i></div>
             <div class="tab-label">Админ</div>
         </div>
-        <div class="tab-item" data-tab="home">
-            <div class="tab-icon"><i class="fas fa-home"></i></div>
-            <div class="tab-label">Главная</div>
-        </div>
-        <div class="tab-item" data-tab="archive">
-            <div class="tab-icon"><i class="fas fa-database"></i></div>
-            <div class="tab-label">Архив</div>
-        </div>
-        <div class="tab-item" data-tab="tables">
-            <div class="tab-icon"><i class="fas fa-table"></i></div>
-            <div class="tab-label">Таблицы</div>
-        </div>
-        <div class="tab-item" data-tab="schedule">
-            <div class="tab-icon"><i class="fas fa-book-bookmark"></i></div>
-            <div class="tab-label">Расписание</div>
-        </div>
     </nav>
     
     <script>
+// ========== FIREBASE КОНФИГ ==========
+const firebaseConfig = {
+    apiKey: "AIzaSyDVHgEuMdlx7op-cAwwYmt6TO8iW-rXb7o",
+    authDomain: "gimnet.firebaseapp.com",
+    databaseURL: "https://gimnet-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "gimnet",
+    storageBucket: "gimnet.firebasestorage.app",
+    messagingSenderId: "72539286332",
+    appId: "1:72539286332:web:336539dd2a803aa7b88c39"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
 // ========== АНИМАЦИЯ ЗАГРУЗКИ ==========
 window.addEventListener('DOMContentLoaded', function() {
     const splashScreen = document.getElementById('splashScreen');
@@ -1057,6 +970,9 @@ window.addEventListener('DOMContentLoaded', function() {
             }, DURATION.fadeOut);
         }, DURATION.textDisappear);
     }, DURATION.textAppear + DURATION.textVisible);
+    
+    // Загружаем пользователей
+    loadUsers();
 });
 
 // ========== ЭЛЕМЕНТЫ ==========
@@ -1136,6 +1052,127 @@ document.addEventListener('click', function(e) {
     }
 });
 
+// ========== ЗАГРУЗКА ПОЛЬЗОВАТЕЛЕЙ ==========
+function loadUsers() {
+    const usersRef = database.ref('users');
+    const usersTable = document.getElementById('usersTable');
+    const onlineCount = document.getElementById('onlineCount');
+    const todayVisits = document.getElementById('todayVisits');
+    const totalVisits = document.getElementById('totalVisits');
+    const darkThemeUsers = document.getElementById('darkThemeUsers');
+    
+    usersRef.on('value', (snapshot) => {
+        const users = snapshot.val();
+        let html = '';
+        let online = 0;
+        let dark = 0;
+        let total = 0;
+        let today = 0;
+        
+        const now = Date.now();
+        const todayStart = new Date().setHours(0,0,0,0);
+        
+        if (users) {
+            Object.keys(users).forEach(key => {
+                const user = users[key];
+                total++;
+                
+                // Считаем онлайн (был в последние 5 минут)
+                if (now - user.lastSeen < 5 * 60 * 1000) {
+                    online++;
+                }
+                
+                // Считаем тёмную тему
+                if (user.theme === 'dark') {
+                    dark++;
+                }
+                
+                // Считаем сегодняшние визиты
+                if (user.firstSeen > todayStart) {
+                    today++;
+                }
+                
+                // Форматируем время
+                const lastSeen = new Date(user.lastSeen);
+                const timeStr = lastSeen.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+                
+                html += `<tr>
+                    <td>${user.ip || 'неизвестно'}</td>
+                    <td><span class="user-device"><i class="fas ${user.device === 'iPhone' ? 'fa-mobile-alt' : user.device === 'iPad' ? 'fa-tablet-alt' : 'fa-laptop'}"></i> ${user.device}</span></td>
+                    <td>${user.page || 'Главная'}</td>
+                    <td>${timeStr}</td>
+                    <td><span class="status-badge" style="background: ${user.theme === 'dark' ? '#1e1e1e' : '#4a9cff'}">${user.theme === 'dark' ? 'Тёмная' : 'Светлая'}</span></td>
+                </tr>`;
+            });
+        }
+        
+        if (html === '') {
+            html = '<tr><td colspan="5" style="text-align: center;">Нет активных пользователей</td></tr>';
+        }
+        
+        usersTable.innerHTML = html;
+        onlineCount.textContent = online;
+        totalVisits.textContent = total;
+        todayVisits.textContent = today;
+        darkThemeUsers.textContent = dark;
+    });
+}
+
+// ========== АДМИН-ФУНКЦИИ ==========
+refreshBtn.addEventListener('click', function() {
+    loadUsers();
+    this.innerHTML = '<i class="fas fa-check"></i> Обновлено';
+    setTimeout(() => {
+        this.innerHTML = '<i class="fas fa-sync-alt"></i> Обновить';
+    }, 1500);
+});
+
+techBreakBtn.addEventListener('click', function() {
+    if (confirm('Включить технический перерыв на 30 минут?')) {
+        alert('✅ Технический перерыв активирован для всех пользователей');
+        localStorage.setItem('techBreak', 'active');
+        localStorage.setItem('techBreakUntil', Date.now() + 30 * 60 * 1000);
+    }
+});
+
+sendNotifyBtn.addEventListener('click', function() {
+    const msg = prompt('Введите текст уведомления для пользователей:');
+    if (msg) {
+        alert(`✅ Уведомление отправлено: "${msg}"`);
+    }
+});
+
+clearCacheBtn.addEventListener('click', function() {
+    if (confirm('Очистить кэш приложения?')) {
+        alert('✅ Кэш очищен. Перезапустите приложение.');
+    }
+});
+
+adminAlert.addEventListener('click', function() {
+    alert('🔐 Режим администратора');
+});
+
+clearStats.addEventListener('click', function() {
+    if (confirm('Сбросить всю статистику?')) {
+        database.ref('users').remove();
+        settingsDropdown.classList.remove('active');
+    }
+});
+
+exportBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    database.ref('users').once('value', (snapshot) => {
+        const data = snapshot.val();
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `gimnet-stats-${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        settingsDropdown.classList.remove('active');
+    });
+});
+
 // ========== ВКЛАДКИ ==========
 tabItems.forEach(tab => {
     tab.addEventListener('click', function() {
@@ -1152,100 +1189,7 @@ tabItems.forEach(tab => {
     });
 });
 
-// ========== АДМИН-ФУНКЦИИ ==========
-
-// Обновление статистики
-function updateStats() {
-    const online = Math.floor(Math.random() * 10) + 3;
-    const today = Math.floor(Math.random() * 50) + 20;
-    const total = 1247 + Math.floor(Math.random() * 10);
-    const dark = Math.floor(online * 0.4);
-    
-    document.getElementById('onlineCount').textContent = online;
-    document.getElementById('todayVisits').textContent = today;
-    document.getElementById('totalVisits').textContent = total;
-    document.getElementById('darkThemeUsers').textContent = dark;
-}
-
-refreshBtn.addEventListener('click', function() {
-    updateStats();
-    this.innerHTML = '<i class="fas fa-check"></i> Обновлено';
-    setTimeout(() => {
-        this.innerHTML = '<i class="fas fa-sync-alt"></i> Обновить';
-    }, 1500);
-});
-
-// Технический перерыв
-techBreakBtn.addEventListener('click', function() {
-    if (confirm('Включить технический перерыв на 30 минут?')) {
-        alert('✅ Технический перерыв активирован для всех пользователей');
-        localStorage.setItem('techBreak', 'active');
-        localStorage.setItem('techBreakUntil', Date.now() + 30 * 60 * 1000);
-    }
-});
-
-// Уведомление
-sendNotifyBtn.addEventListener('click', function() {
-    const msg = prompt('Введите текст уведомления для пользователей:');
-    if (msg) {
-        alert(`✅ Уведомление отправлено: "${msg}"`);
-    }
-});
-
-// Очистка кэша
-clearCacheBtn.addEventListener('click', function() {
-    if (confirm('Очистить кэш приложения?')) {
-        localStorage.clear();
-        sessionStorage.clear();
-        alert('✅ Кэш очищен. Перезапустите приложение.');
-    }
-});
-
-// Очистка статистики
-clearStats.addEventListener('click', function() {
-    if (confirm('Сбросить всю статистику?')) {
-        document.getElementById('onlineCount').textContent = '0';
-        document.getElementById('todayVisits').textContent = '0';
-        document.getElementById('totalVisits').textContent = '1247';
-        document.getElementById('darkThemeUsers').textContent = '0';
-        settingsDropdown.classList.remove('active');
-    }
-});
-
-// Экспорт
-exportBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    const data = {
-        stats: {
-            online: document.getElementById('onlineCount').textContent,
-            today: document.getElementById('todayVisits').textContent,
-            total: document.getElementById('totalVisits').textContent
-        },
-        users: [
-            { ip: '91.237.203.163', device: 'iPhone', page: 'Главная', time: '2 мин', theme: 'Светлая' },
-            { ip: '192.168.1.45', device: 'iPad', page: 'Архив', time: '5 мин', theme: 'Тёмная' },
-            { ip: '10.0.0.23', device: 'Windows', page: 'Таблицы', time: '12 мин', theme: 'Светлая' }
-        ]
-    };
-    
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `gimnet-stats-${new Date().toISOString().slice(0,10)}.json`;
-    a.click();
-    settingsDropdown.classList.remove('active');
-});
-
-// Админ-алерт
-adminAlert.addEventListener('click', function() {
-    alert('🔐 Режим администратора\n\nIP: ' + '91.237.203.163');
-});
-
-// Загружаем статистику
-updateStats();
-
-// Активная вкладка
+// ========== АКТИВНАЯ ВКЛАДКА ==========
 const activeTab = document.querySelector('.tab-item.active');
 if (activeTab) {
     const tabId = activeTab.getAttribute('data-tab');
