@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GimNet - Приложение</title>
+    <title>GimNet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Firebase SDK -->
@@ -141,6 +141,7 @@
     --active-color: #007AFF;
 }
 
+/* ========== ТЕЛЕГРАМ-ФОН ========== */
 body {
     background-color: #a0c0e0;
     background-image: 
@@ -565,7 +566,7 @@ body.dark-theme .tab-item.active .tab-label {
     .tab-label { font-size: 10px; }
 }
 
-/* ========== КОНТЕНТ - ФИНАЛЬНАЯ ВЕРСИЯ ========== */
+/* ========== КОНТЕНТ ========== */
 .content {
     padding: 20px;
     padding-bottom: 0 !important;
@@ -813,13 +814,11 @@ body.dark-theme .tab-bar::before {
 html, body {
     margin: 0 !important;
     padding: 0 !important;
-    background: var(--card-bg) !important;
 }
 
 body {
     padding-top: 64px !important;
     padding-bottom: 0 !important;
-    background: var(--bg-color) !important;
 }
 
 .content {
@@ -833,7 +832,6 @@ body {
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
     height: 60px !important;
-    background: var(--card-bg) !important;
 }
 
 @supports (padding: max(0px)) {
@@ -845,14 +843,6 @@ body {
     .content {
         height: calc(100vh - 64px - 60px - env(safe-area-inset-bottom)) !important;
     }
-}
-
-body.dark-theme {
-    background: #1e1e1e !important;
-}
-
-body.dark-theme .tab-bar {
-    background: #1e1e1e !important;
 }
 
 .content {
