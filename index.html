@@ -163,6 +163,24 @@ body {
     width: 100% !important;
 }
 
+body {
+    background-color: #a0c0e0;
+    background-image: 
+        radial-gradient(circle at 30% 40%, rgba(255,255,255,0.1) 0%, transparent 20%),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.1) 0%, transparent 25%),
+        radial-gradient(circle at 10% 80%, rgba(255,255,255,0.1) 0%, transparent 30%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 8px);
+}
+
+body.dark-theme {
+    background-color: #1a2a3a;
+    background-image: 
+        radial-gradient(circle at 30% 40%, rgba(255,255,255,0.03) 0%, transparent 20%),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.03) 0%, transparent 25%),
+        radial-gradient(circle at 10% 80%, rgba(255,255,255,0.03) 0%, transparent 30%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 8px);
+}
+
 /* ========== ВЕРХНЕЕ МЕНЮ ========== */
 .app-header {
     background: var(--header-gradient);
@@ -865,69 +883,6 @@ body.dark-theme .tab-bar {
 @keyframes showContent {
     to { opacity: 1; }
 }
-
-/* ========== НОВЫЕ СТИЛИ ДЛЯ ГЛАВНОЙ ========== */
-.telegram-notification {
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: white;
-    text-align: center;
-    padding: 10px 18px;
-    border-radius: 30px;
-    font-size: 14px;
-    font-weight: 500;
-    margin: 0 auto 25px;
-    max-width: 280px;
-    width: fit-content;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.telegram-glass {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 30px;
-    padding: 35px 25px;
-    max-width: 340px;
-    margin: 0 auto 30px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    text-align: center;
-}
-
-.sticker {
-    font-size: 60px;
-    margin-bottom: 15px;
-}
-
-.glass-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 10px;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.glass-text {
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.9);
-    line-height: 1.5;
-}
-
-body.dark-theme .telegram-glass {
-    background: rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Временно меняем фон body для главной */
-body {
-    background: linear-gradient(145deg, #b8d2f0, #9bb8e0) !important;
-}
-
-body.dark-theme {
-    background: linear-gradient(145deg, #1a2a3a, #0a1a2a) !important;
-}
     </style>
 </head>
 <body class="light-theme">
@@ -1006,22 +961,37 @@ body.dark-theme {
     <div class="content">
         <!-- Главная -->
         <div id="home" class="page active">
-            <!-- Системное уведомление как в Telegram -->
-            <div class="telegram-notification">
-                <i class="fas fa-bell" style="margin-right: 8px;"></i> Включены уведомления
+            <div class="page-header">
+                <h1>Главная</h1>
+                <div class="page-actions">
+                    <button class="action-btn">Обновить</button>
+                    <button class="action-btn">Новое</button>
+                </div>
             </div>
-
-            <!-- Центральный стеклянный блок -->
-            <div class="telegram-glass">
-                <div class="sticker">
-                    <i class="fas fa-heart" style="color: #ff6b6b;"></i>
+            <div class="card">
+                <h3>Добро пожаловать в GimNet!</h3>
+                <p>Это главная страница приложения. Здесь вы можете видеть последние обновления и важную информацию.</p>
+                <div style="margin-top: 20px; display: flex; gap: 15px;">
+                    <div style="flex: 1; padding: 15px; background: rgba(0, 122, 255, 0.1); border-radius: 8px;">
+                        <h4>Статистика</h4>
+                        <p style="font-size: 24px; font-weight: bold; color: var(--active-color);">25</p>
+                        <p>активных задачи</p>
+                    </div>
+                    <div style="flex: 1; padding: 15px; background: rgba(0, 122, 255, 0.1); border-radius: 8px;">
+                        <h4>Архив</h4>
+                        <p style="font-size: 24px; font-weight: bold; color: var(--active-color);">156</p>
+                        <p>записей в архиве</p>
+                    </div>
                 </div>
-                <div class="glass-title">
-                    С праздником! ❤️
-                </div>
-                <div class="glass-text">
-                    Не забудьте поздравить близких с 14 февраля.
-                </div>
+            </div>
+            <div class="card">
+                <h3>Последние обновления</h3>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li>Добавлена новая таблица с данными</li>
+                    <li>Обновлено расписание на неделю</li>
+                    <li>В архив добавлено 5 новых записей</li>
+                    <li>Исправлены мелкие ошибки интерфейса</li>
+                </ul>
             </div>
         </div>
         
