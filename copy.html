@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GimNet - Приложение</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <style>
+/* ========== АНИМАЦИЯ ЗАГРУЗКИ ========== */
+#splashScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 1s ease, visibility 1s ease;
+}
+
+.splash-text {
+    color: white;
+    font-size: 80px;
+    font-weight: 900;
+    font-family: 'Segoe UI', sans-serif;
+    opacity: 0;
+    transform: scale(0.1);
+    filter: blur(20px);
+    transition: opacity 0.9s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1),
+                filter 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.splash-text.show {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+}
+
+.splash-text.hide {
+    opacity: 0;
+    transform: scale(1.3);
+    filter: blur(20px);
+    transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+                filter 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.splash-dots {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    z-index: 10001;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.splash-dots.show {
+    opacity: 1;
+}
+
+.splash-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.splash-dot.active {
+    animation: dotPulse 1.4s ease-in-out infinite;
+}
+
+.splash-dot:nth-child(1).active {
+    animation-delay: 0s;
+}
+
+.splash-dot:nth-child(2).active {
+    animation-delay: 0.25s;
+}
+
+.splash-dot:nth-child(3).active {
+    animation-delay: 0.5s;
+}
+
+@keyframes dotPulse {
+    0%, 100% {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    }
+    50% {
+        background-color: white;
+        transform: scale(1.2);
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    }
+}
+
+@media (max-width: 768px) {
+    .splash-text { font-size: 50px; }
+    .splash-dots { bottom: 40px; gap: 7px; }
+    .splash-dot { width: 5px; height: 5px; }
+}
+@media (max-width: 480px) {
+    .splash-text { font-size: 36px; }
+    .splash-dots { bottom: 35px; gap: 6px; }
+    .splash-dot { width: 4px; height: 4px; }
+}
+
+/* ========== ОСНОВНЫЕ СТИЛИ ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+:root {
+    --bg-color: #f5f7fa;
+    --text-color: #333;
+    --card-bg: white;
+    --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    --header-gradient: linear-gradient(135deg, #bbbbbb 0%, #0f0f0f 100%);
+    --logo-gradient: linear-gradient(135deg, #0f0f0f 0%, #333333 100%);
+    --active-color: #007AFF;
+}
+
+body.dark-theme {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --card-bg: #1e1e1e;
+    --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    --header-gradient: linear-gradient(135deg, #222222 0%, #000000 100%);
+    --logo-gradient: linear-gradient(135deg, #333333 0%, #666666 100%);
+    --active-color: #4a9cff;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+    padding-top: 64px;
+    overflow: hidden !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+/* ========== ВЕРХНЕЕ МЕНЮ ========== */
+.app-header {
+    background: var(--header-gradient);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 64px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.app-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.app-logo {
+    width: 36px;
+    height: 36px;
+    background: var(--logo-gradient);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-size: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.app-logo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.app-logo:active {
+    transform: scale(0.95);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto;
+}
+
+.notification-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.notification-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #808080;
+    color: white;
+    font-size: 8px;
+    width: 30px;
+    height: 13px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.settings-container {
+    position: relative;
+}
+
+.settings-btn {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.settings-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: rotate(30deg);
+}
+
+.settings-btn:active {
+    transform: scale(0.95) rotate(30deg);
+}
+
+.settings-icon {
+    font-size: 20px;
+}
+
+.settings-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: linear-gradient(135deg, #3a3a3a 0%, #0a0a0a 50%, #3a3a3a 100%);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 5px 15px rgba(255, 255, 255, 0.05) inset;
+    width: 280px;
+    padding: 15px 0;
+    margin-top: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1001;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-header {
+    padding: 0 20px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 10px;
+}
+
+.dropdown-header h3 {
+    color: #f0f0f0;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.settings-dropdown .dropdown-item {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #e0e0e0 !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 16px;
+}
+
+.settings-dropdown .dropdown-item:hover {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    color: #ffffff !important;
+    border-left: 3px solid rgba(255, 255, 255, 0.5);
+    padding-left: 17px;
+}
+
+.dropdown-item-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dropdown-item i {
+    width: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #cccccc;
+}
+
+.dropdown-item:hover i {
+    color: #ffffff;
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.2) 80%, transparent 100%);
+    margin: 10px 20px;
+}
+
+.fa-telegram {
+    color: #cccccc;
+}
+
+.dropdown-item:hover .fa-telegram {
+    color: #27a7e7;
+}
+
+.theme-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 8px 8px;
+}
+
+.theme-submenu.active {
+    max-height: 120px;
+}
+
+.theme-option {
+    padding: 10px 20px 10px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.theme-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+}
+
+.theme-option.active {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.theme-check {
+    color: #4CAF50;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.theme-option.active .theme-check {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        padding: 0 15px;
+        height: 56px;
+    }
+    .app-header { height: 56px; }
+    .app-logo {
+        width: 32px;
+        height: 32px;
+    }
+    .settings-dropdown {
+        width: 260px;
+        right: -10px;
+    }
+    body { padding-top: 56px; }
+}
+
+/* ========== ОСНОВНОЙ КОНТЕНТ ========== */
+.page {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ========== НИЖНЕЕ МЕНЮ ========== */
+.tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--card-bg);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 999;
+}
+
+.tab-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    top: 8px;
+}
+
+.tab-icon {
+    font-size: 22px;
+    margin-bottom: 2px;
+    transition: transform 0.2s ease;
+    color: #a9a9a9;
+}
+
+.tab-item.active .tab-icon {
+    color: var(--active-color);
+    transform: translateY(-1px);
+}
+
+.tab-label {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    color: #a9a9a9;
+}
+
+.tab-item.active .tab-label {
+    font-weight: 800;
+    color: var(--active-color);
+}
+
+body.dark-theme .tab-bar {
+    background: #1e1e1e;
+}
+
+body.dark-theme .tab-item,
+body.dark-theme .tab-icon,
+body.dark-theme .tab-label {
+    color: #a9a9a9;
+}
+
+body.dark-theme .tab-item.active .tab-icon,
+body.dark-theme .tab-item.active .tab-label {
+    color: var(--active-color);
+}
+
+@media (max-width: 768px) {
+    .tab-bar { height: 56px; }
+    .tab-item { top: 6px; }
+    .tab-icon { font-size: 20px; margin-bottom: 1px; }
+    .tab-label { font-size: 11px; }
+}
+
+@media (max-width: 480px) {
+    .tab-item { top: 5px; }
+    .tab-icon { font-size: 19px; }
+    .tab-label { font-size: 10px; }
+}
+
+/* ========== КОНТЕНТ - ФИНАЛЬНАЯ ВЕРСИЯ ========== */
+.content {
+    padding: 20px;
+    padding-bottom: 0 !important;
+    overflow-y: scroll !important;
+    height: calc(100vh - 64px - 60px) !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    overflow-x: hidden !important;
+}
+
+.content::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* ========== СТИЛИ КОМПОНЕНТОВ ========== */
+h1 {
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: var(--card-shadow);
+    color: var(--text-color);
+}
+
+.card:last-child {
+    margin-bottom: 0 !important;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.page-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    padding: 8px 16px;
+    background: var(--active-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.data-table th {
+    background: var(--active-color);
+    color: white;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.data-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.data-table tr:hover {
+    background: rgba(128, 128, 128, 0.05);
+}
+
+.schedule-day {
+    margin-bottom: 20px;
+}
+
+.day-header {
+    background: var(--active-color);
+    color: white;
+    padding: 12px 15px;
+    border-radius: 8px 8px 0 0;
+    font-weight: 600;
+}
+
+.schedule-item {
+    padding: 15px;
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-top: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.schedule-item:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+.time {
+    font-weight: 600;
+    color: var(--active-color);
+}
+
+.archive-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.archive-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    transition: all 0.2s ease;
+}
+
+.archive-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.file-icon {
+    color: var(--active-color);
+    font-size: 20px;
+}
+
+/* ========== СКРОЛЛБАРЫ ========== */
+*::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+html, body {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ========== ДОПОЛНИТЕЛЬНО ========== */
+@supports (padding: max(0px)) {
+    .tab-bar {
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+}
+
+/* ========== ФИНАЛЬНЫЙ РАССТРЕЛ ЧЕРТЫ ========== */
+.content {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    clip-path: inset(-20px -20px 0 -20px) !important;
+}
+
+.card, .archive-item, .schedule-item {
+    box-shadow: var(--card-shadow);
+}
+
+.card:last-child,
+.archive-item:last-child,
+.schedule-day:last-child .schedule-item:last-child {
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
+}
+
+.content > *:last-child {
+    box-shadow: none !important;
+}
+
+.tab-bar {
+    position: relative;
+    box-shadow: 0 -2px 0 var(--card-bg), 0 -4px 0 var(--card-bg) !important;
+}
+
+body.dark-theme .tab-bar {
+    box-shadow: 0 -2px 0 #1e1e1e, 0 -4px 0 #1e1e1e !important;
+}
+
+.tab-bar::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--card-bg);
+    z-index: 1000;
+    pointer-events: none;
+}
+
+body.dark-theme .tab-bar::before {
+    background: #1e1e1e;
+}
+
+/* ========== ВЫРАВНИВАНИЕ ПО ЦЕНТРУ ========== */
+.header-container,
+.content,
+.tab-bar {
+    max-width: 500px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+}
+
+.content {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+@media (min-width: 768px) {
+    .tab-bar {
+        left: auto !important;
+        transform: none !important;
+        border-radius: 20px 20px 0 0 !important;
+    }
+}
+
+/* ========== ПРИЖИМАЕМ ВСЁ К HOME BAR ========== */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: var(--card-bg) !important;
+}
+
+body {
+    padding-top: 64px !important;
+    padding-bottom: 0 !important;
+    background: var(--bg-color) !important;
+}
+
+.content {
+    height: calc(100vh - 64px - 60px) !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.tab-bar {
+    bottom: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    height: 60px !important;
+    background: var(--card-bg) !important;
+}
+
+@supports (padding: max(0px)) {
+    .tab-bar {
+        height: calc(60px + env(safe-area-inset-bottom)) !important;
+        padding-bottom: env(safe-area-inset-bottom) !important;
+    }
+    
+    .content {
+        height: calc(100vh - 64px - 60px - env(safe-area-inset-bottom)) !important;
+    }
+}
+
+body.dark-theme {
+    background: #1e1e1e !important;
+}
+
+body.dark-theme .tab-bar {
+    background: #1e1e1e !important;
+}
+
+.content {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    overflow-y: scroll !important;
+}
+
+.content::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+    -webkit-appearance: none !important;
+}
+
+.content {
+    opacity: 0;
+    animation: showContent 0.1s ease 0.3s forwards;
+}
+
+@keyframes showContent {
+    to { opacity: 1; }
+}
+    </style>
+</head>
+<body class="light-theme">
+    <!-- Анимация загрузки -->
+    <div id="splashScreen" style="background: #000 !important;">
+        <div class="splash-text">GimNet</div>
+        <div class="splash-dots">
+            <div class="splash-dot"></div>
+            <div class="splash-dot"></div>
+            <div class="splash-dot"></div>
+        </div>
+    </div>
+
+    <!-- Верхнее меню -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="app-brand">
+                <div class="app-logo" id="logoBtn">GimNet</div>
+            </div>
+            <div class="header-actions">
+                <button class="notification-btn">
+                    <i class="far fa-bell"></i>
+                    <span class="notification-badge">скоро</span>
+                </button>
+                <div class="settings-container">
+                    <button class="settings-btn" id="settingsBtn">
+                        <i class="fas fa-cog settings-icon"></i>
+                    </button>
+                    <div class="settings-dropdown" id="settingsDropdown">
+                        <div class="dropdown-header">
+                            <h3>Настройки</h3>
+                        </div>
+                        <div class="dropdown-item" id="themeToggleBtn">
+                            <div class="dropdown-item-content">
+                                <i class="fas fa-palette"></i>
+                                <span>Тема оформления</span>
+                            </div>
+                            <i class="fas fa-chevron-right" style="font-size: 14px;"></i>
+                        </div>
+                        <div class="theme-submenu" id="themeSubmenu">
+                            <div class="theme-option" data-theme="light">
+                                <div class="dropdown-item-content">
+                                    <i class="fas fa-sun"></i>
+                                    <span>Светлая</span>
+                                </div>
+                                <i class="fas fa-check theme-check"></i>
+                            </div>
+                            <div class="theme-option" data-theme="dark">
+                                <div class="dropdown-item-content">
+                                    <i class="fas fa-moon"></i>
+                                    <span>Темная</span>
+                                </div>
+                                <i class="fas fa-check theme-check"></i>
+                            </div>
+                        </div>
+                        <div class="dropdown-item" id="notificationsBtn">
+                            <div class="dropdown-item-content">
+                                <i class="fas fa-bell"></i>
+                                <span>Уведомления (скоро)</span>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="https://t.me/+ObOQyRCXbWwwMWIy" target="_blank" class="dropdown-item" id="telegramBtn">
+                            <div class="dropdown-item-content">
+                                <i class="fab fa-telegram"></i>
+                                <span>Telegram</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <div class="content">
+        <!-- Главная -->
+        <div id="home" class="page active">
+            <div class="page-header">
+                <h1>Главная</h1>
+                <div class="page-actions">
+                    <button class="action-btn">Обновить</button>
+                    <button class="action-btn">Новое</button>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Добро пожаловать в GimNet!</h3>
+                <p>Это главная страница приложения. Здесь вы можете видеть последние обновления и важную информацию.</p>
+                <div style="margin-top: 20px; display: flex; gap: 15px;">
+                    <div style="flex: 1; padding: 15px; background: rgba(0, 122, 255, 0.1); border-radius: 8px;">
+                        <h4>Статистика</h4>
+                        <p style="font-size: 24px; font-weight: bold; color: var(--active-color);">25</p>
+                        <p>активных задачи</p>
+                    </div>
+                    <div style="flex: 1; padding: 15px; background: rgba(0, 122, 255, 0.1); border-radius: 8px;">
+                        <h4>Архив</h4>
+                        <p style="font-size: 24px; font-weight: bold; color: var(--active-color);">156</p>
+                        <p>записей в архиве</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Последние обновления</h3>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li>Добавлена новая таблица с данными</li>
+                    <li>Обновлено расписание на неделю</li>
+                    <li>В архив добавлено 5 новых записей</li>
+                    <li>Исправлены мелкие ошибки интерфейса</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Архив -->
+        <div id="archive" class="page">
+            <div class="page-header">
+                <h1>Архив</h1>
+                <div class="page-actions">
+                    <button class="action-btn">Поиск</button>
+                    <button class="action-btn">Добавить</button>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Архивные записи</h3>
+                <p>Здесь хранятся все архивные данные и документы.</p>
+                <div class="archive-list">
+                    <div class="archive-item">
+                        <div class="file-info">
+                            <i class="file-icon fas fa-file-pdf"></i>
+                            <div>
+                                <h4>Отчет за 2023 год</h4>
+                                <p>PDF • 2.4 MB • 15.12.2023</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
+                    </div>
+                    <div class="archive-item">
+                        <div class="file-info">
+                            <i class="file-icon fas fa-file-excel"></i>
+                            <div>
+                                <h4>Данные по продажам</h4>
+                                <p>XLSX • 1.8 MB • 10.12.2023</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
+                    </div>
+                    <div class="archive-item">
+                        <div class="file-info">
+                            <i class="file-icon fas fa-file-word"></i>
+                            <div>
+                                <h4>Документация проекта</h4>
+                                <p>DOCX • 3.2 MB • 05.12.2023</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
+                    </div>
+                    <div class="archive-item">
+                        <div class="file-info">
+                            <i class="file-icon fas fa-file-image"></i>
+                            <div>
+                                <h4>Графики и диаграммы</h4>
+                                <p>PNG • 4.1 MB • 01.12.2023</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Таблицы -->
+        <div id="tables" class="page">
+            <div class="page-header">
+                <h1>Таблицы</h1>
+                <div class="page-actions">
+                    <button class="action-btn">Экспорт</button>
+                    <button class="action-btn">Новая таблица</button>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Таблица данных</h3>
+                <p>Управление таблицами с информацией.</p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Тип</th>
+                            <th>Дата создания</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Пользователи</td>
+                            <td>Основная</td>
+                            <td>15.11.2023</td>
+                            <td><span style="color: #4CAF50; font-weight: bold;">Активна</span></td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Продукты</td>
+                            <td>Каталог</td>
+                            <td>20.11.2023</td>
+                            <td><span style="color: #4CAF50; font-weight: bold;">Активна</span></td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>Заказы</td>
+                            <td>Транзакции</td>
+                            <td>25.11.2023</td>
+                            <td><span style="color: #FF9800; font-weight: bold;">На проверке</span></td>
+                        </tr>
+                        <tr>
+                            <td>004</td>
+                            <td>Статистика</td>
+                            <td>Аналитика</td>
+                            <td>01.12.2023</td>
+                            <td><span style="color: #4CAF50; font-weight: bold;">Активна</span></td>
+                        </tr>
+                        <tr>
+                            <td>005</td>
+                            <td>Архив 2022</td>
+                            <td>Историческая</td>
+                            <td>10.12.2023</td>
+                            <td><span style="color: #9E9E9E; font-weight: bold;">Завершена</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button class="action-btn" style="background: #4CAF50;">Добавить запись</button>
+                    <button class="action-btn" style="background: #FF9800;">Редактировать</button>
+                    <button class="action-btn" style="background: #F44336;">Удалить</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Расписание -->
+        <div id="schedule" class="page">
+            <div class="page-header">
+                <h1>Расписание</h1>
+                <div class="page-actions">
+                    <button class="action-btn">Неделя</button>
+                    <button class="action-btn">Месяц</button>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Расписание на неделю</h3>
+                <p>Планирование и управление временем.</p>
+                <div class="schedule-day">
+                    <div class="day-header">Понедельник, 18 декабря</div>
+                    <div class="schedule-item">
+                        <div>
+                            <strong>Совещание команды</strong>
+                            <p>Обсуждение текущих проектов</p>
+                        </div>
+                        <div class="time">09:00 - 10:30</div>
+                    </div>
+                    <div class="schedule-item">
+                        <div>
+                            <strong>Работа над проектом</strong>
+                            <p>Разработка нового функционала</p>
+                        </div>
+                        <div class="time">11:00 - 13:00</div>
+                    </div>
+                    <div class="schedule-item">
+                        <div>
+                            <strong>Обзор кода</strong>
+                            <p>Проверка Pull Request'ов</p>
+                        </div>
+                        <div class="time">14:00 - 15:30</div>
+                    </div>
+                </div>
+                <div class="schedule-day">
+                    <div class="day-header">Вторник, 19 декабря</div>
+                    <div class="schedule-item">
+                        <div>
+                            <strong>Встреча с клиентом</strong>
+                            <p>Презентация нового функционала</p>
+                        </div>
+                        <div class="time">10:00 - 11:30</div>
+                    </div>
+                    <div class="schedule-item">
+                        <div>
+                            <strong>Обучение</strong>
+                            <p>Изучение новых технологий</p>
+                        </div>
+                        <div class="time">12:00 - 14:00</div>
+                    </div>
+                    <div class="schedule-item">
+                        <div>
+                            <strong>Планирование</strong>
+                            <p>Составление плана на следующую неделю</p>
+                        </div>
+                        <div class="time">15:00 - 16:30</div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="action-btn" style="width: 200px;">Добавить событие</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Нижнее меню -->
+    <nav class="tab-bar">
+        <div class="tab-item active" data-tab="home">
+            <div class="tab-icon"><i class="fas fa-home"></i></div>
+            <div class="tab-label">Главная</div>
+        </div>
+        <div class="tab-item" data-tab="archive">
+            <div class="tab-icon"><i class="fas fa-database"></i></div>
+            <div class="tab-label">Архив</div>
+        </div>
+        <div class="tab-item" data-tab="tables">
+            <div class="tab-icon"><i class="fas fa-table"></i></div>
+            <div class="tab-label">Таблицы</div>
+        </div>
+        <div class="tab-item" data-tab="schedule">
+            <div class="tab-icon"><i class="fas fa-book-bookmark"></i></div>
+            <div class="tab-label">Расписание</div>
+        </div>
+    </nav>
+    
+    <script>
+// ========== FIREBASE КОНФИГ ==========
+const firebaseConfig = {
+    apiKey: "AIzaSyDVHgEuMdlx7op-cAwwYmt6TO8iW-rXb7o",
+    authDomain: "gimnet.firebaseapp.com",
+    databaseURL: "https://gimnet-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "gimnet",
+    storageBucket: "gimnet.firebasestorage.app",
+    messagingSenderId: "72539286332",
+    appId: "1:72539286332:web:336539dd2a803aa7b88c39"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// ========== ОПРЕДЕЛЯЕМ УСТРОЙСТВО ==========
+function getDeviceType() {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+        return "iPad";
+    }
+    if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+        return "iPhone";
+    }
+    return "ПК";
+}
+
+// ========== ПОЛУЧАЕМ IP ==========
+let userIP = 'не определен';
+fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => {
+        userIP = data.ip;
+        
+        // Сохраняем в Firebase
+        database.ref('users/' + userIP.replace(/\./g, '_')).set({
+            ip: userIP,
+            device: getDeviceType(),
+            page: 'Главная',
+            lastSeen: Date.now(),
+            theme: document.body.classList.contains('dark-theme') ? 'dark' : 'light',
+            firstSeen: Date.now()
+        });
+    });
+
+// ========== АНИМАЦИЯ ЗАГРУЗКИ ==========
+window.addEventListener('DOMContentLoaded', function() {
+    const splashScreen = document.getElementById('splashScreen');
+    const splashText = document.querySelector('.splash-text');
+    const splashDots = document.querySelector('.splash-dots');
+    const dots = document.querySelectorAll('.splash-dot');
+    
+    const DURATION = {
+        textAppear: 900,
+        textVisible: 4500,
+        textDisappear: 700,
+        fadeOut: 1000
+    };
+    
+    splashScreen.style.background = '#000';
+    
+    setTimeout(() => {
+        splashText.classList.add('show');
+    }, 20);
+    
+    setTimeout(() => {
+        splashDots.classList.add('show');
+        dots.forEach(dot => dot.classList.add('active'));
+    }, DURATION.textAppear + 50);
+    
+    setTimeout(() => {
+        splashText.classList.add('hide');
+        
+        setTimeout(() => {
+            splashScreen.style.opacity = '0';
+            splashScreen.style.visibility = 'hidden';
+            
+            setTimeout(() => {
+                if (splashScreen && splashScreen.parentNode) {
+                    splashScreen.remove();
+                }
+            }, DURATION.fadeOut);
+        }, DURATION.textDisappear);
+    }, DURATION.textAppear + DURATION.textVisible);
+});
+
+// ========== ЛОГОТИП ==========
+setTimeout(function() {
+    const logo = document.getElementById('logoBtn');
+    if (logo) {
+        logo.onclick = function(e) {
+            e.preventDefault();
+            const content = document.querySelector('.content');
+            if (content) {
+                content.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => { this.style.transform = ''; }, 150);
+            return false;
+        };
+    }
+}, 500);
+
+// ========== ЭЛЕМЕНТЫ ==========
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsDropdown = document.getElementById('settingsDropdown');
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const themeSubmenu = document.getElementById('themeSubmenu');
+const themeOptions = document.querySelectorAll('.theme-option');
+const notificationsBtn = document.getElementById('notificationsBtn');
+const tabItems = document.querySelectorAll('.tab-item');
+const pages = document.querySelectorAll('.page');
+
+// ========== ТЕМА ==========
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.body.classList.add(savedTheme + '-theme');
+
+function updateActiveTheme(theme) {
+    themeOptions.forEach(option => {
+        option.classList.remove('active');
+        if (option.getAttribute('data-theme') === theme) {
+            option.classList.add('active');
+        }
+    });
+}
+updateActiveTheme(savedTheme);
+
+// ========== НАСТРОЙКИ ==========
+settingsBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    settingsDropdown.classList.toggle('active');
+    themeSubmenu.classList.remove('active');
+});
+
+themeToggleBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    themeSubmenu.classList.toggle('active');
+});
+
+themeOptions.forEach(option => {
+    option.addEventListener('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        const theme = this.getAttribute('data-theme');
+        document.body.classList.remove('light-theme', 'dark-theme');
+        document.body.classList.add(theme + '-theme');
+        updateActiveTheme(theme);
+        localStorage.setItem('theme', theme);
+        
+        if (userIP) {
+            database.ref('users/' + userIP.replace(/\./g, '_') + '/theme').set(theme);
+        }
+        
+        setTimeout(() => { themeSubmenu.classList.remove('active'); }, 300);
+    });
+});
+
+notificationsBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    settingsDropdown.classList.remove('active');
+});
+
+document.addEventListener('click', function(e) {
+    if (!settingsDropdown.contains(e.target) && !settingsBtn.contains(e.target)) {
+        settingsDropdown.classList.remove('active');
+        themeSubmenu.classList.remove('active');
+    }
+});
+
+tabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+        const tabId = this.getAttribute('data-tab');
+        
+        tabItems.forEach(item => { item.classList.remove('active'); });
+        this.classList.add('active');
+        
+        pages.forEach(page => { page.classList.remove('active'); });
+        document.getElementById(tabId).classList.add('active');
+        
+        if (userIP) {
+            database.ref('users/' + userIP.replace(/\./g, '_') + '/page').set(tabId);
+        }
+        
+        const content = document.querySelector('.content');
+        if (content) { content.scrollTo({ top: 0, behavior: 'smooth' }); }
+        
+        if (navigator.vibrate) { navigator.vibrate(10); }
+    });
+});
+
+const activeTab = document.querySelector('.tab-item.active');
+if (activeTab) {
+    const tabId = activeTab.getAttribute('data-tab');
+    document.getElementById(tabId).classList.add('active');
+}
+
+setInterval(() => {
+    if (userIP) {
+        database.ref('users/' + userIP.replace(/\./g, '_') + '/lastSeen').set(Date.now());
+    }
+}, 60000);
+
+window.addEventListener('beforeunload', function() {
+    if (userIP) {
+        database.ref('users/' + userIP.replace(/\./g, '_')).remove();
+    }
+});
+    </script>
+</body>
+</html>
