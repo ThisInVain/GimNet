@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GimNet — Telegram Style</title>
+    <title>GimNet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* ========== СБРОС ========== */
@@ -14,37 +14,37 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* ========== СВЕТЛАЯ ТЕМА (по умолчанию) ========== */
+        /* ========== СВЕТЛАЯ ТЕМА ========== */
         :root {
-            --bg-gradient: radial-gradient(circle at 20% 30%, #a8d8ff, #7cb9e8);
-            --glass-bg: rgba(255, 255, 255, 0.25);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            --text-primary: #1e1e1e;
-            --text-secondary: #4a4a4a;
-            --card-bg: rgba(255, 255, 255, 0.2);
+            --bg-gradient: linear-gradient(145deg, #c0d9f0 0%, #a0c0e0 100%);
+            --glass-bg: rgba(255, 255, 255, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --text-primary: #1a1a1a;
+            --text-secondary: #444;
+            --active-color: #007AFF;
             --heart-color: #ff3b30;
-            --header-gradient: linear-gradient(135deg, #3a3a3a 0%, #1a1a1a 100%);
+            --header-gradient: linear-gradient(135deg, #4a4a4a, #1a1a1a);
         }
 
         /* ========== ТЁМНАЯ ТЕМА ========== */
         body.dark-theme {
-            --bg-gradient: radial-gradient(circle at 20% 30%, #1a2a3a, #0a1a2a);
-            --glass-bg: rgba(30, 30, 30, 0.6);
+            --bg-gradient: linear-gradient(145deg, #1a2a3a, #0a1a2a);
+            --glass-bg: rgba(30, 30, 30, 0.7);
             --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            --glass-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
             --text-primary: #f0f0f0;
-            --text-secondary: #a0a0a0;
-            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-secondary: #aaa;
+            --active-color: #4a9cff;
             --heart-color: #ff5e5e;
-            --header-gradient: linear-gradient(135deg, #2a2a2a 0%, #0a0a0a 100%);
+            --header-gradient: linear-gradient(135deg, #2a2a2a, #0a0a0a);
         }
 
         body {
             background: var(--bg-gradient);
             min-height: 100vh;
             color: var(--text-primary);
-            transition: background 0.3s ease, color 0.3s ease;
+            transition: all 0.3s ease;
             padding-top: 64px;
             padding-bottom: 70px;
         }
@@ -53,14 +53,13 @@
         .app-header {
             background: var(--header-gradient);
             color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
             height: 64px;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         .header-container {
@@ -76,33 +75,26 @@
         .app-logo {
             width: 36px;
             height: 36px;
-            background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%);
-            border-radius: 10px;
+            background: linear-gradient(135deg, #666, #333);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            color: white;
             font-size: 8px;
+            color: white;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 15px;
         }
 
         .settings-btn {
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.2);
             border: none;
             border-radius: 50%;
             width: 40px;
             height: 40px;
             color: white;
-            cursor: pointer;
             font-size: 20px;
-            backdrop-filter: blur(5px);
+            cursor: pointer;
         }
 
         /* ========== ОСНОВНОЙ КОНТЕНТ ========== */
@@ -110,9 +102,8 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            padding-bottom: 0;
-            overflow-y: auto;
             height: calc(100vh - 64px - 70px);
+            overflow-y: auto;
             scrollbar-width: none;
         }
 
@@ -123,114 +114,110 @@
         /* ========== LIQUID GLASS БЛОКИ ========== */
         .glass-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 24px;
-            box-shadow: var(--glass-shadow);
+            border-radius: 20px;
+            padding: 20px;
             margin-bottom: 20px;
-            transition: transform 0.2s ease;
+            box-shadow: var(--glass-shadow);
         }
 
-        .glass-card:hover {
-            transform: translateY(-2px);
-        }
-
-        /* ========== ПРИВЕТСТВИЕ ========== */
-        .hero {
-            text-align: center;
-        }
-
-        .hero h2 {
-            font-size: 28px;
+        /* ========== ГЛАВНАЯ ========== */
+        h1 {
+            font-size: 32px;
             font-weight: 700;
             letter-spacing: -0.02em;
             margin-bottom: 8px;
         }
 
-        .hero p {
-            font-size: 15px;
-            color: var(--text-secondary);
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
         }
 
-        /* ========== БЛОК НОВОСТЕЙ ========== */
-        .news-section {
-            margin-top: 10px;
-        }
-
-        .news-section h3 {
+        h3 {
             font-size: 20px;
             font-weight: 700;
             letter-spacing: -0.02em;
             margin-bottom: 16px;
-            padding-left: 8px;
         }
 
-        /* ========== ПОСТЫ ========== */
-        .post {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 12px;
-            border: 1px solid var(--glass-border);
+        p {
+            font-size: 15px;
+            line-height: 1.4;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
         }
 
-        .post-header {
+        hr {
+            border: none;
+            border-top: 1px solid var(--glass-border);
+            margin: 20px 0;
+        }
+
+        /* ========== НОВОСТИ ========== */
+        .news-item {
+            margin-bottom: 20px;
+        }
+
+        .news-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
-        .post-avatar {
-            width: 40px;
-            height: 40px;
+        .news-avatar {
+            width: 36px;
+            height: 36px;
             background: linear-gradient(135deg, var(--active-color), #4a9cff);
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
+            font-size: 12px;
         }
 
-        .post-author {
+        .news-author {
             font-weight: 700;
             font-size: 15px;
             letter-spacing: -0.02em;
         }
 
-        .post-time {
+        .news-time {
             font-size: 13px;
             color: var(--text-secondary);
             margin-left: auto;
         }
 
-        .post-content {
+        .news-content {
             font-size: 15px;
-            line-height: 1.4;
             margin-bottom: 12px;
+            padding-left: 46px;
         }
 
-        .post-stats {
+        .news-stats {
             display: flex;
-            gap: 20px;
-            color: var(--text-secondary);
+            gap: 24px;
+            padding-left: 46px;
             font-size: 14px;
+            color: var(--text-secondary);
         }
 
-        .post-stats i {
+        .news-stats i {
             margin-right: 6px;
         }
 
-        .post-actions {
+        .news-actions {
             display: flex;
-            gap: 20px;
+            gap: 24px;
+            padding-left: 46px;
             margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--glass-border);
         }
 
         .action-btn {
@@ -261,7 +248,7 @@
             right: 0;
             height: 70px;
             background: var(--glass-bg);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(12px);
             border-top: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-around;
@@ -277,13 +264,12 @@
             align-items: center;
             justify-content: center;
             color: var(--text-secondary);
-            text-decoration: none;
             cursor: pointer;
             gap: 4px;
         }
 
         .tab-item.active {
-            color: var(--active-color, #007AFF);
+            color: var(--active-color);
         }
 
         .tab-icon {
@@ -293,7 +279,6 @@
         .tab-label {
             font-size: 11px;
             font-weight: 600;
-            letter-spacing: -0.02em;
         }
 
         /* ========== НАСТРОЙКИ ========== */
@@ -332,10 +317,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-        }
-
-        .dropdown-item:hover {
-            background: rgba(255,255,255,0.1);
         }
 
         .theme-submenu {
@@ -378,7 +359,7 @@
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            transition: opacity 0.8s ease;
         }
 
         .splash-text {
@@ -396,6 +377,8 @@
 
         @media (max-width: 480px) {
             .splash-text { font-size: 36px; }
+            h1 { font-size: 28px; }
+            h2 { font-size: 22px; }
         }
     </style>
 </head>
@@ -409,26 +392,24 @@
     <header class="app-header">
         <div class="header-container">
             <div class="app-logo" id="logoBtn">GimNet</div>
-            <div class="header-actions">
-                <div class="settings-container">
-                    <button class="settings-btn" id="settingsBtn">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                    <div class="settings-dropdown" id="settingsDropdown">
-                        <div class="dropdown-item" id="themeToggleBtn">
-                            <i class="fas fa-palette"></i>
-                            <span>Тема оформления</span>
-                            <i class="fas fa-chevron-right" style="margin-left: auto;"></i>
+            <div class="settings-container">
+                <button class="settings-btn" id="settingsBtn">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <div class="settings-dropdown" id="settingsDropdown">
+                    <div class="dropdown-item" id="themeToggleBtn">
+                        <i class="fas fa-palette"></i>
+                        <span>Тема</span>
+                        <i class="fas fa-chevron-right" style="margin-left: auto;"></i>
+                    </div>
+                    <div class="theme-submenu" id="themeSubmenu">
+                        <div class="theme-option" data-theme="light">
+                            <span>Светлая</span>
+                            <i class="fas fa-check"></i>
                         </div>
-                        <div class="theme-submenu" id="themeSubmenu">
-                            <div class="theme-option" data-theme="light">
-                                <span>Светлая</span>
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="theme-option" data-theme="dark">
-                                <span>Тёмная</span>
-                                <i class="fas fa-check"></i>
-                            </div>
+                        <div class="theme-option" data-theme="dark">
+                            <span>Тёмная</span>
+                            <i class="fas fa-check"></i>
                         </div>
                     </div>
                 </div>
@@ -438,92 +419,73 @@
 
     <!-- Main Content -->
     <div class="content">
-        <!-- Liquid Glass Hero -->
-        <div class="glass-card hero">
-            <h2>С праздником! ❤️</h2>
-            <p>Не забудьте поздравить близких с 14 февраля.</p>
-        </div>
+        <!-- Главная -->
+        <div id="home" class="page active">
+            <h1>Главная</h1>
+            
+            <!-- Праздничный блок -->
+            <div class="glass-card">
+                <h2>С праздником! ❤️</h2>
+                <p>Не забудьте поздравить близких с 14 февраля.</p>
+            </div>
 
-        <!-- Welcome Block -->
-        <div class="glass-card">
-            <p style="font-size: 15px; color: var(--text-secondary);">Добро пожаловать! Это главная страница. Здесь собраны новости и информация о последних обновлениях GimNet.</p>
-        </div>
+            <!-- Добро пожаловать -->
+            <div class="glass-card">
+                <h2>Добро пожаловать!</h2>
+                <p>Это главная страница. Здесь собраны новости и информация о последних обновлениях GimNet.</p>
+            </div>
 
-        <!-- News Section -->
-        <div class="news-section">
+            <hr>
+
+            <!-- Новости -->
             <h3>Новости</h3>
 
-            <!-- Post 1 -->
-            <div class="post" id="post1">
-                <div class="post-header">
-                    <div class="post-avatar">GN</div>
-                    <span class="post-author">GimNet News</span>
-                    <span class="post-time">2 ч назад</span>
+            <!-- Новость 1 -->
+            <div class="glass-card news-item" id="news1">
+                <div class="news-header">
+                    <div class="news-avatar">GN</div>
+                    <span class="news-author">GimNet News</span>
+                    <span class="news-time">2 ч назад</span>
                 </div>
-                <div class="post-content">
-                    🚀 Запущена новая версия интерфейса в стиле Liquid Glass! Теперь GimNet стал ещё красивее.
+                <div class="news-content">
+                    🎉 Запущена новая версия интерфейса в стиле Liquid Glass! Теперь GimNet стал ещё красивее.
                 </div>
-                <div class="post-stats">
-                    <span><i class="far fa-heart"></i> 24</span>
+                <div class="news-stats">
+                    <span><i class="far fa-heart"></i> 25</span>
                     <span><i class="far fa-comment"></i> 5</span>
                     <span><i class="far fa-eye"></i> 128</span>
                 </div>
-                <div class="post-actions">
-                    <button class="action-btn like-btn" data-post="post1">
+                <div class="news-actions">
+                    <button class="action-btn like-btn" data-news="news1">
                         <i class="far fa-heart"></i> Нравится
                     </button>
                     <button class="action-btn">
-                        <i class="far fa-comment"></i> Комментировать
+                        <i class="far fa-comment"></i> Коммент.
                     </button>
                 </div>
             </div>
 
-            <!-- Post 2 -->
-            <div class="post" id="post2">
-                <div class="post-header">
-                    <div class="post-avatar">GN</div>
-                    <span class="post-author">GimNet News</span>
-                    <span class="post-time">5 ч назад</span>
+            <!-- Новость 2 (добавил для примера) -->
+            <div class="glass-card news-item" id="news2">
+                <div class="news-header">
+                    <div class="news-avatar">GN</div>
+                    <span class="news-author">GimNet News</span>
+                    <span class="news-time">5 ч назад</span>
                 </div>
-                <div class="post-content">
-                    📱 Теперь приложение полностью адаптировано под Telegram-стиль. Наслаждайтесь!
+                <div class="news-content">
+                    📱 Добавлена поддержка тёмной темы. Проверьте в настройках!
                 </div>
-                <div class="post-stats">
+                <div class="news-stats">
                     <span><i class="far fa-heart"></i> 42</span>
                     <span><i class="far fa-comment"></i> 8</span>
                     <span><i class="far fa-eye"></i> 256</span>
                 </div>
-                <div class="post-actions">
-                    <button class="action-btn like-btn" data-post="post2">
+                <div class="news-actions">
+                    <button class="action-btn like-btn" data-news="news2">
                         <i class="far fa-heart"></i> Нравится
                     </button>
                     <button class="action-btn">
-                        <i class="far fa-comment"></i> Комментировать
-                    </button>
-                </div>
-            </div>
-
-            <!-- Post 3 -->
-            <div class="post" id="post3">
-                <div class="post-header">
-                    <div class="post-avatar">GN</div>
-                    <span class="post-author">GimNet News</span>
-                    <span class="post-time">1 д назад</span>
-                </div>
-                <div class="post-content">
-                    🌙 Добавлена тёмная тема! Проверьте в настройках.
-                </div>
-                <div class="post-stats">
-                    <span><i class="far fa-heart"></i> 89</span>
-                    <span><i class="far fa-comment"></i> 12</span>
-                    <span><i class="far fa-eye"></i> 512</span>
-                </div>
-                <div class="post-actions">
-                    <button class="action-btn like-btn" data-post="post3">
-                        <i class="far fa-heart"></i> Нравится
-                    </button>
-                    <button class="action-btn">
-                        <i class="far fa-comment"></i> Комментировать
+                        <i class="far fa-comment"></i> Коммент.
                     </button>
                 </div>
             </div>
@@ -566,7 +528,7 @@
             document.querySelector('.content').scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Settings menu
+        // Settings
         const settingsBtn = document.getElementById('settingsBtn');
         const settingsDropdown = document.getElementById('settingsDropdown');
         const themeToggleBtn = document.getElementById('themeToggleBtn');
@@ -575,9 +537,7 @@
         settingsBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             settingsDropdown.classList.toggle('active');
-            if (themeSubmenu.classList.contains('active')) {
-                themeSubmenu.classList.remove('active');
-            }
+            themeSubmenu.classList.remove('active');
         });
 
         themeToggleBtn.addEventListener('click', (e) => {
@@ -585,7 +545,7 @@
             themeSubmenu.classList.toggle('active');
         });
 
-        // Theme switching
+        // Theme
         const themeOptions = document.querySelectorAll('.theme-option');
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.body.className = savedTheme + '-theme';
@@ -617,20 +577,6 @@
             themeSubmenu.classList.remove('active');
         });
 
-        // Tab navigation
-        const tabItems = document.querySelectorAll('.tab-item');
-        const pages = ['home', 'archive', 'tables', 'schedule'];
-        
-        tabItems.forEach((tab, index) => {
-            tab.addEventListener('click', () => {
-                tabItems.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                // Here you would normally switch pages
-                console.log('Switch to:', pages[index]);
-            });
-        });
-
         // Like buttons
         document.querySelectorAll('.like-btn').forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -640,9 +586,9 @@
                 icon.classList.toggle('far');
                 icon.classList.toggle('fas');
                 
-                // Update count
-                const post = document.getElementById(this.dataset.post);
-                const countSpan = post.querySelector('.post-stats span:first-child');
+                const newsId = this.dataset.news;
+                const newsItem = document.getElementById(newsId);
+                const countSpan = newsItem.querySelector('.news-stats span:first-child');
                 let count = parseInt(countSpan.textContent);
                 count = this.classList.contains('liked') ? count + 1 : count - 1;
                 countSpan.innerHTML = `<i class="far fa-heart"></i> ${count}`;
