@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GimNet</title>
+    <title>GimNet — Telegram Style</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Firebase SDK -->
@@ -128,12 +128,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 :root {
-    --bg-color: #f5f7fa;
     --text-color: #333;
+    --text-secondary: #666;
     --card-bg: white;
     --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     --header-gradient: linear-gradient(135deg, #bbbbbb 0%, #0f0f0f 100%);
@@ -141,17 +141,17 @@
     --active-color: #007AFF;
 }
 
-/* ========== ТЕЛЕГРАМ-ФОН (Ч/Б) ========== */
+/* ========== ТЕЛЕГРАМ-ФОН ========== */
 body {
-    background: linear-gradient(145deg, #e9e9e9 0%, #d4d4d4 100%);
+    background-color: #d4dce8;
     background-image: 
-        radial-gradient(circle at 30% 40%, rgba(0,0,0,0.03) 0%, transparent 20%),
-        radial-gradient(circle at 70% 60%, rgba(0,0,0,0.03) 0%, transparent 25%),
-        radial-gradient(circle at 10% 80%, rgba(0,0,0,0.03) 0%, transparent 30%),
-        repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0px, rgba(0,0,0,0.02) 2px, transparent 2px, transparent 8px);
+        radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 0%, transparent 20%),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.15) 0%, transparent 25%),
+        radial-gradient(circle at 10% 80%, rgba(255,255,255,0.15) 0%, transparent 30%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 2px, transparent 2px, transparent 8px);
     color: var(--text-color);
     line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: all 0.3s ease;
     min-height: 100vh;
     padding-top: 64px;
     overflow: hidden !important;
@@ -160,50 +160,19 @@ body {
 }
 
 body.dark-theme {
-    background: linear-gradient(145deg, #1e1e1e 0%, #121212 100%);
+    background-color: #1a1e26;
     background-image: 
         radial-gradient(circle at 30% 40%, rgba(255,255,255,0.03) 0%, transparent 20%),
         radial-gradient(circle at 70% 60%, rgba(255,255,255,0.03) 0%, transparent 25%),
         radial-gradient(circle at 10% 80%, rgba(255,255,255,0.03) 0%, transparent 30%),
         repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 8px);
     color: #e0e0e0;
-}
-
-/* ========== ЦЕНТРАЛЬНЫЙ БЛОК ========== */
-.center-card {
-    max-width: 340px;
-    margin: 0 auto;
-    text-align: center;
-    padding: 40px 25px;
-}
-
-.welcome-title {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    color: white;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.welcome-text {
-    font-size: 16px;
-    color: rgba(255,255,255,0.9);
-    line-height: 1.5;
-}
-
-/* ========== GLASS CARD (общий стиль) ========== */
-.glass-card {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 30px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
-
-body.dark-theme .glass-card {
-    background: rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 255, 255, 0.1);
+    --text-color: #e0e0e0;
+    --text-secondary: #aaa;
+    --card-bg: #1e1e1e;
+    --header-gradient: linear-gradient(135deg, #222222 0%, #000000 100%);
+    --logo-gradient: linear-gradient(135deg, #333333 0%, #666666 100%);
+    --active-color: #4a9cff;
 }
 
 /* ========== ВЕРХНЕЕ МЕНЮ ========== */
@@ -226,7 +195,7 @@ body.dark-theme .glass-card {
     align-items: center;
     padding: 0 20px;
     height: 64px;
-    max-width: 1200px;
+    max-width: 600px;
     margin: 0 auto;
 }
 
@@ -492,6 +461,19 @@ body.dark-theme .glass-card {
 }
 
 /* ========== ОСНОВНОЙ КОНТЕНТ ========== */
+.content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    height: calc(100vh - 64px - 70px);
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.content::-webkit-scrollbar {
+    display: none;
+}
+
 .page {
     display: none;
     animation: fadeIn 0.3s ease;
@@ -512,19 +494,21 @@ body.dark-theme .glass-card {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 60px;
-    background: var(--card-bg);
+    height: 70px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border: none !important;
-    border-top: none !important;
-    border-bottom: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    -webkit-box-shadow: none !important;
     padding-bottom: env(safe-area-inset-bottom);
     z-index: 999;
+}
+
+body.dark-theme .tab-bar {
+    background: rgba(30, 30, 30, 0.7);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .tab-item {
@@ -533,88 +517,58 @@ body.dark-theme .glass-card {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    color: #666;
-    text-decoration: none;
-    transition: all 0.2s ease;
+    color: var(--text-secondary);
     cursor: pointer;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-    position: relative;
-    top: 8px;
+    gap: 4px;
+}
+
+.tab-item.active {
+    color: var(--active-color);
 }
 
 .tab-icon {
     font-size: 22px;
-    margin-bottom: 2px;
-    transition: transform 0.2s ease;
-    color: #a9a9a9;
-}
-
-.tab-item.active .tab-icon {
-    color: var(--active-color);
-    transform: translateY(-1px);
 }
 
 .tab-label {
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 0.3px;
-    color: #a9a9a9;
+    font-size: 11px;
+    font-weight: 500;
 }
 
-.tab-item.active .tab-label {
-    font-weight: 800;
-    color: var(--active-color);
+/* ========== ЦЕНТРАЛЬНЫЙ LIQUID GLASS БЛОК ========== */
+.glass-card {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    padding: 40px 30px;
+    max-width: 340px;
+    margin: 40px auto 0;
+    text-align: center;
 }
 
-body.dark-theme .tab-bar {
-    background: #1e1e1e;
+body.dark-theme .glass-card {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
-body.dark-theme .tab-item,
-body.dark-theme .tab-icon,
-body.dark-theme .tab-label {
-    color: #a9a9a9;
+.glass-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: white;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-body.dark-theme .tab-item.active .tab-icon,
-body.dark-theme .tab-item.active .tab-label {
-    color: var(--active-color);
+.glass-text {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.5;
 }
 
-@media (max-width: 768px) {
-    .tab-bar { height: 56px; }
-    .tab-item { top: 6px; }
-    .tab-icon { font-size: 20px; margin-bottom: 1px; }
-    .tab-label { font-size: 11px; }
-}
-
-@media (max-width: 480px) {
-    .tab-item { top: 5px; }
-    .tab-icon { font-size: 19px; }
-    .tab-label { font-size: 10px; }
-}
-
-/* ========== КОНТЕНТ - ФИНАЛЬНАЯ ВЕРСИЯ ========== */
-.content {
-    padding: 20px;
-    padding-bottom: 0 !important;
-    overflow-y: scroll !important;
-    height: calc(100vh - 64px - 60px) !important;
-    -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-    overflow-x: hidden !important;
-}
-
-.content::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-}
-
-/* ========== СТИЛИ КОМПОНЕНТОВ ========== */
+/* ========== СТИЛИ ДРУГИХ СТРАНИЦ ========== */
 h1 {
     margin-bottom: 20px;
     color: var(--text-color);
@@ -627,10 +581,6 @@ h1 {
     margin-bottom: 15px;
     box-shadow: var(--card-shadow);
     color: var(--text-color);
-}
-
-.card:last-child {
-    margin-bottom: 0 !important;
 }
 
 .page-header {
@@ -653,35 +603,23 @@ h1 {
     border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
-    transition: all 0.2s ease;
-}
-
-.action-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
 }
 
 .data-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
 }
 
 .data-table th {
     background: var(--active-color);
     color: white;
-    padding: 12px 15px;
+    padding: 12px;
     text-align: left;
-    font-weight: 600;
 }
 
 .data-table td {
-    padding: 12px 15px;
+    padding: 12px;
     border-bottom: 1px solid rgba(128, 128, 128, 0.2);
-}
-
-.data-table tr:hover {
-    background: rgba(128, 128, 128, 0.05);
 }
 
 .schedule-day {
@@ -691,7 +629,7 @@ h1 {
 .day-header {
     background: var(--active-color);
     color: white;
-    padding: 12px 15px;
+    padding: 12px;
     border-radius: 8px 8px 0 0;
     font-weight: 600;
 }
@@ -702,16 +640,6 @@ h1 {
     border-top: none;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-}
-
-.schedule-item:last-child {
-    border-radius: 0 0 8px 8px;
-}
-
-.time {
-    font-weight: 600;
-    color: var(--active-color);
 }
 
 .archive-list {
@@ -728,12 +656,6 @@ h1 {
     background: var(--card-bg);
     border-radius: 8px;
     box-shadow: var(--card-shadow);
-    transition: all 0.2s ease;
-}
-
-.archive-item:hover {
-    transform: translateX(5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .file-info {
@@ -749,9 +671,7 @@ h1 {
 
 /* ========== СКРОЛЛБАРЫ ========== */
 *::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
+    display: none;
 }
 
 html, body {
@@ -769,150 +689,11 @@ html, body {
         padding-bottom: max(20px, env(safe-area-inset-bottom));
     }
 }
-
-/* ========== ФИНАЛЬНЫЙ РАССТРЕЛ ЧЕРТЫ ========== */
-.content {
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-    clip-path: inset(-20px -20px 0 -20px) !important;
-}
-
-.card, .archive-item, .schedule-item {
-    box-shadow: var(--card-shadow);
-}
-
-.card:last-child,
-.archive-item:last-child,
-.schedule-day:last-child .schedule-item:last-child {
-    box-shadow: none !important;
-    margin-bottom: 0 !important;
-}
-
-.content > *:last-child {
-    box-shadow: none !important;
-}
-
-.tab-bar {
-    position: relative;
-    box-shadow: 0 -2px 0 var(--card-bg), 0 -4px 0 var(--card-bg) !important;
-}
-
-body.dark-theme .tab-bar {
-    box-shadow: 0 -2px 0 #1e1e1e, 0 -4px 0 #1e1e1e !important;
-}
-
-.tab-bar::before {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--card-bg);
-    z-index: 1000;
-    pointer-events: none;
-}
-
-body.dark-theme .tab-bar::before {
-    background: #1e1e1e;
-}
-
-/* ========== ВЫРАВНИВАНИЕ ПО ЦЕНТРУ ========== */
-.header-container,
-.content,
-.tab-bar {
-    max-width: 500px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    width: 100% !important;
-}
-
-.content {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-}
-
-@media (min-width: 768px) {
-    .tab-bar {
-        left: auto !important;
-        transform: none !important;
-        border-radius: 20px 20px 0 0 !important;
-    }
-}
-
-/* ========== ПРИЖИМАЕМ ВСЁ К HOME BAR ========== */
-html, body {
-    margin: 0 !important;
-    padding: 0 !important;
-    background: var(--card-bg) !important;
-}
-
-body {
-    padding-top: 64px !important;
-    padding-bottom: 0 !important;
-    background: var(--bg-color) !important;
-}
-
-.content {
-    height: calc(100vh - 64px - 60px) !important;
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-}
-
-.tab-bar {
-    bottom: 0 !important;
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-    height: 60px !important;
-    background: var(--card-bg) !important;
-}
-
-@supports (padding: max(0px)) {
-    .tab-bar {
-        height: calc(60px + env(safe-area-inset-bottom)) !important;
-        padding-bottom: env(safe-area-inset-bottom) !important;
-    }
-    
-    .content {
-        height: calc(100vh - 64px - 60px - env(safe-area-inset-bottom)) !important;
-    }
-}
-
-body.dark-theme {
-    background: #1e1e1e !important;
-}
-
-body.dark-theme .tab-bar {
-    background: #1e1e1e !important;
-}
-
-.content {
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-    overflow-y: scroll !important;
-}
-
-.content::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-    background: transparent !important;
-    -webkit-appearance: none !important;
-}
-
-.content {
-    opacity: 0;
-    animation: showContent 0.1s ease 0.3s forwards;
-}
-
-@keyframes showContent {
-    to { opacity: 1; }
-}
     </style>
 </head>
 <body class="light-theme">
-    <!-- Анимация загрузки -->
-    <div id="splashScreen" style="background: #000 !important;">
+    <!-- Splash Screen -->
+    <div id="splashScreen">
         <div class="splash-text">GimNet</div>
         <div class="splash-dots">
             <div class="splash-dot"></div>
@@ -921,7 +702,7 @@ body.dark-theme .tab-bar {
         </div>
     </div>
 
-    <!-- Верхнее меню -->
+    <!-- Header -->
     <header class="app-header">
         <div class="header-container">
             <div class="app-brand">
@@ -934,7 +715,7 @@ body.dark-theme .tab-bar {
                 </button>
                 <div class="settings-container">
                     <button class="settings-btn" id="settingsBtn">
-                        <i class="fas fa-cog settings-icon"></i>
+                        <i class="fas fa-cog"></i>
                     </button>
                     <div class="settings-dropdown" id="settingsDropdown">
                         <div class="dropdown-header">
@@ -943,9 +724,9 @@ body.dark-theme .tab-bar {
                         <div class="dropdown-item" id="themeToggleBtn">
                             <div class="dropdown-item-content">
                                 <i class="fas fa-palette"></i>
-                                <span>Тема оформления</span>
+                                <span>Тема</span>
                             </div>
-                            <i class="fas fa-chevron-right" style="font-size: 14px;"></i>
+                            <i class="fas fa-chevron-right"></i>
                         </div>
                         <div class="theme-submenu" id="themeSubmenu">
                             <div class="theme-option" data-theme="light">
@@ -958,7 +739,7 @@ body.dark-theme .tab-bar {
                             <div class="theme-option" data-theme="dark">
                                 <div class="dropdown-item-content">
                                     <i class="fas fa-moon"></i>
-                                    <span>Темная</span>
+                                    <span>Тёмная</span>
                                 </div>
                                 <i class="fas fa-check theme-check"></i>
                             </div>
@@ -966,240 +747,43 @@ body.dark-theme .tab-bar {
                         <div class="dropdown-item" id="notificationsBtn">
                             <div class="dropdown-item-content">
                                 <i class="fas fa-bell"></i>
-                                <span>Уведомления (скоро)</span>
+                                <span>Уведомления</span>
                             </div>
                         </div>
-                        <div class="dropdown-divider"></div>
-                        <a href="https://t.me/+ObOQyRCXbWwwMWIy" target="_blank" class="dropdown-item" id="telegramBtn">
-                            <div class="dropdown-item-content">
-                                <i class="fab fa-telegram"></i>
-                                <span>Telegram</span>
-                            </div>
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Основной контент -->
+    <!-- Main Content -->
     <div class="content">
-      
- <!-- Главная -->
-<div id="home" class="page active">
-    <!-- Уведомление сверху (как на фото) -->
-    <div class="notification-banner" id="holidayNotice">
-        <div style="display: flex; align-items: center; gap: 8px;">
-            <i class="fas fa-heart" style="color: #ff6b6b;"></i>
-            <span>С праздником! Не забудьте поздравить близких с 14 февраля.</span>
+        <!-- Главная страница (Только Telegram-блок) -->
+        <div id="home" class="page active">
+            <div class="glass-card">
+                <div class="glass-title">Добро пожаловать!</div>
+                <div class="glass-text">
+                    Это главная страница. Здесь собраны новости и информация о последних обновлениях GimNet.
+                </div>
+            </div>
         </div>
-        <button class="close-btn" onclick="document.getElementById('holidayNotice').style.display='none'">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
 
-    <!-- Центральный Liquid Glass прямоугольник -->
-    <div class="glass-card center-card">
-        <h2 class="welcome-title">Добро пожаловать!</h2>
-        <p class="welcome-text">
-            Это главная страница. Здесь собраны новости и информация о последних обновлениях GimNet.
-        </p>
-    </div>
-</div>
-
-        <!-- Архив -->
+        <!-- Другие страницы -->
         <div id="archive" class="page">
-            <div class="page-header">
-                <h1>Архив</h1>
-                <div class="page-actions">
-                    <button class="action-btn">Поиск</button>
-                    <button class="action-btn">Добавить</button>
-                </div>
-            </div>
-            <div class="card">
-                <h3>Архивные записи</h3>
-                <p>Здесь хранятся все архивные данные и документы.</p>
-                <div class="archive-list">
-                    <div class="archive-item">
-                        <div class="file-info">
-                            <i class="file-icon fas fa-file-pdf"></i>
-                            <div>
-                                <h4>Отчет за 2023 год</h4>
-                                <p>PDF • 2.4 MB • 15.12.2023</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
-                    </div>
-                    <div class="archive-item">
-                        <div class="file-info">
-                            <i class="file-icon fas fa-file-excel"></i>
-                            <div>
-                                <h4>Данные по продажам</h4>
-                                <p>XLSX • 1.8 MB • 10.12.2023</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
-                    </div>
-                    <div class="archive-item">
-                        <div class="file-info">
-                            <i class="file-icon fas fa-file-word"></i>
-                            <div>
-                                <h4>Документация проекта</h4>
-                                <p>DOCX • 3.2 MB • 05.12.2023</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
-                    </div>
-                    <div class="archive-item">
-                        <div class="file-info">
-                            <i class="file-icon fas fa-file-image"></i>
-                            <div>
-                                <h4>Графики и диаграммы</h4>
-                                <p>PNG • 4.1 MB • 01.12.2023</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
-                    </div>
-                </div>
-            </div>
+            <h1>Архив</h1>
+            <div class="card">Архивные записи</div>
         </div>
-        
-        <!-- Таблицы -->
         <div id="tables" class="page">
-            <div class="page-header">
-                <h1>Таблицы</h1>
-                <div class="page-actions">
-                    <button class="action-btn">Экспорт</button>
-                    <button class="action-btn">Новая таблица</button>
-                </div>
-            </div>
-            <div class="card">
-                <h3>Таблица данных</h3>
-                <p>Управление таблицами с информацией.</p>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Название</th>
-                            <th>Тип</th>
-                            <th>Дата создания</th>
-                            <th>Статус</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>001</td>
-                            <td>Пользователи</td>
-                            <td>Основная</td>
-                            <td>15.11.2023</td>
-                            <td><span style="color: #4CAF50; font-weight: bold;">Активна</span></td>
-                        </tr>
-                        <tr>
-                            <td>002</td>
-                            <td>Продукты</td>
-                            <td>Каталог</td>
-                            <td>20.11.2023</td>
-                            <td><span style="color: #4CAF50; font-weight: bold;">Активна</span></td>
-                        </tr>
-                        <tr>
-                            <td>003</td>
-                            <td>Заказы</td>
-                            <td>Транзакции</td>
-                            <td>25.11.2023</td>
-                            <td><span style="color: #FF9800; font-weight: bold;">На проверке</span></td>
-                        </tr>
-                        <tr>
-                            <td>004</td>
-                            <td>Статистика</td>
-                            <td>Аналитика</td>
-                            <td>01.12.2023</td>
-                            <td><span style="color: #4CAF50; font-weight: bold;">Активна</span></td>
-                        </tr>
-                        <tr>
-                            <td>005</td>
-                            <td>Архив 2022</td>
-                            <td>Историческая</td>
-                            <td>10.12.2023</td>
-                            <td><span style="color: #9E9E9E; font-weight: bold;">Завершена</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button class="action-btn" style="background: #4CAF50;">Добавить запись</button>
-                    <button class="action-btn" style="background: #FF9800;">Редактировать</button>
-                    <button class="action-btn" style="background: #F44336;">Удалить</button>
-                </div>
-            </div>
+            <h1>Таблицы</h1>
+            <div class="card">Таблицы с данными</div>
         </div>
-        
-        <!-- Расписание -->
         <div id="schedule" class="page">
-            <div class="page-header">
-                <h1>Расписание</h1>
-                <div class="page-actions">
-                    <button class="action-btn">Неделя</button>
-                    <button class="action-btn">Месяц</button>
-                </div>
-            </div>
-            <div class="card">
-                <h3>Расписание на неделю</h3>
-                <p>Планирование и управление временем.</p>
-                <div class="schedule-day">
-                    <div class="day-header">Понедельник, 18 декабря</div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Совещание команды</strong>
-                            <p>Обсуждение текущих проектов</p>
-                        </div>
-                        <div class="time">09:00 - 10:30</div>
-                    </div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Работа над проектом</strong>
-                            <p>Разработка нового функционала</p>
-                        </div>
-                        <div class="time">11:00 - 13:00</div>
-                    </div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Обзор кода</strong>
-                            <p>Проверка Pull Request'ов</p>
-                        </div>
-                        <div class="time">14:00 - 15:30</div>
-                    </div>
-                </div>
-                <div class="schedule-day">
-                    <div class="day-header">Вторник, 19 декабря</div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Встреча с клиентом</strong>
-                            <p>Презентация нового функционала</p>
-                        </div>
-                        <div class="time">10:00 - 11:30</div>
-                    </div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Обучение</strong>
-                            <p>Изучение новых технологий</p>
-                        </div>
-                        <div class="time">12:00 - 14:00</div>
-                    </div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Планирование</strong>
-                            <p>Составление плана на следующую неделю</p>
-                        </div>
-                        <div class="time">15:00 - 16:30</div>
-                    </div>
-                </div>
-                <div style="margin-top: 20px; text-align: center;">
-                    <button class="action-btn" style="width: 200px;">Добавить событие</button>
-                </div>
-            </div>
+            <h1>Расписание</h1>
+            <div class="card">Расписание</div>
         </div>
     </div>
-    
-    <!-- Нижнее меню -->
+
+    <!-- Bottom Navigation -->
     <nav class="tab-bar">
         <div class="tab-item active" data-tab="home">
             <div class="tab-icon"><i class="fas fa-home"></i></div>
@@ -1214,222 +798,107 @@ body.dark-theme .tab-bar {
             <div class="tab-label">Таблицы</div>
         </div>
         <div class="tab-item" data-tab="schedule">
-            <div class="tab-icon"><i class="fas fa-book-bookmark"></i></div>
+            <div class="tab-icon"><i class="fas fa-calendar"></i></div>
             <div class="tab-label">Расписание</div>
         </div>
     </nav>
-    
+
     <script>
-// ========== FIREBASE КОНФИГ ==========
-const firebaseConfig = {
-    apiKey: "AIzaSyDVHgEuMdlx7op-cAwwYmt6TO8iW-rXb7o",
-    authDomain: "gimnet.firebaseapp.com",
-    databaseURL: "https://gimnet-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "gimnet",
-    storageBucket: "gimnet.firebasestorage.app",
-    messagingSenderId: "72539286332",
-    appId: "1:72539286332:web:336539dd2a803aa7b88c39"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
-
-// ========== ОПРЕДЕЛЯЕМ УСТРОЙСТВО ==========
-function getDeviceType() {
-    const ua = navigator.userAgent;
-    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
-        return "iPad";
-    }
-    if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
-        return "iPhone";
-    }
-    return "ПК";
-}
-
-// ========== ПОЛУЧАЕМ IP ==========
-let userIP = 'не определен';
-fetch('https://api.ipify.org?format=json')
-    .then(response => response.json())
-    .then(data => {
-        userIP = data.ip;
-        
-        // Сохраняем в Firebase
-        database.ref('users/' + userIP.replace(/\./g, '_')).set({
-            ip: userIP,
-            device: getDeviceType(),
-            page: 'Главная',
-            lastSeen: Date.now(),
-            theme: document.body.classList.contains('dark-theme') ? 'dark' : 'light',
-            firstSeen: Date.now()
-        });
-    });
-
-// ========== АНИМАЦИЯ ЗАГРУЗКИ ==========
-window.addEventListener('DOMContentLoaded', function() {
-    const splashScreen = document.getElementById('splashScreen');
-    const splashText = document.querySelector('.splash-text');
-    const splashDots = document.querySelector('.splash-dots');
-    const dots = document.querySelectorAll('.splash-dot');
-    
-    const DURATION = {
-        textAppear: 900,
-        textVisible: 4500,
-        textDisappear: 700,
-        fadeOut: 1000
-    };
-    
-    splashScreen.style.background = '#000';
-    
-    setTimeout(() => {
-        splashText.classList.add('show');
-    }, 20);
-    
-    setTimeout(() => {
-        splashDots.classList.add('show');
-        dots.forEach(dot => dot.classList.add('active'));
-    }, DURATION.textAppear + 50);
-    
-    setTimeout(() => {
-        splashText.classList.add('hide');
-        
-        setTimeout(() => {
-            splashScreen.style.opacity = '0';
-            splashScreen.style.visibility = 'hidden';
-            
-            setTimeout(() => {
-                if (splashScreen && splashScreen.parentNode) {
-                    splashScreen.remove();
-                }
-            }, DURATION.fadeOut);
-        }, DURATION.textDisappear);
-    }, DURATION.textAppear + DURATION.textVisible);
-});
-
-// ========== ЛОГОТИП ==========
-setTimeout(function() {
-    const logo = document.getElementById('logoBtn');
-    if (logo) {
-        logo.onclick = function(e) {
-            e.preventDefault();
-            const content = document.querySelector('.content');
-            if (content) {
-                content.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-            this.style.transform = 'scale(0.9)';
-            setTimeout(() => { this.style.transform = ''; }, 150);
-            return false;
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDVHgEuMdlx7op-cAwwYmt6TO8iW-rXb7o",
+            authDomain: "gimnet.firebaseapp.com",
+            databaseURL: "https://gimnet-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "gimnet",
+            storageBucket: "gimnet.firebasestorage.app",
+            messagingSenderId: "72539286332",
+            appId: "1:72539286332:web:336539dd2a803aa7b88c39"
         };
-    }
-}, 500);
 
-// ========== ЭЛЕМЕНТЫ ==========
-const settingsBtn = document.getElementById('settingsBtn');
-const settingsDropdown = document.getElementById('settingsDropdown');
-const themeToggleBtn = document.getElementById('themeToggleBtn');
-const themeSubmenu = document.getElementById('themeSubmenu');
-const themeOptions = document.querySelectorAll('.theme-option');
-const notificationsBtn = document.getElementById('notificationsBtn');
-const tabItems = document.querySelectorAll('.tab-item');
-const pages = document.querySelectorAll('.page');
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-// ========== ТЕМА ==========
-const savedTheme = localStorage.getItem('theme') || 'light';
-document.body.classList.add(savedTheme + '-theme');
+        // Splash Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('splashScreen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('splashScreen').remove();
+                }, 800);
+            }, 2000);
+        });
 
-function updateActiveTheme(theme) {
-    themeOptions.forEach(option => {
-        option.classList.remove('active');
-        if (option.getAttribute('data-theme') === theme) {
-            option.classList.add('active');
+        // Logo
+        document.getElementById('logoBtn').addEventListener('click', () => {
+            document.querySelector('.content').scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Settings
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsDropdown = document.getElementById('settingsDropdown');
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeSubmenu = document.getElementById('themeSubmenu');
+        const themeOptions = document.querySelectorAll('.theme-option');
+
+        settingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            settingsDropdown.classList.toggle('active');
+            themeSubmenu.classList.remove('active');
+        });
+
+        themeToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            themeSubmenu.classList.toggle('active');
+        });
+
+        // Theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.className = savedTheme + '-theme';
+
+        themeOptions.forEach(option => {
+            if (option.dataset.theme === savedTheme) {
+                option.classList.add('active');
+            }
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const theme = option.dataset.theme;
+                document.body.className = theme + '-theme';
+                localStorage.setItem('theme', theme);
+                themeOptions.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                setTimeout(() => {
+                    themeSubmenu.classList.remove('active');
+                    settingsDropdown.classList.remove('active');
+                }, 200);
+            });
+        });
+
+        // Close dropdowns
+        document.addEventListener('click', () => {
+            settingsDropdown.classList.remove('active');
+            themeSubmenu.classList.remove('active');
+        });
+
+        // Tab navigation
+        const tabItems = document.querySelectorAll('.tab-item');
+        const pages = document.querySelectorAll('.page');
+
+        tabItems.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.dataset.tab;
+                tabItems.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                pages.forEach(p => p.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                document.querySelector('.content').scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Active tab on load
+        const activeTab = document.querySelector('.tab-item.active');
+        if (activeTab) {
+            document.getElementById(activeTab.dataset.tab).classList.add('active');
         }
-    });
-}
-updateActiveTheme(savedTheme);
-
-// ========== НАСТРОЙКИ ==========
-settingsBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    settingsDropdown.classList.toggle('active');
-    themeSubmenu.classList.remove('active');
-});
-
-themeToggleBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    themeSubmenu.classList.toggle('active');
-});
-
-themeOptions.forEach(option => {
-    option.addEventListener('click', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        const theme = this.getAttribute('data-theme');
-        document.body.classList.remove('light-theme', 'dark-theme');
-        document.body.classList.add(theme + '-theme');
-        updateActiveTheme(theme);
-        localStorage.setItem('theme', theme);
-        
-        if (userIP) {
-            database.ref('users/' + userIP.replace(/\./g, '_') + '/theme').set(theme);
-        }
-        
-        setTimeout(() => { themeSubmenu.classList.remove('active'); }, 300);
-    });
-});
-
-notificationsBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    settingsDropdown.classList.remove('active');
-});
-
-document.addEventListener('click', function(e) {
-    if (!settingsDropdown.contains(e.target) && !settingsBtn.contains(e.target)) {
-        settingsDropdown.classList.remove('active');
-        themeSubmenu.classList.remove('active');
-    }
-});
-
-tabItems.forEach(tab => {
-    tab.addEventListener('click', function() {
-        const tabId = this.getAttribute('data-tab');
-        
-        tabItems.forEach(item => { item.classList.remove('active'); });
-        this.classList.add('active');
-        
-        pages.forEach(page => { page.classList.remove('active'); });
-        document.getElementById(tabId).classList.add('active');
-        
-        if (userIP) {
-            database.ref('users/' + userIP.replace(/\./g, '_') + '/page').set(tabId);
-        }
-        
-        const content = document.querySelector('.content');
-        if (content) { content.scrollTo({ top: 0, behavior: 'smooth' }); }
-        
-        if (navigator.vibrate) { navigator.vibrate(10); }
-    });
-});
-
-const activeTab = document.querySelector('.tab-item.active');
-if (activeTab) {
-    const tabId = activeTab.getAttribute('data-tab');
-    document.getElementById(tabId).classList.add('active');
-}
-
-setInterval(() => {
-    if (userIP) {
-        database.ref('users/' + userIP.replace(/\./g, '_') + '/lastSeen').set(Date.now());
-    }
-}, 60000);
-
-window.addEventListener('beforeunload', function() {
-    if (userIP) {
-        database.ref('users/' + userIP.replace(/\./g, '_')).remove();
-    }
-});
     </script>
 </body>
 </html>
