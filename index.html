@@ -940,7 +940,7 @@ body.dark-theme .glass-card {
             <div class="app-brand">
                 <div class="app-logo" id="logoBtn">GimNet</div>
             </div>
-            <div style="font-size: 18px; font-weight: 600; color: white;">Главная</div>
+            <div id="pageTitle" style="font-size: 18px; font-weight: 700; color: white; position: absolute; left: 50%; transform: translateX(-50%);">Главная</div>
             <div class="header-actions">
                 <button class="notification-btn">
                     <i class="far fa-bell"></i>
@@ -1433,6 +1433,38 @@ window.addEventListener('beforeunload', function() {
         database.ref('users/' + userIP.replace(/\./g, '_')).remove();
     }
 });
+
+// ========== ОБНОВЛЕНИЕ НАЗВАНИЯ ВКЛАДКИ ==========
+function updatePageTitle() {
+    const activeTab = document.querySelector('.tab-item.active');
+    if (!activeTab) return;
+    
+    const tabId = activeTab.getAttribute('data-tab');
+    const titles = {
+        home: 'Главная',
+        archive: 'Архив',
+        tables: 'Таблицы',
+        schedule: 'Расписание'
+    };
+    
+    const titleElement = document.getElementById('pageTitle');
+    if (titleElement) {
+        titleElement.textContent = titles[tabId] || 'Главная';
+    }
+}
+
+// Обновляем при клике на вкладку
+const tabItems = document.querySelectorAll('.tab-item');
+tabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+        // Немного ждём, пока обновится активный класс
+        setTimeout(updatePageTitle, 10);
+    });
+});
+
+// Обновляем при загрузке
+updatePageTitle();
+
     </script>
 </body>
 </html>
