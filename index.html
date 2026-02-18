@@ -157,19 +157,25 @@ body.dark-theme {
 body {
     background-color: #d4e0ec;
     background-image: 
-        /* Крупные размытые пятна (как облака) */
-        radial-gradient(circle at 10% 30%, rgba(255,255,255,0.4) 0%, transparent 25%),
-        radial-gradient(circle at 95% 70%, rgba(255,255,255,0.35) 0%, transparent 30%),
-        radial-gradient(circle at 40% 85%, rgba(255,255,255,0.3) 0%, transparent 35%),
-        radial-gradient(circle at 70% 15%, rgba(255,255,255,0.3) 0%, transparent 30%),
+        /* 1. Большие размытые пятна (как облака) */
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.5) 0%, transparent 30%),
+        radial-gradient(circle at 90% 30%, rgba(255,255,255,0.45) 0%, transparent 35%),
+        radial-gradient(circle at 30% 80%, rgba(255,255,255,0.4) 0%, transparent 35%),
+        radial-gradient(circle at 70% 70%, rgba(255,255,255,0.4) 0%, transparent 30%),
         
-        /* Мелкие точечки (шум) */
-        repeating-radial-gradient(circle at 30% 40%, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 8px),
-        repeating-radial-gradient(circle at 70% 60%, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 12px),
+        /* 2. Мелкие точки (шум) */
+        repeating-radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15) 1px, transparent 1px, transparent 8px),
+        repeating-radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 12px),
         
-        /* Диагональные линии (полоски) */
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.07) 0px, rgba(255,255,255,0.07) 2px, transparent 2px, transparent 10px),
-        repeating-linear-gradient(-45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 10px);
+        /* 3. Диагональные линии (сетка) */
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 2px, transparent 2px, transparent 12px),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 2px, transparent 2px, transparent 12px),
+        
+        /* 4. Вертикальные линии (как в Telegram Web) */
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 20px),
+        
+        /* 5. Горизонтальные линии */
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 20px);
     
     color: var(--text-color);
     line-height: 1.6;
@@ -184,14 +190,16 @@ body {
 body.dark-theme {
     background-color: #1a1f2c;
     background-image: 
-        radial-gradient(circle at 10% 30%, rgba(255,255,255,0.1) 0%, transparent 25%),
-        radial-gradient(circle at 95% 70%, rgba(255,255,255,0.08) 0%, transparent 30%),
-        radial-gradient(circle at 40% 85%, rgba(255,255,255,0.06) 0%, transparent 35%),
-        radial-gradient(circle at 70% 15%, rgba(255,255,255,0.06) 0%, transparent 30%),
-        repeating-radial-gradient(circle at 30% 40%, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 8px),
-        repeating-radial-gradient(circle at 70% 60%, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 12px),
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 10px),
-        repeating-linear-gradient(-45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 10px);
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.12) 0%, transparent 30%),
+        radial-gradient(circle at 90% 30%, rgba(255,255,255,0.1) 0%, transparent 35%),
+        radial-gradient(circle at 30% 80%, rgba(255,255,255,0.08) 0%, transparent 35%),
+        radial-gradient(circle at 70% 70%, rgba(255,255,255,0.08) 0%, transparent 30%),
+        repeating-radial-gradient(circle at 20% 20%, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 8px),
+        repeating-radial-gradient(circle at 80% 80%, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 12px),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 12px),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 12px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 20px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 20px);
     color: #e0e0e0;
 }
 
