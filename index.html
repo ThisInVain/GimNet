@@ -174,10 +174,10 @@ body {
 body.dark-theme {
     background-color: #1a1e26;
     background-image: 
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 0%, transparent 25%),
-        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 0%, transparent 30%),
-        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.02) 0%, transparent 35%),
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 8px);
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08) 0%, transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.05) 0%, transparent 30%),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.03) 0%, transparent 35%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 8px);
     color: #e0e0e0;
 }
 
@@ -203,6 +203,7 @@ body.dark-theme {
     height: 64px;
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
 }
 
 .app-brand {
@@ -235,6 +236,17 @@ body.dark-theme {
 
 .app-logo:active {
     transform: scale(0.95);
+}
+
+#pageTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    padding: 10px 15px;
 }
 
 .header-actions {
@@ -459,6 +471,7 @@ body.dark-theme {
         width: 32px;
         height: 32px;
     }
+    #pageTitle { font-size: 16px; }
     .settings-dropdown {
         width: 260px;
         right: -10px;
@@ -942,7 +955,7 @@ body.dark-theme .glass-card {
             <div class="app-brand">
                 <div class="app-logo" id="logoBtn">GimNet</div>
             </div>
-            <div id="pageTitle" style="font-size: 18px; font-weight: 700; color: white; position: absolute; left: 50%; transform: translateX(-50%);">Главная</div>
+            <div id="pageTitle">Главная</div>
             <div class="header-actions">
                 <button class="notification-btn">
                     <i class="far fa-bell"></i>
@@ -1424,6 +1437,14 @@ titleTabItems.forEach(tab => {
 });
 
 updatePageTitle();
+
+// ========== КЛИК ПО НАЗВАНИЮ ВКЛАДКИ ==========
+document.getElementById('pageTitle').addEventListener('click', function() {
+    const content = document.querySelector('.content');
+    if (content) {
+        content.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+});
 
 // ========== ВКЛАДКИ ==========
 tabItems.forEach(tab => {
