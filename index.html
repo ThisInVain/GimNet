@@ -155,13 +155,22 @@ body.dark-theme {
 
 /* ========== ТЕЛЕГРАМ-ФОН ========== */
 body {
-    background-color: #e0e8f0;
+    background-color: #d4e0ec;
     background-image: 
-        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.3) 0%, transparent 30%),
-        radial-gradient(circle at 90% 30%, rgba(255, 255, 255, 0.25) 0%, transparent 35%),
-        radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.2) 0%, transparent 40%),
-        radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.2) 0%, transparent 35%),
-        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0px, rgba(255, 255, 255, 0.1) 2px, transparent 2px, transparent 10px);
+        /* Крупные размытые пятна (как облака) */
+        radial-gradient(circle at 10% 30%, rgba(255,255,255,0.4) 0%, transparent 25%),
+        radial-gradient(circle at 95% 70%, rgba(255,255,255,0.35) 0%, transparent 30%),
+        radial-gradient(circle at 40% 85%, rgba(255,255,255,0.3) 0%, transparent 35%),
+        radial-gradient(circle at 70% 15%, rgba(255,255,255,0.3) 0%, transparent 30%),
+        
+        /* Мелкие точечки (шум) */
+        repeating-radial-gradient(circle at 30% 40%, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 8px),
+        repeating-radial-gradient(circle at 70% 60%, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 12px),
+        
+        /* Диагональные линии (полоски) */
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.07) 0px, rgba(255,255,255,0.07) 2px, transparent 2px, transparent 10px),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 10px);
+    
     color: var(--text-color);
     line-height: 1.6;
     transition: all 0.3s ease;
@@ -173,13 +182,16 @@ body {
 }
 
 body.dark-theme {
-    background-color: #1a1e26;
+    background-color: #1a1f2c;
     background-image: 
-        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 30%),
-        radial-gradient(circle at 90% 30%, rgba(255, 255, 255, 0.06) 0%, transparent 35%),
-        radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 40%),
-        radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.04) 0%, transparent 35%),
-        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0px, rgba(255, 255, 255, 0.03) 2px, transparent 2px, transparent 10px);
+        radial-gradient(circle at 10% 30%, rgba(255,255,255,0.1) 0%, transparent 25%),
+        radial-gradient(circle at 95% 70%, rgba(255,255,255,0.08) 0%, transparent 30%),
+        radial-gradient(circle at 40% 85%, rgba(255,255,255,0.06) 0%, transparent 35%),
+        radial-gradient(circle at 70% 15%, rgba(255,255,255,0.06) 0%, transparent 30%),
+        repeating-radial-gradient(circle at 30% 40%, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 8px),
+        repeating-radial-gradient(circle at 70% 60%, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 12px),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 10px),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 10px);
     color: #e0e0e0;
 }
 
