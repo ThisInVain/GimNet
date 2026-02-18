@@ -1395,6 +1395,37 @@ document.addEventListener('click', function(e) {
     }
 });
 
+// ========== ОБНОВЛЕНИЕ НАЗВАНИЯ ВКЛАДКИ (БЕЗ КОНФЛИКТА) ==========
+function updatePageTitle() {
+    const activeTab = document.querySelector('.tab-item.active');
+    if (!activeTab) return;
+    
+    const tabId = activeTab.getAttribute('data-tab');
+    const titles = {
+        home: 'Главная',
+        archive: 'Архив',
+        tables: 'Таблицы',
+        schedule: 'Расписание'
+    };
+    
+    const titleElement = document.getElementById('pageTitle');
+    if (titleElement) {
+        titleElement.textContent = titles[tabId] || 'Главная';
+    }
+}
+
+// Используем другую переменную, чтобы не конфликтовать
+const titleTabItems = document.querySelectorAll('.tab-item');
+titleTabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+        setTimeout(updatePageTitle, 10);
+    });
+});
+
+// Обновляем при загрузке
+updatePageTitle();
+
+// ========== ВКЛАДКИ ==========
 tabItems.forEach(tab => {
     tab.addEventListener('click', function() {
         const tabId = this.getAttribute('data-tab');
@@ -1433,38 +1464,6 @@ window.addEventListener('beforeunload', function() {
         database.ref('users/' + userIP.replace(/\./g, '_')).remove();
     }
 });
-
-// ========== ОБНОВЛЕНИЕ НАЗВАНИЯ ВКЛАДКИ ==========
-function updatePageTitle() {
-    const activeTab = document.querySelector('.tab-item.active');
-    if (!activeTab) return;
-    
-    const tabId = activeTab.getAttribute('data-tab');
-    const titles = {
-        home: 'Главная',
-        archive: 'Архив',
-        tables: 'Таблицы',
-        schedule: 'Расписание'
-    };
-    
-    const titleElement = document.getElementById('pageTitle');
-    if (titleElement) {
-        titleElement.textContent = titles[tabId] || 'Главная';
-    }
-}
-
-// Обновляем при клике на вкладку
-const tabItems = document.querySelectorAll('.tab-item');
-tabItems.forEach(tab => {
-    tab.addEventListener('click', function() {
-        // Немного ждём, пока обновится активный класс
-        setTimeout(updatePageTitle, 10);
-    });
-});
-
-// Обновляем при загрузке
-updatePageTitle();
-
     </script>
 </body>
 </html>
