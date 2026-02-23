@@ -11,15 +11,34 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     
     <style>
-
+/* ========== СТИЛИ ДЛЯ НОВОСТЕЙ ========== */
 .glass-text {
-    text-align: left;  /* Текст по левому краю */
+    text-align: left;
 }
 
 .quote {
     padding-left: 16px;
-    border-left: 4px solid #c0c0c0;  /* Синяя полоска слева */
+    border-left: 4px solid #c0c0c0;
     margin: 12px 0;
+}
+
+.version-badge {
+    display: inline-block;
+    background: var(--active-color);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.news-content {
+    text-align: left;
+}
+
+.news-content p {
+    margin: 8px 0;
 }
 
 /* ========== АНИМАЦИЯ ЗАГРУЗКИ ========== */
@@ -176,10 +195,9 @@ body.dark-theme {
     --glass-text: #ffffff;
 }
 
-/* ========== ТЕЛЕГРАМ-ФОН (СВЕТЛАЯ ТЕМА — ВИДИМЫЙ) ========== */
+/* ========== ТЕЛЕГРАМ-ФОН ========== */
 body {
     background: 
-        /* Тёмные пятна — делаем заметнее */
         radial-gradient(circle at 5% 15%, rgba(0,0,0,0.18) 0%, transparent 30%),
         radial-gradient(circle at 95% 25%, rgba(0,0,0,0.14) 0%, transparent 35%),
         radial-gradient(circle at 20% 70%, rgba(0,0,0,0.16) 0%, transparent 30%),
@@ -188,17 +206,12 @@ body {
         radial-gradient(circle at 60% 60%, rgba(30,30,30,0.1) 0%, transparent 25%),
         radial-gradient(circle at 10% 90%, rgba(0,0,0,0.09) 0%, transparent 30%),
         radial-gradient(circle at 90% 10%, rgba(0,0,0,0.09) 0%, transparent 30%),
-        
-        /* Мелкие точки — чуть ярче */
         repeating-radial-gradient(circle at 20% 20%, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 12px),
         repeating-radial-gradient(circle at 80% 80%, rgba(0,0,0,0.06) 1px, transparent 1px, transparent 16px),
-        
-        /* Полоски — видимые, но не кричащие */
         repeating-linear-gradient(45deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 2px, transparent 2px, transparent 18px),
         repeating-linear-gradient(-45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 2px, transparent 2px, transparent 18px),
         repeating-linear-gradient(90deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 25px),
         repeating-linear-gradient(0deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 25px),
-        
         #ecf2f8;
     color: var(--text-color);
     line-height: 1.6;
@@ -210,7 +223,6 @@ body {
     width: 100% !important;
 }
 
-/* Тёмную тему НЕ ТРОГАЕМ — она идеальна */
 body.dark-theme {
     background: 
         radial-gradient(circle at 5% 15%, rgba(255,255,255,0.1) 0%, transparent 30%),
@@ -323,22 +335,6 @@ body.dark-theme {
 
 .notification-btn:hover {
     background: rgba(255, 255, 255, 0.2);
-}
-
-.notification-badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: #808080;
-    color: white;
-    font-size: 8px;
-    width: 30px;
-    height: 13px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
 }
 
 .settings-container {
@@ -975,6 +971,7 @@ body.dark-theme .glass-card {
     color: var(--glass-text);
     opacity: 0.9;
     line-height: 1.5;
+    text-align: left;
 }
 
 /* ========== СВЕТЛАЯ ТЕМА: МЕНЕЕ ПРОЗРАЧНЫЙ GLASS ========== */
@@ -1012,12 +1009,6 @@ body.light-theme {
         repeating-linear-gradient(0deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 25px),
         #ecf2f8 !important;
 }
-
-/* Тёмную тему не трогаем */
-body.dark-theme {
-    /* остаётся как было */
-}
-
     </style>
 </head>
 <body class="light-theme">
@@ -1039,9 +1030,10 @@ body.dark-theme {
             </div>
             <div id="pageTitle">Главная</div>
             <div class="header-actions">
-                <a href="news.html" class="notification-btn">
-    <i class="far fa-bell"></i>
-</a>
+                <!-- Колокольчик теперь переключает на новости -->
+                <div class="notification-btn" onclick="switchToNews()">
+                    <i class="far fa-bell"></i>
+                </div>
                 <div class="settings-container">
                     <button class="settings-btn" id="settingsBtn">
                         <i class="fas fa-cog settings-icon"></i>
@@ -1073,12 +1065,13 @@ body.dark-theme {
                                 <i class="fas fa-check theme-check"></i>
                             </div>
                         </div>
-                       <a href="news.html" class="dropdown-item" style="text-decoration: none; color: inherit;">
-    <div class="dropdown-item-content">
-        <i class="fas fa-bell"></i>
-        <span>Новости</span>
-    </div>
-</a>
+                        <!-- Пункт меню Уведомления теперь ведёт на новости -->
+                        <div class="dropdown-item" onclick="switchToNews()">
+                            <div class="dropdown-item-content">
+                                <i class="fas fa-bell"></i>
+                                <span>Новости</span>
+                            </div>
+                        </div>
                         <div class="dropdown-divider"></div>
                         <a href="https://t.me/+ObOQyRCXbWwwMWIy" target="_blank" class="dropdown-item" id="telegramBtn">
                             <div class="dropdown-item-content">
@@ -1101,13 +1094,36 @@ body.dark-theme {
                     <div class="glass-title">Что нового?</div>
                     <div class="glass-text">
                         Глобальное обновление 1.0.0<br>
-<div class="quote">- Новый движок приложения.<br>
-- Интерфейс был полностью переработан.<br>
-- Вкладка «Быстрые ссылки» была убрана.<br>
-- Была добавлена вкладка «Расписание».<br>
-- Верхнее меню было переработано.</div><br>
-Подробнее об обновлении <a href="news.html" style="color: #007AFF;">тут</a>
+                        <div class="quote">
+                            - Новый движок приложения.<br>
+                            - Интерфейс был полностью переработан.<br>
+                            - Вкладка «Быстрые ссылки» была убрана.<br>
+                            - Была добавлена вкладка «Расписание».<br>
+                            - Верхнее меню было переработано.
+                        </div>
+                        Подробнее об обновлении <a href="#" onclick="switchToNews(); return false;" style="color: #007AFF;">тут</a>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Новости (новая страница) -->
+        <div id="news" class="page">
+            <div class="glass-card" style="max-width: 350px; margin: 0 auto;">
+                <span class="version-badge">Версия 1.0.0</span>
+                <div class="glass-title" style="font-size: 24px; text-align: left;">Что нового?</div>
+                <div class="glass-text">
+                    <p><strong>Глобальное обновление 1.0.0</strong></p>
+                    <div class="quote" style="margin: 16px 0;">
+                        <p>✅ Новый движок приложения</p>
+                        <p>✅ Интерфейс полностью переработан</p>
+                        <p>✅ Вкладка «Быстрые ссылки» убрана</p>
+                        <p>✅ Добавлена вкладка «Расписание»</p>
+                        <p>✅ Верхнее меню переработано</p>
+                        <p>✅ Фон в стиле Telegram</p>
+                        <p>✅ Улучшена тёмная тема</p>
+                    </div>
+                    <p style="margin-top: 20px; color: #666; text-align: center;">Спасибо, что пользуетесь GimNet! ❤️</p>
                 </div>
             </div>
         </div>
@@ -1438,6 +1454,19 @@ const notificationsBtn = document.getElementById('notificationsBtn');
 const tabItems = document.querySelectorAll('.tab-item');
 const pages = document.querySelectorAll('.page');
 
+// ========== ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ НА НОВОСТИ ==========
+function switchToNews() {
+    // Деактивируем все табы
+    tabItems.forEach(item => { item.classList.remove('active'); });
+    // Активируем первый таб (или можно создать отдельный, но пока оставим так)
+    // Скрываем все страницы
+    pages.forEach(page => { page.classList.remove('active'); });
+    // Показываем страницу новостей
+    document.getElementById('news').classList.add('active');
+    // Обновляем заголовок
+    document.getElementById('pageTitle').textContent = 'Новости';
+}
+
 // ========== ТЕМА ==========
 const savedTheme = localStorage.getItem('theme') || 'light';
 document.body.classList.add(savedTheme + '-theme');
@@ -1482,12 +1511,6 @@ themeOptions.forEach(option => {
         
         setTimeout(() => { themeSubmenu.classList.remove('active'); }, 300);
     });
-});
-
-notificationsBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    settingsDropdown.classList.remove('active');
 });
 
 document.addEventListener('click', function(e) {
