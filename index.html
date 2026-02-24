@@ -1014,6 +1014,18 @@ body.light-theme {
         repeating-linear-gradient(0deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 25px),
         #ecf2f8 !important;
 }
+
+/* Исправление цвета нижней строки в новостях */
+.news-content p:last-child,
+.glass-text p:last-child {
+    color: var(--text-secondary, #666) !important;
+}
+
+body.dark-theme .news-content p:last-child,
+body.dark-theme .glass-text p:last-child {
+    color: #aaa !important;
+}
+
     </style>
 </head>
 <body class="light-theme">
@@ -1133,7 +1145,7 @@ body.light-theme {
                         <p>- При нажатии на логотип или подпись вкладки в верхнем меню, плавно переносит наверх страницы
 
                     </div>
-                    <p style="margin-top: 20px; color: #c0c0c0; text-align: center;">Спасибо, что вы с нами ❤️</p>
+                    <p style="margin-top: 20px; color: #666; text-align: center;">Спасибо, что вы с нами ❤️</p>
                 </div>
             </div>
         </div>
