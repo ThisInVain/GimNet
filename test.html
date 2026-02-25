@@ -9,9 +9,6 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-  
-    <!-- Twemoji для красивых эмодзи (один раз) -->
-    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
 
     <style>
 /* ========== СТИЛИ ДЛЯ НОВОСТЕЙ ========== */
@@ -1633,15 +1630,15 @@ window.addEventListener('beforeunload', function() {
     }
 });
 
-// ========== TWE MOJI (ОДИН РАЗ ПОСЛЕ ЗАГРУЗКИ) ==========
-window.addEventListener('load', function() {
-    if (typeof twemoji !== 'undefined') {
+<!-- Twemoji (SVG версия, красивые эмодзи) -->
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
         twemoji.parse(document.body, {
-            folder: 'svg',
+            base: 'https://cdn.jsdelivr.net/npm/@twemoji/svg@latest/svg/',
             ext: '.svg'
         });
-    }
-});
-    </script>
+    });
+</script>
 </body>
 </html>
