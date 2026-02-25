@@ -1030,6 +1030,16 @@ body.light-theme {
     color: var(--text-secondary) !important;
 }
 
+/* ========== ИСПРАВЛЕНИЕ ЦВЕТА В НОВОСТЯХ ========== */
+#news .glass-text p:last-child {
+    color: var(--text-secondary) !important;
+}
+
+/* Оставляем остальные параграфы как есть */
+#news .glass-text p:not(:last-child) {
+    color: var(--glass-text);
+}
+
     </style>
 </head>
 <body class="light-theme">
