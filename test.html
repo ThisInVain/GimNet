@@ -13,13 +13,6 @@
 <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
 <script>
     twemoji.parse(document.body);
-
-
-// ========== ПРИНУДИТЕЛЬНОЕ ПРИМЕНЕНИЕ ТЕМЫ ==========
-(function() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.body.className = savedTheme + '-theme';
-})();
 </script>
 
     <style>
@@ -1497,7 +1490,8 @@ function switchToNews() {
 }
 
 // ========== ТЕМА ==========
-const savedTheme = document.body.className.replace('-theme', '');
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.body.classList.add(savedTheme + '-theme');
 
 function updateActiveTheme(theme) {
     themeOptions.forEach(option => {
