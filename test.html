@@ -1640,5 +1640,28 @@ window.addEventListener('beforeunload', function() {
         });
     });
 </script>
+
+<script>
+// ========== АВАРИЙНОЕ ВОССТАНОВЛЕНИЕ ==========
+document.addEventListener('DOMContentLoaded', function() {
+    // Принудительно показываем контент
+    const splash = document.getElementById('splashScreen');
+    if (splash) {
+        splash.style.opacity = '0';
+        splash.style.visibility = 'hidden';
+        setTimeout(() => splash.remove(), 500);
+    }
+    
+    // Восстанавливаем тему
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.className = savedTheme + '-theme';
+    
+    // Активируем главную страницу
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('home').classList.add('active');
+    
+    console.log('GimNet восстановлен!');
+});
+</script>
 </body>
 </html>
