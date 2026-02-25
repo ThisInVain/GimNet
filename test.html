@@ -6,12 +6,6 @@
     <title>GimNet Test</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-// ========== ПРИНУДИТЕЛЬНОЕ ПРИМЕНЕНИЕ ТЕМЫ ==========
-(function() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.body.className = savedTheme + '-theme';
-})();
-
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -19,8 +13,15 @@
 <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
 <script>
     twemoji.parse(document.body);
+
+
+// ========== ПРИНУДИТЕЛЬНОЕ ПРИМЕНЕНИЕ ТЕМЫ ==========
+(function() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.className = savedTheme + '-theme';
+})();
 </script>
-  
+
     <style>
 /* ========== СТИЛИ ДЛЯ НОВОСТЕЙ ========== */
 .glass-text {
