@@ -1618,5 +1618,14 @@ window.addEventListener('beforeunload', function() {
     }
 });
     </script>
+<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
+<script>
+    window.addEventListener('load', function() {
+        twemoji.parse(document.body, {
+            folder: 'svg',
+            ext: '.svg'
+        });
+    });
+</script>
 </body>
 </html>
