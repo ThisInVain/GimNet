@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GimNet Test</title>
+    <title>GimNet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   
-<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
-<script>
-    twemoji.parse(document.body);
-</script>
+    <!-- Twemoji для красивых эмодзи (один раз) -->
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
 
     <style>
 /* ========== СТИЛИ ДЛЯ НОВОСТЕЙ ========== */
@@ -44,6 +42,16 @@
 
 .news-content p {
     margin: 8px 0;
+}
+
+/* ========== НОРМАЛЬНЫЙ РАЗМЕР ЭМОДЗИ ========== */
+img.emoji {
+    display: inline !important;
+    height: 1.2em !important;
+    width: 1.2em !important;
+    margin: 0 0.05em 0 0.1em !important;
+    vertical-align: -0.2em !important;
+    max-width: none !important;
 }
 
 /* ========== АНИМАЦИЯ ЗАГРУЗКИ ========== */
@@ -163,12 +171,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-}
-
-* {
     font-family: -apple-system, BlinkMacSystemFont, 
-                 "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                 "Segoe UI", Roboto, Helvetica, Arial, 
+                 "Apple Color Emoji", "Twemoji Mozilla", 
+                 "Noto Color Emoji", "EmojiOne Color", 
+                 "Android Emoji", sans-serif;
     font-weight: 400;
     letter-spacing: -0.02em;
 }
@@ -181,6 +188,7 @@ h1, h2, h3, .bold {
 :root {
     --bg-color: #f5f7fa;
     --text-color: #333;
+    --text-secondary: #666;
     --card-bg: white;
     --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     --header-gradient: linear-gradient(135deg, #bbbbbb 0%, #0f0f0f 100%);
@@ -192,6 +200,7 @@ h1, h2, h3, .bold {
 body.dark-theme {
     --bg-color: #121212;
     --text-color: #e0e0e0;
+    --text-secondary: #aaa;
     --card-bg: #1e1e1e;
     --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     --header-gradient: linear-gradient(135deg, #222222 0%, #000000 100%);
@@ -1018,12 +1027,7 @@ body.light-theme {
 /* Исправление цвета нижней строки в новостях */
 .news-content p:last-child,
 .glass-text p:last-child {
-    color: var(--text-secondary, #666) !important;
-}
-
-body.dark-theme .news-content p:last-child,
-body.dark-theme .glass-text p:last-child {
-    color: #aaa !important;
+    color: var(--text-secondary) !important;
 }
 
     </style>
@@ -1047,7 +1051,7 @@ body.dark-theme .glass-text p:last-child {
             </div>
             <div id="pageTitle">Главная</div>
             <div class="header-actions">
-                <!-- Колокольчик теперь переключает на новости -->
+                <!-- Колокольчик переключает на новости -->
                 <div class="notification-btn" onclick="switchToNews()">
                     <i class="far fa-bell"></i>
                 </div>
@@ -1082,7 +1086,7 @@ body.dark-theme .glass-text p:last-child {
                                 <i class="fas fa-check theme-check"></i>
                             </div>
                         </div>
-                        <!-- Пункт меню Уведомления теперь ведёт на новости -->
+                        <!-- Пункт меню Новости -->
                         <div class="dropdown-item" onclick="switchToNews()">
                             <div class="dropdown-item-content">
                                 <i class="fas fa-bell"></i>
@@ -1124,7 +1128,7 @@ body.dark-theme .glass-text p:last-child {
             </div>
         </div>
 
-        <!-- Новости (новая страница) -->
+        <!-- Новости -->
         <div id="news" class="page">
             <div class="glass-card" style="max-width: 350px; margin: 0 auto;">
                 <span class="version-badge">Версия 1.0.0</span>
@@ -1145,7 +1149,7 @@ body.dark-theme .glass-text p:last-child {
                         <p>- Были добавлены красивые анимации переходов</p>
                         <p>- При нажатии на логотип или подпись вкладки в верхнем меню, плавно переносит наверх страницы</p>
                     </div>
-                    <p style="margin-top: 20px; color: #666; text-align: center;">Спасибо, что вы с нами ❤️</p>
+                    <p style="margin-top: 20px; text-align: center;">Спасибо, что вы с нами ❤️</p>
                 </div>
             </div>
         </div>
@@ -1472,7 +1476,6 @@ const settingsDropdown = document.getElementById('settingsDropdown');
 const themeToggleBtn = document.getElementById('themeToggleBtn');
 const themeSubmenu = document.getElementById('themeSubmenu');
 const themeOptions = document.querySelectorAll('.theme-option');
-const notificationsBtn = document.getElementById('notificationsBtn');
 const tabItems = document.querySelectorAll('.tab-item');
 const pages = document.querySelectorAll('.page');
 
@@ -1480,7 +1483,6 @@ const pages = document.querySelectorAll('.page');
 function switchToNews() {
     // Деактивируем все табы
     tabItems.forEach(item => { item.classList.remove('active'); });
-    // Активируем первый таб (или можно создать отдельный, но пока оставим так)
     // Скрываем все страницы
     pages.forEach(page => { page.classList.remove('active'); });
     // Показываем страницу новостей
@@ -1490,8 +1492,9 @@ function switchToNews() {
 }
 
 // ========== ТЕМА ==========
+// Применяем сохранённую тему при загрузке
 const savedTheme = localStorage.getItem('theme') || 'light';
-document.body.classList.add(savedTheme + '-theme');
+document.body.className = savedTheme + '-theme';
 
 function updateActiveTheme(theme) {
     themeOptions.forEach(option => {
@@ -1522,8 +1525,7 @@ themeOptions.forEach(option => {
         e.stopPropagation();
         e.preventDefault();
         const theme = this.getAttribute('data-theme');
-        document.body.classList.remove('light-theme', 'dark-theme');
-        document.body.classList.add(theme + '-theme');
+        document.body.className = theme + '-theme';
         updateActiveTheme(theme);
         localStorage.setItem('theme', theme);
         
@@ -1531,7 +1533,10 @@ themeOptions.forEach(option => {
             database.ref('users/' + userIP.replace(/\./g, '_') + '/theme').set(theme);
         }
         
-        setTimeout(() => { themeSubmenu.classList.remove('active'); }, 300);
+        setTimeout(() => { 
+            themeSubmenu.classList.remove('active'); 
+            settingsDropdown.classList.remove('active'); 
+        }, 300);
     });
 });
 
@@ -1617,15 +1622,16 @@ window.addEventListener('beforeunload', function() {
         database.ref('users/' + userIP.replace(/\./g, '_')).remove();
     }
 });
-    </script>
-<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
-<script>
-    window.addEventListener('load', function() {
+
+// ========== TWE MOJI (ОДИН РАЗ ПОСЛЕ ЗАГРУЗКИ) ==========
+window.addEventListener('load', function() {
+    if (typeof twemoji !== 'undefined') {
         twemoji.parse(document.body, {
             folder: 'svg',
             ext: '.svg'
         });
-    });
-</script>
+    }
+});
+    </script>
 </body>
 </html>
