@@ -6,6 +6,12 @@
     <title>GimNet Test</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+// ========== ПРИНУДИТЕЛЬНОЕ ПРИМЕНЕНИЕ ТЕМЫ ==========
+(function() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.className = savedTheme + '-theme';
+})();
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -1490,8 +1496,7 @@ function switchToNews() {
 }
 
 // ========== ТЕМА ==========
-const savedTheme = localStorage.getItem('theme') || 'light';
-document.body.classList.add(savedTheme + '-theme');
+const savedTheme = document.body.className.replace('-theme', '');
 
 function updateActiveTheme(theme) {
     themeOptions.forEach(option => {
