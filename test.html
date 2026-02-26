@@ -1112,6 +1112,21 @@ body {
     min-height: calc(100vh - 64px - 60px - 40px);
 }
 
+/* ТОЛЬКО ДЛЯ АРХИВА - ЦЕНТР */
+#archive .center-wrapper {
+    min-height: calc(100vh - 64px - 60px - 40px) !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+}
+
+/* ДЛЯ ВСЕХ ОСТАЛЬНЫХ - КАК БЫЛО */
+#home .center-wrapper,
+#news .center-wrapper,
+#tables .center-wrapper,
+#schedule .center-wrapper {
+    min-height: calc(100vh - 64px - 60px - 40px);
+}
+
 .glass-card {
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(20px);
