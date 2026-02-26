@@ -1651,6 +1651,7 @@ function switchToNews() {
     document.getElementById('news').classList.add('active');
     pageTitle.textContent = 'Новости';
     closeSearch();
+updateSearchButtonVisibility();
 }
 
 const savedTheme = localStorage.getItem('theme') || 'light';
