@@ -1063,6 +1063,29 @@ body.light-theme {
     opacity: 0.8;
 }
 
+/* ========== СТИЛИ ПОИСКА В АРХИВЕ ========== */
+.archive-search input {
+    transition: all 0.2s ease;
+}
+
+.archive-search input:focus {
+    background: rgba(255,255,255,0.3) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+body.dark-theme .archive-search input {
+    background: rgba(0,0,0,0.3);
+    color: white;
+}
+
+.archive-item {
+    transition: transform 0.2s ease;
+}
+
+.archive-item:hover {
+    transform: translateX(5px);
+}
+
     </style>
 </head>
 <body class="light-theme">
@@ -1192,6 +1215,30 @@ body.light-theme {
   <!-- Архив -->
 <div id="archive" class="page">
     <div class="center-wrapper">
+<!-- Архив с поиском -->
+<div id="archive" class="page">
+    <!-- Поле поиска (только в архиве) -->
+    <div class="archive-search" style="margin-bottom: 20px;">
+        <input type="text" id="archiveSearchInput" placeholder="Поиск в архиве..." style="
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            color: var(--glass-text);
+            font-size: 15px;
+            outline: none;
+        ">
+    </div>
+
+    <!-- Контейнер для результатов -->
+    <div id="archiveResults" class="glass-card" style="padding: 20px;">
+        <div class="glass-text" style="text-align: center; font-size: 15px;">
+            Введите запрос для поиска...
+        </div>
+    </div>
+</div>
         <div class="glass-card">
             <div class="glass-text" style="text-align: center; font-size: 14px; opacity: 0.8;">
                 Здесь пока что пусто...
@@ -1621,6 +1668,80 @@ window.addEventListener('load', function() {
         });
     }
 });
-    </script>
+
+// ========== ПОИСК В АРХИВЕ ==========
+const archiveSearchInput = document.getElementById('archiveSearchInput');
+const archiveResults = document.getElementById('archiveResults');
+
+if (archiveSearchInput) {
+    archiveSearchInput.addEventListener('input', function() {
+        const query = this.value.trim().toLowerCase();
+        
+        if (query === '') {
+            archiveResults.innerHTML = `
+                <div class="glass-text" style="text-align: center; font-size: 15px;">
+                    Введите запрос
+                </div>
+            `;
+            return;
+        }
+        
+        // Пример данных для поиска (замени на свои)
+        const archiveData = [
+            { title: 'Отчет за 2023 год', type: 'PDF', date: '15.12.2023' },
+            { title: 'Данные по продажам', type: 'XLSX', date: '10.12.2023' },
+            { title: 'Документация проекта', type: 'DOCX', date: '05.12.2023' },
+            { title: 'Графики и диаграммы', type: 'PNG', date: '01.12.2023' },
+            { title: 'Смета за январь', type: 'PDF', date: '20.01.2024' },
+            { title: 'Презентация', type: 'PPTX', date: '15.01.2024' }
+        ];
+        
+        const results = archiveData.filter(item => 
+            item.title.toLowerCase().includes(query) || 
+            item.type.toLowerCase().includes(query) ||
+            item.date.includes(query)
+        );
+        
+        if (results.length > 0) {
+            let html = '<div class="archive-list" style="margin-top: 0;">';
+            results.forEach(item => {
+                html += `
+                    <div class="archive-item" style="margin-bottom: 10px; padding: 12px;">
+                        <div class="file-info">
+                            <i class="file-icon fas fa-file-${getFileIcon(item.type)}" style="font-size: 24px;"></i>
+                            <div>
+                                <h4 style="margin: 0; font-size: 16px;">${item.title}</h4>
+                                <p style="margin: 4px 0 0; font-size: 12px; color: var(--text-secondary);">${item.type} • ${item.date}</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            archiveResults.innerHTML = html;
+        } else {
+            archiveResults.innerHTML = `
+                <div class="glass-text" style="text-align: center; font-size: 15px; color: var(--text-secondary);">
+                    Ничего не найдено по запросу "${this.value}"
+                </div>
+            `;
+        }
+    });
+}
+
+// Функция для определения иконки по типу файла
+function getFileIcon(type) {
+    switch(type.toLowerCase()) {
+        case 'pdf': return 'pdf';
+        case 'xlsx': return 'excel';
+        case 'docx': return 'word';
+        case 'png': return 'image';
+        case 'pptx': return 'powerpoint';
+        default: return 'alt';
+    }
+}
+ 
+   </script>
 </body>
 </html>
