@@ -1209,6 +1209,31 @@ body.light-theme {
     opacity: 0.8;
 }
 
+/* ========== ИСПРАВЛЕНИЕ ДЛЯ КЛАВИАТУРЫ ========== */
+html, body {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.content {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    height: calc(100vh - 64px - 60px) !important;
+    padding-bottom: 0 !important;
+}
+
+/* Убираем трансформацию при появлении клавиатуры */
+input, textarea {
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+}
+
     </style>
 </head>
 <body class="light-theme">
@@ -1895,6 +1920,19 @@ tabItems.forEach(tab => {
 
 // При загрузке
 updateSearchButtonVisibility();
-    </script>
+
+// ========== ФИКС ДЛЯ КЛАВИАТУРЫ ==========
+// Предотвращаем сдвиг при появлении клавиатуры
+const inputs = document.querySelectorAll('input, textarea');
+inputs.forEach(input => {
+    input.addEventListener('focus', function() {
+        // Небольшая задержка, чтобы клавиатура успела появиться
+        setTimeout(() => {
+            this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+    });
+});
+  
+  </script>
 </body>
 </html>
