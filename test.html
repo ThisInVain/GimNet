@@ -1381,7 +1381,7 @@ html, body {
             <!-- Результаты поиска -->
             <div class="search-results" id="searchResults">
                 <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
-                    Введите запрос для поиска
+                    Введите запрос
                 </div>
             </div>
 
@@ -1867,7 +1867,7 @@ searchInput.addEventListener('input', function(e) {
         searchResults.classList.remove('active');
         searchResults.innerHTML = `
             <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
-                Введите запрос для поиска
+                Введите запрос
             </div>
         `;
         return;
@@ -1877,7 +1877,7 @@ searchInput.addEventListener('input', function(e) {
     
     // Здесь будет реальный поиск
     const mockResults = [
-        { title: 'Отчет 2023', type: 'PDF', date: '15.12.2023' },
+        { title: 'Отчет', type: 'PDF', date: '15.12.2023' },
         { title: 'Данные продаж', type: 'XLSX', date: '10.12.2023' },
         { title: 'Документация', type: 'DOCX', date: '05.12.2023' }
     ].filter(item => 
