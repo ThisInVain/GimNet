@@ -1112,21 +1112,6 @@ body {
     min-height: calc(100vh - 64px - 60px - 40px);
 }
 
-/* ТОЛЬКО ДЛЯ АРХИВА - ЦЕНТР */
-#archive .center-wrapper {
-    min-height: calc(100vh - 64px - 60px - 40px) !important;
-    margin-top: 0 !important;
-    padding: 0 !important;
-}
-
-/* ДЛЯ ВСЕХ ОСТАЛЬНЫХ - КАК БЫЛО */
-#home .center-wrapper,
-#news .center-wrapper,
-#tables .center-wrapper,
-#schedule .center-wrapper {
-    min-height: calc(100vh - 64px - 60px - 40px);
-}
-
 .glass-card {
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(20px);
@@ -1396,7 +1381,7 @@ html, body {
             <!-- Результаты поиска -->
             <div class="search-results" id="searchResults">
                 <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
-                    Введите запрос
+                    Введите запрос для поиска
                 </div>
             </div>
 
@@ -1816,7 +1801,7 @@ window.addEventListener('load', function() {
     }
 });
 
-// ========== НОВЫЙ ПОИСК (ИСПРАВЛЕННЫЙ) ==========
+// ========== НОВЫЙ ПОИСК (БЕЗ ДЕМО-ДАННЫХ) ==========
 const searchButton = document.getElementById('searchButton');
 const searchInput = document.getElementById('searchInput');
 const searchResults = document.getElementById('searchResults');
@@ -1873,50 +1858,23 @@ searchButton.addEventListener('click', function(e) {
     }
 });
 
-// Обработчик ввода текста
+// Обработчик ввода текста (УПРОЩЁННЫЙ)
 searchInput.addEventListener('input', function(e) {
     e.stopPropagation();
     const query = this.value.trim();
     
     if (query.length === 0) {
         searchResults.classList.remove('active');
-        searchResults.innerHTML = `
-            <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
-                Введите запрос
-            </div>
-        `;
         return;
     }
     
+    // Архив пуст — всегда показываем "ничего не найдено"
     searchResults.classList.add('active');
-    
-    // Здесь будет реальный поиск
-    const mockResults = [
-        { title: 'Отчет', type: 'PDF', date: '15.12.2023' },
-        { title: 'Данные продаж', type: 'XLSX', date: '10.12.2023' },
-        { title: 'Документация', type: 'DOCX', date: '05.12.2023' }
-    ].filter(item => 
-        item.title.toLowerCase().includes(query.toLowerCase())
-    );
-    
-    if (mockResults.length > 0) {
-        let html = '';
-        mockResults.forEach(item => {
-            html += `
-                <div class="result-item">
-                    <div class="result-title">${item.title}</div>
-                    <div class="result-meta">${item.type} • ${item.date}</div>
-                </div>
-            `;
-        });
-        searchResults.innerHTML = html;
-    } else {
-        searchResults.innerHTML = `
-            <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
-                Ничего не найдено по запросу "${query}"
-            </div>
-        `;
-    }
+    searchResults.innerHTML = `
+        <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
+            Ничего не найдено по запросу "${query}"
+        </div>
+    `;
 });
 
 // Обработчик фокуса на поле ввода
@@ -1952,4 +1910,4 @@ updateSearchButtonVisibility();
   
   </script>
 </body>
-</html>
+</html> 
