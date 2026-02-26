@@ -358,6 +358,7 @@ body.dark-theme {
     position: relative;
     overflow: hidden;
     white-space: nowrap;
+    padding: 0;
 }
 
 .search-button.visible {
@@ -372,17 +373,13 @@ body.dark-theme {
     padding: 0 12px;
     gap: 8px;
     background: rgba(255, 255, 255, 0.25);
-    cursor: default;
+    cursor: text;
 }
 
 .search-button.expanded i {
     font-size: 14px;
     opacity: 0.8;
-}
-
-.search-button.expanded .search-placeholder {
-    opacity: 0.7;
-    font-size: 14px;
+    flex-shrink: 0;
 }
 
 .search-button .search-input {
@@ -399,14 +396,26 @@ body.dark-theme {
     outline: none;
     opacity: 0;
     transition: opacity 0.2s ease;
+    pointer-events: none;
 }
 
 .search-button.expanded .search-input {
     opacity: 1;
+    pointer-events: auto;
+    position: relative;
+    padding: 0;
+    background: transparent;
 }
 
-.search-button .search-input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+.search-button .search-placeholder {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    font-size: 14px;
+    margin-left: 4px;
+}
+
+.search-button.expanded .search-placeholder {
+    opacity: 0.7;
 }
 
 /* Анимация для кнопок действий */
@@ -1217,14 +1226,14 @@ body.light-theme {
     <header class="app-header">
         <div class="header-container">
             <div class="app-brand">
-                <div class="app-logo" id="logoBtn">GimNet</div>
-                <!-- Кнопка поиска -->
-                <button class="search-button" id="searchButton">
-                    <i class="fas fa-search"></i>
-                    <span class="search-placeholder">Поиск в архиве...</span>
-                    <input type="text" class="search-input" id="searchInput" placeholder="Поиск в архиве...">
-                </button>
-            </div>
+    <div class="app-logo" id="logoBtn">GimNet</div>
+    <!-- Кнопка поиска -->
+    <button class="search-button" id="searchButton">
+        <i class="fas fa-search"></i>
+        <span class="search-placeholder">Поиск</span>
+        <input type="text" class="search-input" id="searchInput" placeholder="Поиск в архиве...">
+    </button>
+</div>
             <div id="pageTitle">Главная</div>
             <div class="header-actions" id="headerActions">
                 <!-- Колокольчик переключает на новости -->
@@ -1753,7 +1762,7 @@ window.addEventListener('load', function() {
     }
 });
 
-// ========== НОВЫЙ ПОИСК (ТОЛЬКО ЭТОТ БЛОК) ==========
+// ========== НОВЫЙ ПОИСК (ИСПРАВЛЕННЫЙ) ==========
 const searchButton = document.getElementById('searchButton');
 const searchInput = document.getElementById('searchInput');
 const searchResults = document.getElementById('searchResults');
@@ -1782,7 +1791,10 @@ function closeSearch() {
     searchButton.classList.remove('expanded');
     headerActions.classList.remove('search-active');
     searchResults.classList.remove('active');
-    if (searchInput) searchInput.value = '';
+    if (searchInput) {
+        searchInput.value = '';
+        searchInput.blur();
+    }
 }
 
 // Функция открытия поиска
@@ -1790,7 +1802,9 @@ function openSearch() {
     isSearchActive = true;
     searchButton.classList.add('expanded');
     headerActions.classList.add('search-active');
-    setTimeout(() => searchInput?.focus(), 300);
+    setTimeout(() => {
+        searchInput?.focus();
+    }, 50);
 }
 
 // Обработчик клика по кнопке поиска
@@ -1798,6 +1812,9 @@ searchButton.addEventListener('click', function(e) {
     e.stopPropagation();
     if (!isSearchActive) {
         openSearch();
+    } else {
+        // Если уже открыт, фокусируемся на поле ввода
+        searchInput?.focus();
     }
 });
 
@@ -1818,6 +1835,7 @@ searchInput.addEventListener('input', function(e) {
     
     searchResults.classList.add('active');
     
+    // Здесь будет реальный поиск
     const mockResults = [
         { title: 'Отчет 2023', type: 'PDF', date: '15.12.2023' },
         { title: 'Данные продаж', type: 'XLSX', date: '10.12.2023' },
@@ -1846,6 +1864,18 @@ searchInput.addEventListener('input', function(e) {
     }
 });
 
+// Обработчик фокуса на поле ввода
+searchInput.addEventListener('focus', function() {
+    if (!isSearchActive) {
+        openSearch();
+    }
+});
+
+// Предотвращаем закрытие при клике на поле ввода
+searchInput.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 // Обработчик клика вне поиска
 document.addEventListener('click', function(e) {
     if (isSearchActive && 
@@ -1853,11 +1883,6 @@ document.addEventListener('click', function(e) {
         !searchResults.contains(e.target)) {
         closeSearch();
     }
-});
-
-// Предотвращаем закрытие при клике на поле ввода
-searchInput.addEventListener('click', function(e) {
-    e.stopPropagation();
 });
 
 // Обновляем видимость кнопки при смене страницы
