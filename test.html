@@ -1209,29 +1209,40 @@ body.light-theme {
     opacity: 0.8;
 }
 
-/* ========== ИСПРАВЛЕНИЕ ДЛЯ КЛАВИАТУРЫ ========== */
+/* ========== ФИНАЛЬНЫЕ ИСПРАВЛЕНИЯ ========== */
+
+/* Убираем дублирующийся фон из нижней части */
+html, body:not(.light-theme):not(.dark-theme) {
+    background: transparent !important;
+}
+
+/* Исправляем центрирование в архиве */
+#archive .center-wrapper {
+    min-height: auto;
+    margin-top: 20px;
+}
+
+/* Фикс для клавиатуры */
+input, textarea {
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+
+/* Убираем лишние позиционирования, которые мешают клавиатуре */
 html, body {
-    position: fixed !important;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    overflow: hidden !important;
-    height: 100% !important;
-    width: 100% !important;
+    overflow: hidden;
 }
 
 .content {
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    height: calc(100vh - 64px - 60px) !important;
-    padding-bottom: 0 !important;
-}
-
-/* Убираем трансформацию при появлении клавиатуры */
-input, textarea {
-    -webkit-user-select: auto !important;
-    user-select: auto !important;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
     </style>
@@ -1651,7 +1662,7 @@ function switchToNews() {
     document.getElementById('news').classList.add('active');
     pageTitle.textContent = 'Новости';
     closeSearch();
-updateSearchButtonVisibility();
+    updateSearchButtonVisibility();
 }
 
 const savedTheme = localStorage.getItem('theme') || 'light';
@@ -1758,6 +1769,8 @@ tabItems.forEach(tab => {
         if (content) { content.scrollTo({ top: 0, behavior: 'smooth' }); }
         
         if (navigator.vibrate) { navigator.vibrate(10); }
+        
+        updateSearchButtonVisibility();
     });
 });
 
@@ -1921,18 +1934,6 @@ tabItems.forEach(tab => {
 
 // При загрузке
 updateSearchButtonVisibility();
-
-// ========== ФИКС ДЛЯ КЛАВИАТУРЫ ==========
-// Предотвращаем сдвиг при появлении клавиатуры
-const inputs = document.querySelectorAll('input, textarea');
-inputs.forEach(input => {
-    input.addEventListener('focus', function() {
-        // Небольшая задержка, чтобы клавиатура успела появиться
-        setTimeout(() => {
-            this.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 300);
-    });
-});
   
   </script>
 </body>
