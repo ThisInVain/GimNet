@@ -333,7 +333,13 @@ body.dark-theme {
     transform: translateX(-50%);
     cursor: pointer;
     padding: 10px 15px;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.4s ease;
+    opacity: 1;
+}
+
+#pageTitle.search-hidden {
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* ========== НОВЫЙ ПОИСК ========== */
@@ -356,7 +362,7 @@ body.dark-theme {
     pointer-events: none;
     z-index: 1001;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     white-space: nowrap;
     padding: 0;
 }
@@ -380,6 +386,7 @@ body.dark-theme {
     font-size: 14px;
     opacity: 0.8;
     flex-shrink: 0;
+    margin: 0;
 }
 
 .search-button .search-input {
@@ -408,19 +415,12 @@ body.dark-theme {
 }
 
 .search-button .search-placeholder {
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    font-size: 14px;
-    margin-left: 4px;
-}
-
-.search-button.expanded .search-placeholder {
-    opacity: 0.7;
+    display: none;
 }
 
 /* Анимация для кнопок действий */
 .header-actions {
-    transition: opacity 0.3s ease;
+    transition: opacity 0.4s ease;
 }
 
 .header-actions.search-active {
@@ -481,7 +481,7 @@ body.dark-theme .search-results {
     background: rgba(0, 0, 0, 0.3);
 }
 
-/* ========== ВСЁ ОСТАЛЬНОЕ БЕЗ ИЗМЕНЕНИЙ ========== */
+/* ========== ОСТАЛЬНЫЕ СТИЛИ БЕЗ ИЗМЕНЕНИЙ ========== */
 .header-actions {
     display: flex;
     align-items: center;
@@ -717,7 +717,7 @@ body.dark-theme .search-results {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 50px;
+    height: 60px;
     background: var(--card-bg);
     display: flex;
     justify-content: space-around;
@@ -806,7 +806,7 @@ body.dark-theme .tab-item.active .tab-label {
     padding: 20px;
     padding-bottom: 0 !important;
     overflow-y: scroll !important;
-    height: calc(100vh - 64px - 50px) !important;
+    height: calc(100vh - 64px - 60px) !important;
     -webkit-overflow-scrolling: touch !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
@@ -1226,14 +1226,14 @@ body.light-theme {
     <header class="app-header">
         <div class="header-container">
             <div class="app-brand">
-    <div class="app-logo" id="logoBtn">GimNet</div>
-    <!-- Кнопка поиска -->
-    <button class="search-button" id="searchButton">
-        <i class="fas fa-search"></i>
-        <span class="search-placeholder">Поиск</span>
-        <input type="text" class="search-input" id="searchInput" placeholder="Поиск в архиве...">
-    </button>
-</div>
+                <div class="app-logo" id="logoBtn">GimNet</div>
+                <!-- Кнопка поиска -->
+                <button class="search-button" id="searchButton">
+                    <i class="fas fa-search"></i>
+                    <span class="search-placeholder"></span>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Поиск в архиве...">
+                </button>
+            </div>
             <div id="pageTitle">Главная</div>
             <div class="header-actions" id="headerActions">
                 <!-- Колокольчик переключает на новости -->
@@ -1618,12 +1618,13 @@ const themeSubmenu = document.getElementById('themeSubmenu');
 const themeOptions = document.querySelectorAll('.theme-option');
 const tabItems = document.querySelectorAll('.tab-item');
 const pages = document.querySelectorAll('.page');
+const pageTitle = document.getElementById('pageTitle');
 
 function switchToNews() {
     tabItems.forEach(item => { item.classList.remove('active'); });
     pages.forEach(page => { page.classList.remove('active'); });
     document.getElementById('news').classList.add('active');
-    document.getElementById('pageTitle').textContent = 'Новости';
+    pageTitle.textContent = 'Новости';
     closeSearch();
 }
 
@@ -1692,9 +1693,8 @@ function updatePageTitle() {
         schedule: 'Расписание'
     };
     
-    const titleElement = document.getElementById('pageTitle');
-    if (titleElement) {
-        titleElement.textContent = titles[tabId] || 'Главная';
+    if (pageTitle) {
+        pageTitle.textContent = titles[tabId] || 'Главная';
     }
 }
 
@@ -1707,7 +1707,7 @@ titleTabItems.forEach(tab => {
 
 updatePageTitle();
 
-document.getElementById('pageTitle').addEventListener('click', function() {
+pageTitle.addEventListener('click', function() {
     const content = document.querySelector('.content');
     if (content) {
         content.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1790,6 +1790,7 @@ function closeSearch() {
     isSearchActive = false;
     searchButton.classList.remove('expanded');
     headerActions.classList.remove('search-active');
+    pageTitle.classList.remove('search-hidden');
     searchResults.classList.remove('active');
     if (searchInput) {
         searchInput.value = '';
@@ -1802,6 +1803,7 @@ function openSearch() {
     isSearchActive = true;
     searchButton.classList.add('expanded');
     headerActions.classList.add('search-active');
+    pageTitle.classList.add('search-hidden');
     setTimeout(() => {
         searchInput?.focus();
     }, 50);
@@ -1813,7 +1815,6 @@ searchButton.addEventListener('click', function(e) {
     if (!isSearchActive) {
         openSearch();
     } else {
-        // Если уже открыт, фокусируемся на поле ввода
         searchInput?.focus();
     }
 });
