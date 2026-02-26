@@ -1212,10 +1212,7 @@ body.dark-theme .archive-search input {
   </div>
         </div>
 
-  <!-- Архив -->
-<div id="archive" class="page">
-    <div class="center-wrapper">
-<!-- Архив с поиском -->
+ <!-- Архив -->
 <div id="archive" class="page">
     <!-- Поле поиска (только в архиве) -->
     <div class="archive-search" style="margin-bottom: 20px;">
@@ -1233,12 +1230,14 @@ body.dark-theme .archive-search input {
     </div>
 
     <!-- Контейнер для результатов -->
-    <div id="archiveResults" class="glass-card" style="padding: 20px;">
+    <div id="archiveResults" class="glass-card" style="padding: 20px; margin-bottom: 20px;">
         <div class="glass-text" style="text-align: center; font-size: 15px;">
             Введите запрос для поиска...
         </div>
     </div>
-</div>
+
+    <!-- Пустой архив (показывается когда нет поиска) -->
+    <div class="center-wrapper" style="min-height: auto;">
         <div class="glass-card">
             <div class="glass-text" style="text-align: center; font-size: 14px; opacity: 0.8;">
                 Здесь пока что пусто...
