@@ -10,7 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   
-    <!-- Twemoji для красивых эмодзи (один раз) -->
+    <!-- Twemoji для красивых эмодзи -->
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
 
     <style>
@@ -1063,27 +1063,148 @@ body.light-theme {
     opacity: 0.8;
 }
 
-/* ========== СТИЛИ ПОИСКА В АРХИВЕ ========== */
-.archive-search input {
+/* ========== НОВЫЕ СТИЛИ ДЛЯ ПОИСКА ========== */
+
+/* Кнопка поиска (появляется только в архиве) */
+.search-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: 8px;
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+}
+
+.search-button.visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.search-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Анимированное поле поиска */
+.search-expanded {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+}
+
+.search-expanded.active {
+    max-height: 70px;
+    padding: 12px 20px;
+}
+
+.search-expanded input {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    color: var(--glass-text);
+    font-size: 15px;
+    outline: none;
     transition: all 0.2s ease;
 }
 
-.archive-search input:focus {
-    background: rgba(255,255,255,0.3) !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.search-expanded input:focus {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-body.dark-theme .archive-search input {
-    background: rgba(0,0,0,0.3);
+.search-expanded input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+/* Результаты поиска */
+.search-results {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 16px;
+    margin-top: 16px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.search-results.active {
+    max-height: 400px;
+    opacity: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.search-results .result-item {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.search-results .result-item:last-child {
+    border-bottom: none;
+}
+
+.search-results .result-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+}
+
+.search-results .result-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--glass-text);
+}
+
+.search-results .result-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+body.dark-theme .search-expanded input {
+    background: rgba(0, 0, 0, 0.3);
     color: white;
 }
 
-.archive-item {
-    transition: transform 0.2s ease;
+body.dark-theme .search-results {
+    background: rgba(0, 0, 0, 0.3);
 }
 
-.archive-item:hover {
-    transform: translateX(5px);
+/* Тёмная тема для кнопки */
+body.dark-theme .search-button {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .search-button:hover {
+    background: rgba(255, 255, 255, 0.15);
 }
 
     </style>
@@ -1099,11 +1220,15 @@ body.dark-theme .archive-search input {
         </div>
     </div>
 
-    <!-- Верхнее меню -->
+    <!-- Верхнее меню (ОБНОВЛЕНО: добавлена кнопка поиска) -->
     <header class="app-header">
         <div class="header-container">
             <div class="app-brand">
                 <div class="app-logo" id="logoBtn">GimNet</div>
+                <!-- Кнопка поиска (появляется только в архиве) -->
+                <button class="search-button" id="searchButton">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
             <div id="pageTitle">Главная</div>
             <div class="header-actions">
@@ -1162,6 +1287,11 @@ body.dark-theme .archive-search input {
         </div>
     </header>
 
+    <!-- Выпадающее поле поиска -->
+    <div class="search-expanded" id="searchExpanded">
+        <input type="text" id="searchInput" placeholder="Поиск в архиве...">
+    </div>
+
     <!-- Основной контент -->
     <div class="content">
         <!-- Главная -->
@@ -1212,32 +1342,17 @@ body.dark-theme .archive-search input {
   </div>
         </div>
 
- <!-- Архив -->
+ <!-- Архив (ОБНОВЛЕНО) -->
 <div id="archive" class="page">
-    <!-- Поле поиска (только в архиве) -->
-    <div class="archive-search" style="margin-bottom: 20px;">
-        <input type="text" id="archiveSearchInput" placeholder="Поиск в архиве..." style="
-            width: 100%;
-            padding: 12px 16px;
-            border: none;
-            border-radius: 30px;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            color: var(--glass-text);
-            font-size: 15px;
-            outline: none;
-        ">
-    </div>
-
-    <!-- Контейнер для результатов -->
-    <div id="archiveResults" class="glass-card" style="padding: 20px; margin-bottom: 20px;">
-        <div class="glass-text" style="text-align: center; font-size: 15px;">
-            Введите запрос для поиска...
+    <!-- Результаты поиска -->
+    <div class="search-results" id="searchResults">
+        <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
+            Введите запрос для поиска
         </div>
     </div>
 
     <!-- Пустой архив (показывается когда нет поиска) -->
-    <div class="center-wrapper" style="min-height: auto;">
+    <div class="center-wrapper" style="min-height: auto; margin-top: 20px;">
         <div class="glass-card">
             <div class="glass-text" style="text-align: center; font-size: 14px; opacity: 0.8;">
                 Здесь пока что пусто...
@@ -1668,78 +1783,114 @@ window.addEventListener('load', function() {
     }
 });
 
-// ========== ПОИСК В АРХИВЕ ==========
-const archiveSearchInput = document.getElementById('archiveSearchInput');
-const archiveResults = document.getElementById('archiveResults');
+// ========== НОВЫЙ КОД ДЛЯ ПОИСКА ==========
 
-if (archiveSearchInput) {
-    archiveSearchInput.addEventListener('input', function() {
-        const query = this.value.trim().toLowerCase();
+// Элементы
+const searchButton = document.getElementById('searchButton');
+const searchExpanded = document.getElementById('searchExpanded');
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+
+// Функция обновления видимости кнопки поиска
+function updateSearchButtonVisibility() {
+    const activePage = document.querySelector('.page.active');
+    const isArchive = activePage && activePage.id === 'archive';
+    
+    if (isArchive) {
+        searchButton.classList.add('visible');
+    } else {
+        searchButton.classList.remove('visible');
+        // Закрываем поиск при уходе с архива
+        searchExpanded.classList.remove('active');
+        searchResults.classList.remove('active');
+        if (searchInput) searchInput.value = '';
+    }
+}
+
+// Обработчик клика по кнопке поиска
+if (searchButton) {
+    searchButton.addEventListener('click', function() {
+        searchExpanded.classList.toggle('active');
+        if (!searchExpanded.classList.contains('active')) {
+            searchResults.classList.remove('active');
+            if (searchInput) searchInput.value = '';
+        } else {
+            setTimeout(() => searchInput?.focus(), 100);
+        }
+    });
+}
+
+// Обработчик ввода текста
+if (searchInput) {
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
         
-        if (query === '') {
-            archiveResults.innerHTML = `
-                <div class="glass-text" style="text-align: center; font-size: 15px;">
-                    Введите запрос
+        if (query.length === 0) {
+            searchResults.classList.remove('active');
+            searchResults.innerHTML = `
+                <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
+                    Введите запрос для поиска
                 </div>
             `;
             return;
         }
         
-        // Пример данных для поиска (замени на свои)
-        const archiveData = [
-            { title: 'Отчет за 2023 год', type: 'PDF', date: '15.12.2023' },
-            { title: 'Данные по продажам', type: 'XLSX', date: '10.12.2023' },
-            { title: 'Документация проекта', type: 'DOCX', date: '05.12.2023' },
-            { title: 'Графики и диаграммы', type: 'PNG', date: '01.12.2023' },
-            { title: 'Смета за январь', type: 'PDF', date: '20.01.2024' },
-            { title: 'Презентация', type: 'PPTX', date: '15.01.2024' }
-        ];
+        // Здесь будет реальный поиск по данным архива
+        // Пока показываем демо-результаты
+        searchResults.classList.add('active');
         
-        const results = archiveData.filter(item => 
-            item.title.toLowerCase().includes(query) || 
-            item.type.toLowerCase().includes(query) ||
-            item.date.includes(query)
+        // Пример данных (заменишь на свои)
+        const mockResults = [
+            { title: 'Отчет 2023', type: 'PDF', date: '15.12.2023' },
+            { title: 'Данные продаж', type: 'XLSX', date: '10.12.2023' },
+            { title: 'Документация', type: 'DOCX', date: '05.12.2023' }
+        ].filter(item => 
+            item.title.toLowerCase().includes(query.toLowerCase())
         );
         
-        if (results.length > 0) {
-            let html = '<div class="archive-list" style="margin-top: 0;">';
-            results.forEach(item => {
+        if (mockResults.length > 0) {
+            let html = '';
+            mockResults.forEach(item => {
                 html += `
-                    <div class="archive-item" style="margin-bottom: 10px; padding: 12px;">
-                        <div class="file-info">
-                            <i class="file-icon fas fa-file-${getFileIcon(item.type)}" style="font-size: 24px;"></i>
-                            <div>
-                                <h4 style="margin: 0; font-size: 16px;">${item.title}</h4>
-                                <p style="margin: 4px 0 0; font-size: 12px; color: var(--text-secondary);">${item.type} • ${item.date}</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
+                    <div class="result-item">
+                        <div class="result-title">${item.title}</div>
+                        <div class="result-meta">${item.type} • ${item.date}</div>
                     </div>
                 `;
             });
-            html += '</div>';
-            archiveResults.innerHTML = html;
+            searchResults.innerHTML = html;
         } else {
-            archiveResults.innerHTML = `
-                <div class="glass-text" style="text-align: center; font-size: 15px; color: var(--text-secondary);">
-                    Ничего не найдено по запросу "${this.value}"
+            searchResults.innerHTML = `
+                <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
+                    Ничего не найдено по запросу "${query}"
                 </div>
             `;
         }
     });
 }
 
-// Функция для определения иконки по типу файла
-function getFileIcon(type) {
-    switch(type.toLowerCase()) {
-        case 'pdf': return 'pdf';
-        case 'xlsx': return 'excel';
-        case 'docx': return 'word';
-        case 'png': return 'image';
-        case 'pptx': return 'powerpoint';
-        default: return 'alt';
+// Закрытие поиска при клике вне
+document.addEventListener('click', function(e) {
+    if (searchButton && searchExpanded && searchResults) {
+        if (!searchButton.contains(e.target) && 
+            !searchExpanded.contains(e.target) && 
+            !searchResults.contains(e.target)) {
+            searchExpanded.classList.remove('active');
+            searchResults.classList.remove('active');
+            if (searchInput) searchInput.value = '';
+        }
     }
-}
+});
+
+// Обновляем видимость кнопки при смене страницы
+tabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+        setTimeout(updateSearchButtonVisibility, 50);
+    });
+});
+
+// При загрузке
+updateSearchButtonVisibility();
  
    </script>
 </body>
