@@ -540,22 +540,30 @@ body.dark-theme .search-results {
     font-size: 20px;
 }
 
+/* ========== НОВЫЕ СТИЛИ ДЛЯ LIQUID GLASS МЕНЮ ========== */
 .settings-dropdown {
     position: absolute;
     top: 100%;
     right: 0;
-    background: linear-gradient(135deg, #3a3a3a 0%, #0a0a0a 50%, #3a3a3a 100%);
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 5px 15px rgba(255, 255, 255, 0.05) inset;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
     width: 280px;
-    padding: 15px 0;
+    padding: 12px 0;
     margin-top: 10px;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
     z-index: 1001;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-theme .settings-dropdown {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 .settings-dropdown.active {
@@ -565,41 +573,42 @@ body.dark-theme .search-results {
 }
 
 .dropdown-header {
-    padding: 0 20px 15px;
+    padding: 0 16px 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .dropdown-header h3 {
-    color: #f0f0f0;
-    font-size: 18px;
+    color: white;
+    font-size: 16px;
     font-weight: 600;
     letter-spacing: 0.5px;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .settings-dropdown .dropdown-item {
-    padding: 12px 20px;
+    padding: 12px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #e0e0e0 !important;
+    color: white !important;
     text-decoration: none !important;
     transition: all 0.2s ease;
     cursor: pointer;
     font-weight: 500;
     border-left: 3px solid transparent;
-    background: none;
+    background: transparent;
     border: none;
     width: 100%;
     text-align: left;
-    font-size: 16px;
+    font-size: 15px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .settings-dropdown .dropdown-item:hover {
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.15);
     border-left: 3px solid rgba(255, 255, 255, 0.5);
-    padding-left: 17px;
+    padding-left: 13px;
 }
 
 .dropdown-item-content {
@@ -608,39 +617,33 @@ body.dark-theme .search-results {
     gap: 12px;
 }
 
-.dropdown-item i {
+.settings-dropdown .dropdown-item i {
     width: 20px;
     text-align: center;
     font-size: 18px;
-    color: #cccccc;
+    color: rgba(255, 255, 255, 0.9);
 }
 
-.dropdown-item:hover i {
-    color: #ffffff;
+.settings-dropdown .dropdown-item:hover i {
+    color: white;
     transform: scale(1.1);
     transition: transform 0.2s ease;
 }
 
 .dropdown-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.2) 80%, transparent 100%);
-    margin: 10px 20px;
+    background: rgba(255, 255, 255, 0.15);
+    margin: 10px 16px;
 }
 
-.fa-telegram {
-    color: #cccccc;
-}
-
-.dropdown-item:hover .fa-telegram {
-    color: #27a7e7;
-}
-
+/* Подменю темы */
 .theme-submenu {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 0 0 8px 8px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 12px 12px;
+    margin: 0 8px;
 }
 
 .theme-submenu.active {
@@ -648,23 +651,25 @@ body.dark-theme .search-results {
 }
 
 .theme-option {
-    padding: 10px 20px 10px 50px;
+    padding: 10px 16px 10px 44px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #e0e0e0;
+    color: rgba(255, 255, 255, 0.9);
     cursor: pointer;
     transition: all 0.2s ease;
+    border-radius: 12px;
 }
 
 .theme-option:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
 }
 
 .theme-option.active {
-    color: #ffffff;
+    color: white;
     font-weight: 500;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .theme-check {
@@ -678,6 +683,38 @@ body.dark-theme .search-results {
     opacity: 1;
 }
 
+/* Подменю ссылок */
+.links-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 12px 12px;
+    margin: 0 8px;
+}
+
+.links-submenu.active {
+    max-height: 120px;
+}
+
+.links-submenu .dropdown-item {
+    padding: 10px 16px 10px 44px !important;
+    font-size: 14px;
+}
+
+.links-submenu .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
+    padding-left: 41px !important;
+}
+
+/* Тёмная тема для подменю */
+body.dark-theme .theme-submenu,
+body.dark-theme .links-submenu {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ========== ОСТАЛЬНЫЕ СТИЛИ БЕЗ ИЗМЕНЕНИЙ ========== */
 @media (max-width: 768px) {
     .header-container {
         padding: 0 15px;
@@ -1209,27 +1246,6 @@ body.light-theme {
     opacity: 0.8;
 }
 
-/* ========== СТИЛИ ДЛЯ ПОДМЕНЮ ССЫЛОК ========== */
-.links-submenu {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 0 0 8px 8px;
-}
-
-.links-submenu.active {
-    max-height: 120px;
-}
-
-.links-submenu .dropdown-item {
-    padding: 10px 20px 10px 50px !important;
-}
-
-.links-submenu .dropdown-item:hover {
-    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-}
-
 /* ========== ФИНАЛЬНЫЕ ИСПРАВЛЕНИЯ ========== */
 
 /* Убираем дублирующийся фон из нижней части */
@@ -1344,13 +1360,13 @@ html, body {
                             <i class="fas fa-chevron-right" style="font-size: 14px;"></i>
                         </div>
                         <div class="links-submenu" id="linksSubmenu">
-                            <a href="https://vk.ru/gimnaziapushkin" target="_blank" class="dropdown-item" style="padding-left: 50px;">
+                            <a href="#" target="_blank" class="dropdown-item" style="padding-left: 44px;">
                                 <div class="dropdown-item-content">
                                     <i class="fas fa-school"></i>
                                     <span>Гимназия</span>
                                 </div>
                             </a>
-                            <a href="https://t.me/gimnet_bot" target="_blank" class="dropdown-item" style="padding-left: 50px;">
+                            <a href="#" target="_blank" class="dropdown-item" style="padding-left: 44px;">
                                 <div class="dropdown-item-content">
                                     <i class="fab fa-telegram"></i>
                                     <span>GimNet bot</span>
