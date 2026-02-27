@@ -545,10 +545,10 @@ body.dark-theme .search-results {
     position: absolute;
     top: 100%;
     right: 0;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 20px;
     width: 280px;
     padding: 12px 0;
@@ -558,11 +558,11 @@ body.dark-theme .search-results {
     transform: translateY(-10px);
     transition: all 0.3s ease;
     z-index: 1001;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 body.dark-theme .settings-dropdown {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.7);
     border-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -574,16 +574,23 @@ body.dark-theme .settings-dropdown {
 
 .dropdown-header {
     padding: 0 16px 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 8px;
 }
 
+body.dark-theme .dropdown-header {
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
 .dropdown-header h3 {
-    color: white;
+    color: #1a1a1a;
     font-size: 16px;
     font-weight: 600;
     letter-spacing: 0.5px;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+body.dark-theme .dropdown-header h3 {
+    color: white;
 }
 
 .settings-dropdown .dropdown-item {
@@ -591,7 +598,7 @@ body.dark-theme .settings-dropdown {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: white !important;
+    color: #1a1a1a !important;
     text-decoration: none !important;
     transition: all 0.2s ease;
     cursor: pointer;
@@ -602,13 +609,21 @@ body.dark-theme .settings-dropdown {
     width: 100%;
     text-align: left;
     font-size: 15px;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+body.dark-theme .settings-dropdown .dropdown-item {
+    color: white !important;
 }
 
 .settings-dropdown .dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-left: 3px solid rgba(255, 255, 255, 0.5);
+    background: rgba(0, 0, 0, 0.05);
+    border-left: 3px solid rgba(0, 0, 0, 0.3);
     padding-left: 13px;
+}
+
+body.dark-theme .settings-dropdown .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 3px solid rgba(255, 255, 255, 0.5);
 }
 
 .dropdown-item-content {
@@ -621,19 +636,31 @@ body.dark-theme .settings-dropdown {
     width: 20px;
     text-align: center;
     font-size: 18px;
+    color: #4a4a4a;
+}
+
+body.dark-theme .settings-dropdown .dropdown-item i {
     color: rgba(255, 255, 255, 0.9);
 }
 
 .settings-dropdown .dropdown-item:hover i {
-    color: white;
+    color: #000;
     transform: scale(1.1);
     transition: transform 0.2s ease;
 }
 
+body.dark-theme .settings-dropdown .dropdown-item:hover i {
+    color: white;
+}
+
 .dropdown-divider {
     height: 1px;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.1);
     margin: 10px 16px;
+}
+
+body.dark-theme .dropdown-divider {
+    background: rgba(255, 255, 255, 0.15);
 }
 
 /* Подменю темы */
@@ -641,9 +668,13 @@ body.dark-theme .settings-dropdown {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.02);
     border-radius: 0 0 12px 12px;
     margin: 0 8px;
+}
+
+body.dark-theme .theme-submenu {
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .theme-submenu.active {
@@ -655,20 +686,34 @@ body.dark-theme .settings-dropdown {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: rgba(255, 255, 255, 0.9);
+    color: #333;
     cursor: pointer;
     transition: all 0.2s ease;
     border-radius: 12px;
 }
 
+body.dark-theme .theme-option {
+    color: rgba(255, 255, 255, 0.9);
+}
+
 .theme-option:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.03);
+    color: #000;
+}
+
+body.dark-theme .theme-option:hover {
+    background: rgba(255, 255, 255, 0.05);
     color: white;
 }
 
 .theme-option.active {
+    color: #000;
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+body.dark-theme .theme-option.active {
     color: white;
-    font-weight: 500;
     background: rgba(255, 255, 255, 0.05);
 }
 
@@ -688,9 +733,13 @@ body.dark-theme .settings-dropdown {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.02);
     border-radius: 0 0 12px 12px;
     margin: 0 8px;
+}
+
+body.dark-theme .links-submenu {
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .links-submenu.active {
@@ -703,15 +752,14 @@ body.dark-theme .settings-dropdown {
 }
 
 .links-submenu .dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-left: 3px solid rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.03);
+    border-left: 3px solid rgba(0, 0, 0, 0.2);
     padding-left: 41px !important;
 }
 
-/* Тёмная тема для подменю */
-body.dark-theme .theme-submenu,
-body.dark-theme .links-submenu {
+body.dark-theme .links-submenu .dropdown-item:hover {
     background: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
 }
 
 /* ========== ОСТАЛЬНЫЕ СТИЛИ БЕЗ ИЗМЕНЕНИЙ ========== */
@@ -1743,17 +1791,14 @@ settingsBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
     settingsDropdown.classList.toggle('active');
-    themeSubmenu.classList.remove('active');
-    // Закрываем подменю ссылок при закрытии основного меню
-    document.getElementById('linksSubmenu')?.classList.remove('active');
+    // НЕ закрываем подменю при открытии настроек
 });
 
 themeToggleBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
     themeSubmenu.classList.toggle('active');
-    // Закрываем подменю ссылок
-    document.getElementById('linksSubmenu')?.classList.remove('active');
+    // НЕ закрываем подменю ссылок
 });
 
 themeOptions.forEach(option => {
@@ -1769,15 +1814,12 @@ themeOptions.forEach(option => {
             database.ref('users/' + userIP.replace(/\./g, '_') + '/theme').set(theme);
         }
         
-        setTimeout(() => { 
-            themeSubmenu.classList.remove('active'); 
-            settingsDropdown.classList.remove('active'); 
-            document.getElementById('linksSubmenu')?.classList.remove('active');
-        }, 300);
+        // НЕ закрываем настройки при смене темы
     });
 });
 
 document.addEventListener('click', function(e) {
+    // Закрываем всё только при клике вне меню
     if (!settingsDropdown.contains(e.target) && !settingsBtn.contains(e.target)) {
         settingsDropdown.classList.remove('active');
         themeSubmenu.classList.remove('active');
