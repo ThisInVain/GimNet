@@ -1209,6 +1209,27 @@ body.light-theme {
     opacity: 0.8;
 }
 
+/* ========== СТИЛИ ДЛЯ ПОДМЕНЮ ССЫЛОК ========== */
+.links-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 8px 8px;
+}
+
+.links-submenu.active {
+    max-height: 120px;
+}
+
+.links-submenu .dropdown-item {
+    padding: 10px 20px 10px 50px !important;
+}
+
+.links-submenu .dropdown-item:hover {
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+}
+
 /* ========== ФИНАЛЬНЫЕ ИСПРАВЛЕНИЯ ========== */
 
 /* Убираем дублирующийся фон из нижней части */
@@ -1313,13 +1334,30 @@ html, body {
                                 <span>Новости</span>
                             </div>
                         </div>
-                        <!-- Ссылки -->
-<div class="dropdown-item" id="vkLinksBtn">
-    <div class="dropdown-item-content">
-        <i class="fas fa-link"></i>
-        <span>Ссылки</span>
-    </div>
-</div>
+                        
+                        <!-- Ссылки с подменю -->
+                        <div class="dropdown-item" id="linksBtn">
+                            <div class="dropdown-item-content">
+                                <i class="fas fa-link"></i>
+                                <span>Ссылки</span>
+                            </div>
+                            <i class="fas fa-chevron-right" style="font-size: 14px;"></i>
+                        </div>
+                        <div class="links-submenu" id="linksSubmenu">
+                            <a href="https://vk.ru/gimnaziapushkin" target="_blank" class="dropdown-item" style="padding-left: 50px;">
+                                <div class="dropdown-item-content">
+                                    <i class="fas fa-school"></i>
+                                    <span>Гимназия</span>
+                                </div>
+                            </a>
+                            <a href="https://t.me/gimnet_bot" target="_blank" class="dropdown-item" style="padding-left: 50px;">
+                                <div class="dropdown-item-content">
+                                    <i class="fab fa-telegram"></i>
+                                    <span>GimNet bot</span>
+                                </div>
+                            </a>
+                        </div>
+                        
                         <div class="dropdown-divider"></div>
                         <a href="https://t.me/+ObOQyRCXbWwwMWIy" target="_blank" class="dropdown-item" id="telegramBtn">
                             <div class="dropdown-item-content">
@@ -1402,23 +1440,6 @@ html, body {
             </div>
         </div>
         
-        <!-- VK ссылки -->
-        <div id="vklinks" class="page">
-            <div class="page-header">
-                <h1>Ссылки</h1>
-            </div>
-            <div class="center-wrapper" style="flex-direction: column; gap: 15px;">
-                <a href="#" target="_blank" class="glass-card" style="display: block; text-decoration: none; padding: 20px; max-width: 280px;" id="vkGymLink">
-                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 5px;">🏫 Гимназия</div>
-                    <div style="font-size: 13px; opacity: 0.8;">https://vk.ru/gimnaziapushkin</div>
-                </a>
-                <a href="#" target="_blank" class="glass-card" style="display: block; text-decoration: none; padding: 20px; max-width: 280px;" id="vkBotLink">
-                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 5px;">🤖 GimNet bot</div>
-                    <div style="font-size: 13px; opacity: 0.8;">https://t.me/gimnet_bot</div>
-                </a>
-            </div>
-        </div>
-
         <!-- Таблицы -->
         <div id="tables" class="page">
             <div class="page-header">
@@ -1689,16 +1710,6 @@ function switchToNews() {
     updateSearchButtonVisibility();
 }
 
-function switchToVkLinks() {
-    tabItems.forEach(item => { item.classList.remove('active'); });
-    pages.forEach(page => { page.classList.remove('active'); });
-    document.getElementById('vklinks').classList.add('active');
-    pageTitle.textContent = 'VK ссылки';
-    closeSearch();
-    updateSearchButtonVisibility();
-    settingsDropdown.classList.remove('active');
-}
-
 const savedTheme = localStorage.getItem('theme') || 'light';
 document.body.className = savedTheme + '-theme';
 
@@ -1717,12 +1728,16 @@ settingsBtn.addEventListener('click', function(e) {
     e.preventDefault();
     settingsDropdown.classList.toggle('active');
     themeSubmenu.classList.remove('active');
+    // Закрываем подменю ссылок при закрытии основного меню
+    document.getElementById('linksSubmenu')?.classList.remove('active');
 });
 
 themeToggleBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
     themeSubmenu.classList.toggle('active');
+    // Закрываем подменю ссылок
+    document.getElementById('linksSubmenu')?.classList.remove('active');
 });
 
 themeOptions.forEach(option => {
@@ -1741,6 +1756,7 @@ themeOptions.forEach(option => {
         setTimeout(() => { 
             themeSubmenu.classList.remove('active'); 
             settingsDropdown.classList.remove('active'); 
+            document.getElementById('linksSubmenu')?.classList.remove('active');
         }, 300);
     });
 });
@@ -1749,6 +1765,7 @@ document.addEventListener('click', function(e) {
     if (!settingsDropdown.contains(e.target) && !settingsBtn.contains(e.target)) {
         settingsDropdown.classList.remove('active');
         themeSubmenu.classList.remove('active');
+        document.getElementById('linksSubmenu')?.classList.remove('active');
     }
 });
 
@@ -1761,8 +1778,7 @@ function updatePageTitle() {
         home: 'Главная',
         archive: 'Архив',
         tables: 'Таблицы',
-        schedule: 'Расписание',
-        vklinks: 'VK ссылки'
+        schedule: 'Расписание'
     };
     
     if (pageTitle) {
@@ -1809,11 +1825,6 @@ tabItems.forEach(tab => {
     });
 });
 
-document.getElementById('vkLinksBtn').addEventListener('click', function(e) {
-    e.stopPropagation();
-    switchToVkLinks();
-});
-
 const activeTab = document.querySelector('.tab-item.active');
 if (activeTab) {
     const tabId = activeTab.getAttribute('data-tab');
@@ -1840,6 +1851,17 @@ window.addEventListener('load', function() {
         });
     }
 });
+
+// ========== ПОДМЕНЮ ССЫЛОК ==========
+const linksBtn = document.getElementById('linksBtn');
+const linksSubmenu = document.getElementById('linksSubmenu');
+
+if (linksBtn) {
+    linksBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        linksSubmenu.classList.toggle('active');
+    });
+}
 
 // ========== НОВЫЙ ПОИСК (БЕЗ ДЕМО-ДАННЫХ) ==========
 const searchButton = document.getElementById('searchButton');
