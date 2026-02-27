@@ -1313,6 +1313,13 @@ html, body {
                                 <span>Новости</span>
                             </div>
                         </div>
+                        <!-- Ссылки -->
+<div class="dropdown-item" id="vkLinksBtn">
+    <div class="dropdown-item-content">
+        <i class="fas fa-link"></i>
+        <span>Ссылки</span>
+    </div>
+</div>
                         <div class="dropdown-divider"></div>
                         <a href="https://t.me/+ObOQyRCXbWwwMWIy" target="_blank" class="dropdown-item" id="telegramBtn">
                             <div class="dropdown-item-content">
@@ -1360,7 +1367,7 @@ html, body {
                         <p>- Новый движок приложения</p>
                         <p>- Интерфейс был полностью переработан</p>
                         <p>- Вкладка «Быстрые ссылки» была перенесена в настройки</p>
-                        <p>- «Быстрые ссылки» были переименованы в «VK ссылки»</p>
+                        <p>- «Быстрые ссылки» были переименованы в «Ссылки»</p>
                         <p>- Добавлена вкладка «Расписание»</p>
                         <p>- Верхнее меню было переработано</p>
                         <p>- Нижнее меню было переработано</p>
@@ -1395,6 +1402,23 @@ html, body {
             </div>
         </div>
         
+        <!-- VK ссылки -->
+        <div id="vklinks" class="page">
+            <div class="page-header">
+                <h1>Ссылки</h1>
+            </div>
+            <div class="center-wrapper" style="flex-direction: column; gap: 15px;">
+                <a href="#" target="_blank" class="glass-card" style="display: block; text-decoration: none; padding: 20px; max-width: 280px;" id="vkGymLink">
+                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 5px;">🏫 Гимназия</div>
+                    <div style="font-size: 13px; opacity: 0.8;">https://vk.ru/gimnaziapushkin</div>
+                </a>
+                <a href="#" target="_blank" class="glass-card" style="display: block; text-decoration: none; padding: 20px; max-width: 280px;" id="vkBotLink">
+                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 5px;">🤖 GimNet bot</div>
+                    <div style="font-size: 13px; opacity: 0.8;">https://t.me/gimnet_bot</div>
+                </a>
+            </div>
+        </div>
+
         <!-- Таблицы -->
         <div id="tables" class="page">
             <div class="page-header">
@@ -1665,6 +1689,16 @@ function switchToNews() {
     updateSearchButtonVisibility();
 }
 
+function switchToVkLinks() {
+    tabItems.forEach(item => { item.classList.remove('active'); });
+    pages.forEach(page => { page.classList.remove('active'); });
+    document.getElementById('vklinks').classList.add('active');
+    pageTitle.textContent = 'VK ссылки';
+    closeSearch();
+    updateSearchButtonVisibility();
+    settingsDropdown.classList.remove('active');
+}
+
 const savedTheme = localStorage.getItem('theme') || 'light';
 document.body.className = savedTheme + '-theme';
 
@@ -1727,7 +1761,8 @@ function updatePageTitle() {
         home: 'Главная',
         archive: 'Архив',
         tables: 'Таблицы',
-        schedule: 'Расписание'
+        schedule: 'Расписание',
+        vklinks: 'VK ссылки'
     };
     
     if (pageTitle) {
@@ -1772,6 +1807,11 @@ tabItems.forEach(tab => {
         
         updateSearchButtonVisibility();
     });
+});
+
+document.getElementById('vkLinksBtn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    switchToVkLinks();
 });
 
 const activeTab = document.querySelector('.tab-item.active');
@@ -1910,4 +1950,4 @@ updateSearchButtonVisibility();
   
   </script>
 </body>
-</html> 
+</html>
