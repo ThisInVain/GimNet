@@ -728,7 +728,7 @@ body.dark-theme .theme-option.active {
     opacity: 1;
 }
 
-/* Подменю ссылок */
+/* Подменю ссылок (только одна ссылка) */
 .links-submenu {
     max-height: 0;
     overflow: hidden;
@@ -743,7 +743,7 @@ body.dark-theme .links-submenu {
 }
 
 .links-submenu.active {
-    max-height: 120px;
+    max-height: 70px;
 }
 
 .links-submenu .dropdown-item {
@@ -1399,7 +1399,7 @@ html, body {
                             </div>
                         </div>
                         
-                        <!-- Ссылки с подменю -->
+                        <!-- Ссылки с подменю (только Гимназия) -->
                         <div class="dropdown-item" id="linksBtn">
                             <div class="dropdown-item-content">
                                 <i class="fas fa-link"></i>
@@ -1411,13 +1411,7 @@ html, body {
                             <a href="#" target="_blank" class="dropdown-item" style="padding-left: 44px;">
                                 <div class="dropdown-item-content">
                                     <i class="fas fa-school"></i>
-                                    <span>Гимназия</span>
-                                </div>
-                            </a>
-                            <a href="#" target="_blank" class="dropdown-item" style="padding-left: 44px;">
-                                <div class="dropdown-item-content">
-                                    <i class="fab fa-telegram"></i>
-                                    <span>GimNet bot</span>
+                                    <span>VK Гимназия</span>
                                 </div>
                             </a>
                         </div>
@@ -1910,7 +1904,7 @@ window.addEventListener('load', function() {
     }
 });
 
-// ========== ПОДМЕНЮ ССЫЛОК ==========
+// ========== ПОДМЕНЮ ССЫЛОК (только Гимназия) ==========
 const linksBtn = document.getElementById('linksBtn');
 const linksSubmenu = document.getElementById('linksSubmenu');
 
