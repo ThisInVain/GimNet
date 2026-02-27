@@ -14,12 +14,12 @@
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
 
     <style>
-/* ========== ЗАПРЕТ ВЫДЕЛЕНИЯ ТЕКСТА ========== */
+/* ========== ТВОИ СТИЛИ БЕЗ ИЗМЕНЕНИЙ ========== */
 * {
-    -webkit-user-select: none;  /* Safari */
-    -moz-user-select: none;     /* Firefox */
-    -ms-user-select: none;      /* IE/Edge */
-    user-select: none;           /* стандарт */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 /* ========== СТИЛИ ДЛЯ НОВОСТЕЙ ========== */
@@ -294,6 +294,7 @@ body.dark-theme {
     display: flex;
     align-items: center;
     gap: 12px;
+    position: relative;
 }
 
 .app-logo {
@@ -311,6 +312,7 @@ body.dark-theme {
     cursor: pointer;
     transition: all 0.3s ease;
     user-select: none;
+    z-index: 1002;
 }
 
 .app-logo:hover {
@@ -331,8 +333,155 @@ body.dark-theme {
     transform: translateX(-50%);
     cursor: pointer;
     padding: 10px 15px;
+    transition: opacity 0.4s ease;
+    opacity: 1;
 }
 
+#pageTitle.search-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ========== НОВЫЙ ПОИСК ========== */
+.search-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: 8px;
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    z-index: 1001;
+    position: relative;
+    overflow: visible;
+    white-space: nowrap;
+    padding: 0;
+}
+
+.search-button.visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.search-button.expanded {
+    width: 200px;
+    justify-content: flex-start;
+    padding: 0 12px;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.25);
+    cursor: text;
+}
+
+.search-button.expanded i {
+    font-size: 14px;
+    opacity: 0.8;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.search-button .search-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    padding: 0 12px 0 36px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
+.search-button.expanded .search-input {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+    padding: 0;
+    background: transparent;
+}
+
+.search-button .search-placeholder {
+    display: none;
+}
+
+/* Анимация для кнопок действий */
+.header-actions {
+    transition: opacity 0.4s ease;
+}
+
+.header-actions.search-active {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Результаты поиска */
+.search-results {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 16px;
+    margin-top: 16px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.search-results.active {
+    max-height: 400px;
+    opacity: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.search-results .result-item {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.search-results .result-item:last-child {
+    border-bottom: none;
+}
+
+.search-results .result-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+}
+
+.search-results .result-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--glass-text);
+}
+
+.search-results .result-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+body.dark-theme .search-results {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* ========== ОСТАЛЬНЫЕ СТИЛИ БЕЗ ИЗМЕНЕНИЙ ========== */
 .header-actions {
     display: flex;
     align-items: center;
@@ -568,7 +717,7 @@ body.dark-theme {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 50px;
+    height: 60px;
     background: var(--card-bg);
     display: flex;
     justify-content: space-around;
@@ -657,7 +806,7 @@ body.dark-theme .tab-item.active .tab-label {
     padding: 20px;
     padding-bottom: 0 !important;
     overflow-y: scroll !important;
-    height: calc(100vh - 64px - 50px) !important;
+    height: calc(100vh - 64px - 60px) !important;
     -webkit-overflow-scrolling: touch !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
@@ -1039,17 +1188,14 @@ body.light-theme {
 }
 
 /* ========== ИСПРАВЛЕНИЕ ЦВЕТА В НОВОСТЯХ ========== */
-/* Только последний параграф в новостях */
 #news .glass-text > p:last-child {
     color: var(--text-secondary) !important;
 }
 
-/* Все остальные параграфы в новостях — обычный цвет */
 #news .glass-text p:not(:last-child) {
     color: var(--glass-text) !important;
 }
 
-/* Убираем глобальное правило, которое ломало всё */
 .glass-text p:last-child {
     color: inherit !important;
 }
@@ -1061,6 +1207,42 @@ body.light-theme {
     color: var(--text-secondary);
     margin-top: 16px;
     opacity: 0.8;
+}
+
+/* ========== ФИНАЛЬНЫЕ ИСПРАВЛЕНИЯ ========== */
+
+/* Убираем дублирующийся фон из нижней части */
+html, body:not(.light-theme):not(.dark-theme) {
+    background: transparent !important;
+}
+
+/* Исправляем центрирование в архиве */
+#archive .center-wrapper {
+    min-height: auto;
+    margin-top: 20px;
+}
+
+/* Фикс для клавиатуры */
+input, textarea {
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+
+/* Убираем лишние позиционирования, которые мешают клавиатуре */
+html, body {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.content {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
     </style>
@@ -1081,9 +1263,15 @@ body.light-theme {
         <div class="header-container">
             <div class="app-brand">
                 <div class="app-logo" id="logoBtn">GimNet</div>
+                <!-- Кнопка поиска -->
+                <button class="search-button" id="searchButton">
+                    <i class="fas fa-search"></i>
+                    <span class="search-placeholder"></span>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Поиск в архиве...">
+                </button>
             </div>
             <div id="pageTitle">Главная</div>
-            <div class="header-actions">
+            <div class="header-actions" id="headerActions">
                 <!-- Колокольчик переключает на новости -->
                 <div class="notification-btn" onclick="switchToNews()">
                     <i class="far fa-bell"></i>
@@ -1119,7 +1307,6 @@ body.light-theme {
                                 <i class="fas fa-check theme-check"></i>
                             </div>
                         </div>
-                        <!-- Пункт меню Новости -->
                         <div class="dropdown-item" onclick="switchToNews()">
                             <div class="dropdown-item-content">
                                 <i class="fas fa-bell"></i>
@@ -1185,62 +1372,24 @@ body.light-theme {
                     </div>
                     <p style="margin-top: 20px; text-align: center;">Спасибо, что вы с нами ❤️</p>
                 </div>
-          <div class="news-date">чч месяц гггг, ХХ:ХХ</div>
-  </div>
+                <div class="news-date">чч месяц гггг, ХХ:ХХ</div>
+            </div>
         </div>
 
         <!-- Архив -->
         <div id="archive" class="page">
-            <div class="page-header">
-                <h1>Архив</h1>
-                <div class="page-actions">
-                    <button class="action-btn">Поиск</button>
-                    <button class="action-btn">Добавить</button>
+            <!-- Результаты поиска -->
+            <div class="search-results" id="searchResults">
+                <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
+                    Введите запрос для поиска
                 </div>
             </div>
-            <div class="card">
-                <h3>Архивные записи</h3>
-                <p>Здесь хранятся все архивные данные и документы.</p>
-                <div class="archive-list">
-                    <div class="archive-item">
-                        <div class="file-info">
-                            <i class="file-icon fas fa-file-pdf"></i>
-                            <div>
-                                <h4>Отчет за 2023 год</h4>
-                                <p>PDF • 2.4 MB • 15.12.2023</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
-                    </div>
-                    <div class="archive-item">
-                        <div class="file-info">
-                            <i class="file-icon fas fa-file-excel"></i>
-                            <div>
-                                <h4>Данные по продажам</h4>
-                                <p>XLSX • 1.8 MB • 10.12.2023</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
-                    </div>
-                    <div class="archive-item">
-                        <div class="file-info">
-                            <i class="file-icon fas fa-file-word"></i>
-                            <div>
-                                <h4>Документация проекта</h4>
-                                <p>DOCX • 3.2 MB • 05.12.2023</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
-                    </div>
-                    <div class="archive-item">
-                        <div class="file-info">
-                            <i class="file-icon fas fa-file-image"></i>
-                            <div>
-                                <h4>Графики и диаграммы</h4>
-                                <p>PNG • 4.1 MB • 01.12.2023</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-download" style="color: var(--active-color); cursor: pointer;"></i>
+
+            <!-- Пустой архив -->
+            <div class="center-wrapper" style="min-height: auto; margin-top: 20px;">
+                <div class="glass-card">
+                    <div class="glass-text" style="text-align: center; font-size: 14px; opacity: 0.8;">
+                        Здесь пока что пусто...
                     </div>
                 </div>
             </div>
@@ -1402,7 +1551,7 @@ body.light-theme {
     </nav>
     
     <script>
-// ========== FIREBASE КОНФИГ ==========
+// ========== ТВОЙ ВЕСЬ ОРИГИНАЛЬНЫЙ КОД ==========
 const firebaseConfig = {
     apiKey: "AIzaSyDVHgEuMdlx7op-cAwwYmt6TO8iW-rXb7o",
     authDomain: "gimnet.firebaseapp.com",
@@ -1413,11 +1562,9 @@ const firebaseConfig = {
     appId: "1:72539286332:web:336539dd2a803aa7b88c39"
 };
 
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// ========== ОПРЕДЕЛЯЕМ УСТРОЙСТВО ==========
 function getDeviceType() {
     const ua = navigator.userAgent;
     if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
@@ -1429,14 +1576,11 @@ function getDeviceType() {
     return "ПК";
 }
 
-// ========== ПОЛУЧАЕМ IP ==========
 let userIP = 'не определен';
 fetch('https://api.ipify.org?format=json')
     .then(response => response.json())
     .then(data => {
         userIP = data.ip;
-        
-        // Сохраняем в Firebase
         database.ref('users/' + userIP.replace(/\./g, '_')).set({
             ip: userIP,
             device: getDeviceType(),
@@ -1447,7 +1591,6 @@ fetch('https://api.ipify.org?format=json')
         });
     });
 
-// ========== АНИМАЦИЯ ЗАГРУЗКИ ==========
 window.addEventListener('DOMContentLoaded', function() {
     const splashScreen = document.getElementById('splashScreen');
     const splashText = document.querySelector('.splash-text');
@@ -1488,7 +1631,6 @@ window.addEventListener('DOMContentLoaded', function() {
     }, DURATION.textAppear + DURATION.textVisible);
 });
 
-// ========== ЛОГОТИП ==========
 setTimeout(function() {
     const logo = document.getElementById('logoBtn');
     if (logo) {
@@ -1505,7 +1647,6 @@ setTimeout(function() {
     }
 }, 500);
 
-// ========== ЭЛЕМЕНТЫ ==========
 const settingsBtn = document.getElementById('settingsBtn');
 const settingsDropdown = document.getElementById('settingsDropdown');
 const themeToggleBtn = document.getElementById('themeToggleBtn');
@@ -1513,21 +1654,17 @@ const themeSubmenu = document.getElementById('themeSubmenu');
 const themeOptions = document.querySelectorAll('.theme-option');
 const tabItems = document.querySelectorAll('.tab-item');
 const pages = document.querySelectorAll('.page');
+const pageTitle = document.getElementById('pageTitle');
 
-// ========== ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ НА НОВОСТИ ==========
 function switchToNews() {
-    // Деактивируем все табы
     tabItems.forEach(item => { item.classList.remove('active'); });
-    // Скрываем все страницы
     pages.forEach(page => { page.classList.remove('active'); });
-    // Показываем страницу новостей
     document.getElementById('news').classList.add('active');
-    // Обновляем заголовок
-    document.getElementById('pageTitle').textContent = 'Новости';
+    pageTitle.textContent = 'Новости';
+    closeSearch();
+    updateSearchButtonVisibility();
 }
 
-// ========== ТЕМА ==========
-// Применяем сохранённую тему при загрузке
 const savedTheme = localStorage.getItem('theme') || 'light';
 document.body.className = savedTheme + '-theme';
 
@@ -1541,7 +1678,6 @@ function updateActiveTheme(theme) {
 }
 updateActiveTheme(savedTheme);
 
-// ========== НАСТРОЙКИ ==========
 settingsBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
@@ -1582,7 +1718,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// ========== ОБНОВЛЕНИЕ НАЗВАНИЯ ВКЛАДКИ ==========
 function updatePageTitle() {
     const activeTab = document.querySelector('.tab-item.active');
     if (!activeTab) return;
@@ -1595,9 +1730,8 @@ function updatePageTitle() {
         schedule: 'Расписание'
     };
     
-    const titleElement = document.getElementById('pageTitle');
-    if (titleElement) {
-        titleElement.textContent = titles[tabId] || 'Главная';
+    if (pageTitle) {
+        pageTitle.textContent = titles[tabId] || 'Главная';
     }
 }
 
@@ -1610,15 +1744,13 @@ titleTabItems.forEach(tab => {
 
 updatePageTitle();
 
-// ========== КЛИК ПО НАЗВАНИЮ ВКЛАДКИ ==========
-document.getElementById('pageTitle').addEventListener('click', function() {
+pageTitle.addEventListener('click', function() {
     const content = document.querySelector('.content');
     if (content) {
         content.scrollTo({ top: 0, behavior: 'smooth' });
     }
 });
 
-// ========== ВКЛАДКИ ==========
 tabItems.forEach(tab => {
     tab.addEventListener('click', function() {
         const tabId = this.getAttribute('data-tab');
@@ -1637,6 +1769,8 @@ tabItems.forEach(tab => {
         if (content) { content.scrollTo({ top: 0, behavior: 'smooth' }); }
         
         if (navigator.vibrate) { navigator.vibrate(10); }
+        
+        updateSearchButtonVisibility();
     });
 });
 
@@ -1658,7 +1792,6 @@ window.addEventListener('beforeunload', function() {
     }
 });
 
-// ========== TWE MOJI (ОДИН РАЗ ПОСЛЕ ЗАГРУЗКИ) ==========
 window.addEventListener('load', function() {
     if (typeof twemoji !== 'undefined') {
         twemoji.parse(document.body, {
@@ -1667,6 +1800,114 @@ window.addEventListener('load', function() {
         });
     }
 });
-    </script>
+
+// ========== НОВЫЙ ПОИСК (БЕЗ ДЕМО-ДАННЫХ) ==========
+const searchButton = document.getElementById('searchButton');
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const headerActions = document.getElementById('headerActions');
+
+let isSearchActive = false;
+
+// Функция обновления видимости кнопки поиска
+function updateSearchButtonVisibility() {
+    const activePage = document.querySelector('.page.active');
+    const isArchive = activePage && activePage.id === 'archive';
+    
+    if (isArchive) {
+        searchButton.classList.add('visible');
+    } else {
+        searchButton.classList.remove('visible');
+        if (isSearchActive) {
+            closeSearch();
+        }
+    }
+}
+
+// Функция закрытия поиска
+function closeSearch() {
+    isSearchActive = false;
+    searchButton.classList.remove('expanded');
+    headerActions.classList.remove('search-active');
+    pageTitle.classList.remove('search-hidden');
+    searchResults.classList.remove('active');
+    if (searchInput) {
+        searchInput.value = '';
+        searchInput.blur();
+    }
+}
+
+// Функция открытия поиска
+function openSearch() {
+    isSearchActive = true;
+    searchButton.classList.add('expanded');
+    headerActions.classList.add('search-active');
+    pageTitle.classList.add('search-hidden');
+    setTimeout(() => {
+        searchInput?.focus();
+    }, 50);
+}
+
+// Обработчик клика по кнопке поиска
+searchButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (!isSearchActive) {
+        openSearch();
+    } else {
+        searchInput?.focus();
+    }
+});
+
+// Обработчик ввода текста (УПРОЩЁННЫЙ)
+searchInput.addEventListener('input', function(e) {
+    e.stopPropagation();
+    const query = this.value.trim();
+    
+    if (query.length === 0) {
+        searchResults.classList.remove('active');
+        return;
+    }
+    
+    // Архив пуст — всегда показываем "ничего не найдено"
+    searchResults.classList.add('active');
+    searchResults.innerHTML = `
+        <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
+            Ничего не найдено по запросу "${query}"
+        </div>
+    `;
+});
+
+// Обработчик фокуса на поле ввода
+searchInput.addEventListener('focus', function() {
+    if (!isSearchActive) {
+        openSearch();
+    }
+});
+
+// Предотвращаем закрытие при клике на поле ввода
+searchInput.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+// Обработчик клика вне поиска
+document.addEventListener('click', function(e) {
+    if (isSearchActive && 
+        !searchButton.contains(e.target) && 
+        !searchResults.contains(e.target)) {
+        closeSearch();
+    }
+});
+
+// Обновляем видимость кнопки при смене страницы
+tabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+        setTimeout(updateSearchButtonVisibility, 50);
+    });
+});
+
+// При загрузке
+updateSearchButtonVisibility();
+  
+  </script>
 </body>
-</html>
+</html> 
