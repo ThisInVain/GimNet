@@ -2336,14 +2336,7 @@ function displaySchedule(className) {
     });
 }
 
-// Инициализация расписания
-loadScheduleData();
-createClassButtons();
-fillAllSchedule();
-
 // ========== ЗАПОЛНЕНИЕ РАСПИСАНИЯ ==========
-// Добавь эту функцию после createClassButtons();
-
 function fillAllSchedule() {
     // Создаем шаблон расписания
     const scheduleTemplate = {
@@ -2400,6 +2393,8 @@ function fillAllSchedule() {
                 { number: 8, name: 'Классный час', teacher: 'Иванова М.И.' }
             ]
         }
+        // Здесь можно добавить другие классы через запятую
+    };
 
     // Загружаем шаблон в данные
     for (let className in scheduleTemplate) {
@@ -2411,6 +2406,11 @@ function fillAllSchedule() {
     
     console.log('✅ Расписание загружено для классов:', Object.keys(scheduleTemplate).join(', '));
 }
+
+// Инициализация расписания - ВАЖНО: сначала определяем функции, потом вызываем
+loadScheduleData();
+createClassButtons();
+fillAllSchedule(); // Теперь функция определена до вызова
 </script>
 </body>
 </html>
