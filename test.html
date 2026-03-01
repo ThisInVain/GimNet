@@ -717,8 +717,8 @@ body.dark-theme .theme-option:hover {
 }
 
 body.dark-theme .theme-option.active {
-    color: white;
-    background: rgba(255, 255, 255, 0.05);
+    color: #000 !important;
+    background: white !important;
 }
 
 .theme-check {
@@ -767,14 +767,24 @@ body.dark-theme .links-submenu .dropdown-item:hover {
 }
 
 /* ========== НОВЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ ========== */
+.schedule-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
 .class-selector {
-    margin-bottom: 20px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 .class-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
+    justify-content: center;
     margin: 15px 0;
 }
 
@@ -788,13 +798,15 @@ body.dark-theme .links-submenu .dropdown-item:hover {
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
-    min-width: 60px;
+    transition: all 0.15s ease;
+    min-width: 55px;
+    text-align: center;
+    will-change: transform;
 }
 
 .class-btn:hover {
     background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 .class-btn.active {
@@ -813,15 +825,18 @@ body.dark-theme .class-btn:hover {
 }
 
 body.dark-theme .class-btn.active {
-    background: var(--active-color);
-    color: white;
+    background: white;
+    color: black !important;
+    border-color: white;
 }
 
 .schedule-container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    margin-top: 20px;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 .schedule-day {
@@ -830,6 +845,7 @@ body.dark-theme .class-btn.active {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     padding: 15px;
+    width: 100%;
 }
 
 body.dark-theme .schedule-day {
@@ -837,103 +853,107 @@ body.dark-theme .schedule-day {
 }
 
 .schedule-day h3 {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     color: var(--active-color);
     font-size: 18px;
     font-weight: 600;
+    text-align: left;
 }
 
 .lessons-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
 }
 
 .lesson-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.2s ease;
-}
-
-.lesson-item:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateX(5px);
+    gap: 8px;
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    font-size: 14px;
+    min-height: 40px;
 }
 
 body.dark-theme .lesson-item {
-    background: rgba(0, 0, 0, 0.2);
-}
-
-body.dark-theme .lesson-item:hover {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.15);
 }
 
 .lesson-number {
     font-weight: 700;
     color: var(--active-color);
-    min-width: 30px;
-    font-size: 16px;
+    min-width: 45px;
+    font-size: 13px;
 }
 
 .lesson-name {
     flex: 2;
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lesson-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+    min-width: 85px;
+    text-align: right;
+    white-space: nowrap;
 }
 
 .lesson-teacher {
-    flex: 1;
-    font-size: 13px;
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.lesson-teacher i {
     font-size: 12px;
-    opacity: 0.7;
-}
-
-.lesson-teacher input {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1px dashed rgba(128, 128, 128, 0.3);
-    color: var(--glass-text);
-    font-size: 13px;
-    padding: 2px 4px;
-    outline: none;
-}
-
-.lesson-teacher input:focus {
-    border-bottom-color: var(--active-color);
+    color: var(--text-secondary);
+    min-width: 100px;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .no-schedule {
     text-align: center;
-    padding: 40px;
+    padding: 40px 20px;
     color: var(--text-secondary);
+    font-size: 16px;
+    width: 100%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .lesson-item {
         flex-wrap: wrap;
+        gap: 4px;
     }
     .lesson-number {
-        min-width: 25px;
+        min-width: 40px;
     }
     .lesson-name {
         flex: 1;
+        min-width: 120px;
+    }
+    .lesson-time {
+        min-width: 75px;
+        text-align: right;
     }
     .lesson-teacher {
-        flex: 100%;
-        margin-left: 40px;
-        margin-top: -5px;
+        flex: 1;
+        min-width: 100px;
+        text-align: left;
+        margin-left: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .lesson-time {
+        min-width: 70px;
+        font-size: 11px;
+    }
+    .lesson-teacher {
+        font-size: 11px;
+        margin-left: 44px;
     }
 }
 
@@ -1071,6 +1091,9 @@ body.dark-theme .tab-item.active .tab-label {
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
     overflow-x: hidden !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .content::-webkit-scrollbar {
@@ -1350,7 +1373,7 @@ body {
     border-radius: 30px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     padding: 25px 25px;
-    max-width: 300px;
+    max-width: 500px;
     width: 100%;
     text-align: center;
 }
@@ -1713,38 +1736,28 @@ html, body {
         
         <!-- Расписание -->
         <div id="schedule" class="page">
-            <div class="page-header">
-                <h1>Расписание</h1>
-            </div>
-            
-            <div class="glass-card">
+            <div class="glass-card" style="padding: 20px;">
                 <div class="class-selector">
-                    <h3 style="margin-bottom: 15px;">Выберите класс</h3>
+                    <h3 style="margin-bottom: 15px; text-align: center;">Выберите класс</h3>
                     
                     <!-- 7-9 классы (А, Б, В) -->
                     <div style="margin-bottom: 20px;">
-                        <h4 style="margin-bottom: 10px; color: var(--active-color);">7-9 классы</h4>
-                        <div class="class-buttons" id="classButtonsMiddle">
-                            <!-- Кнопки создаются через JS -->
-                        </div>
+                        <h4 style="margin-bottom: 10px; color: var(--active-color); text-align: center;">7-9 классы</h4>
+                        <div class="class-buttons" id="classButtonsMiddle"></div>
                     </div>
                     
                     <!-- 10-11 классы (без букв) -->
                     <div style="margin-bottom: 20px;">
-                        <h4 style="margin-bottom: 10px; color: var(--active-color);">10-11 классы</h4>
-                        <div class="class-buttons" id="classButtonsHigh">
-                            <!-- Кнопки создаются через JS -->
-                        </div>
+                        <h4 style="margin-bottom: 10px; color: var(--active-color); text-align: center;">10-11 классы</h4>
+                        <div class="class-buttons" id="classButtonsHigh"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Расписание для выбранного класса -->
-            <div id="scheduleDisplay" class="glass-card" style="margin-top: 20px; display: none;">
-                <h2 id="selectedClass" style="text-align: center; margin-bottom: 20px;">7А класс</h2>
-                <div class="schedule-container" id="scheduleContainer">
-                    <!-- Дни недели заполняются через JS -->
-                </div>
+            <!-- Расписание для выбранного класса (скрыто по умолчанию) -->
+            <div id="scheduleDisplay" class="glass-card" style="margin-top: 20px; display: none; padding: 20px;">
+                <h2 id="selectedClass" style="text-align: center; margin-bottom: 20px;"></h2>
+                <div class="schedule-container" id="scheduleContainer"></div>
             </div>
         </div>
     </div>
@@ -1764,7 +1777,7 @@ html, body {
             <div class="tab-label">Таблицы</div>
         </div>
         <div class="tab-item" data-tab="schedule">
-            <div class="tab-icon"><i class="fas fa-calendar-alt"></i></div>
+            <div class="tab-icon"><i class="fas fa-book-bookmark"></i></div>
             <div class="tab-label">Расписание</div>
         </div>
     </nav>
@@ -1981,318 +1994,4 @@ tabItems.forEach(tab => {
         document.getElementById(tabId).classList.add('active');
         
         if (userIP) {
-            database.ref('users/' + userIP.replace(/\./g, '_') + '/page').set(tabId);
-        }
-        
-        const content = document.querySelector('.content');
-        if (content) { content.scrollTo({ top: 0, behavior: 'smooth' }); }
-        
-        if (navigator.vibrate) { navigator.vibrate(10); }
-        
-        updateSearchButtonVisibility();
-    });
-});
-
-const activeTab = document.querySelector('.tab-item.active');
-if (activeTab) {
-    const tabId = activeTab.getAttribute('data-tab');
-    document.getElementById(tabId).classList.add('active');
-}
-
-setInterval(() => {
-    if (userIP) {
-        database.ref('users/' + userIP.replace(/\./g, '_') + '/lastSeen').set(Date.now());
-    }
-}, 60000);
-
-window.addEventListener('beforeunload', function() {
-    if (userIP) {
-        database.ref('users/' + userIP.replace(/\./g, '_')).remove();
-    }
-});
-
-window.addEventListener('load', function() {
-    if (typeof twemoji !== 'undefined') {
-        twemoji.parse(document.body, {
-            folder: 'svg',
-            ext: '.svg'
-        });
-    }
-});
-
-// ========== ПОДМЕНЮ ССЫЛОК (только Гимназия) ==========
-const linksBtn = document.getElementById('linksBtn');
-const linksSubmenu = document.getElementById('linksSubmenu');
-
-if (linksBtn) {
-    linksBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        linksSubmenu.classList.toggle('active');
-    });
-}
-
-// ========== НОВЫЙ ПОИСК (БЕЗ ДЕМО-ДАННЫХ) ==========
-const searchButton = document.getElementById('searchButton');
-const searchInput = document.getElementById('searchInput');
-const searchResults = document.getElementById('searchResults');
-const headerActions = document.getElementById('headerActions');
-
-let isSearchActive = false;
-
-// Функция обновления видимости кнопки поиска
-function updateSearchButtonVisibility() {
-    const activePage = document.querySelector('.page.active');
-    const isArchive = activePage && activePage.id === 'archive';
-    
-    if (isArchive) {
-        searchButton.classList.add('visible');
-    } else {
-        searchButton.classList.remove('visible');
-        if (isSearchActive) {
-            closeSearch();
-        }
-    }
-}
-
-// Функция закрытия поиска
-function closeSearch() {
-    isSearchActive = false;
-    searchButton.classList.remove('expanded');
-    headerActions.classList.remove('search-active');
-    pageTitle.classList.remove('search-hidden');
-    searchResults.classList.remove('active');
-    if (searchInput) {
-        searchInput.value = '';
-        searchInput.blur();
-    }
-}
-
-// Функция открытия поиска
-function openSearch() {
-    isSearchActive = true;
-    searchButton.classList.add('expanded');
-    headerActions.classList.add('search-active');
-    pageTitle.classList.add('search-hidden');
-    setTimeout(() => {
-        searchInput?.focus();
-    }, 50);
-}
-
-// Обработчик клика по кнопке поиска
-searchButton.addEventListener('click', function(e) {
-    e.stopPropagation();
-    if (!isSearchActive) {
-        openSearch();
-    } else {
-        searchInput?.focus();
-    }
-});
-
-// Обработчик ввода текста (УПРОЩЁННЫЙ)
-searchInput.addEventListener('input', function(e) {
-    e.stopPropagation();
-    const query = this.value.trim();
-    
-    if (query.length === 0) {
-        searchResults.classList.remove('active');
-        return;
-    }
-    
-    // Архив пуст — всегда показываем "ничего не найдено"
-    searchResults.classList.add('active');
-    searchResults.innerHTML = `
-        <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
-            Ничего не найдено по запросу "${query}"
-        </div>
-    `;
-});
-
-// Обработчик фокуса на поле ввода
-searchInput.addEventListener('focus', function() {
-    if (!isSearchActive) {
-        openSearch();
-    }
-});
-
-// Предотвращаем закрытие при клике на поле ввода
-searchInput.addEventListener('click', function(e) {
-    e.stopPropagation();
-});
-
-// Обработчик клика вне поиска
-document.addEventListener('click', function(e) {
-    if (isSearchActive && 
-        !searchButton.contains(e.target) && 
-        !searchResults.contains(e.target)) {
-        closeSearch();
-    }
-});
-
-// Обновляем видимость кнопки при смене страницы
-tabItems.forEach(tab => {
-    tab.addEventListener('click', function() {
-        setTimeout(updateSearchButtonVisibility, 50);
-    });
-});
-
-// При загрузке
-updateSearchButtonVisibility();
-
-// ========== НОВОЕ РАСПИСАНИЕ ==========
-// Список всех классов
-const classes = {
-    middle: ['7А', '7Б', '7В', '8А', '8Б', '8В', '9А', '9Б', '9В'],
-    high: ['10', '11']
-};
-
-// Дни недели
-const days = [
-    'monday', 'tuesday', 'wednesday', 'thursday', 'friday'
-];
-
-const daysRussian = {
-    monday: 'Понедельник',
-    tuesday: 'Вторник',
-    wednesday: 'Среда',
-    thursday: 'Четверг',
-    friday: 'Пятница'
-};
-
-// Данные расписания (пустые, заполняются через localStorage)
-let scheduleData = {};
-
-// Загружаем сохраненные данные
-function loadScheduleData() {
-    const allClasses = [...classes.middle, ...classes.high];
-    allClasses.forEach(className => {
-        const saved = localStorage.getItem(`schedule_${className}`);
-        if (saved) {
-            try {
-                scheduleData[className] = JSON.parse(saved);
-            } catch(e) {
-                console.log('Ошибка загрузки для', className);
-                createEmptySchedule(className);
-            }
-        } else {
-            createEmptySchedule(className);
-        }
-    });
-}
-
-// Создаем пустое расписание для класса
-function createEmptySchedule(className) {
-    scheduleData[className] = {};
-    days.forEach(day => {
-        scheduleData[className][day] = [];
-        for (let i = 1; i <= 8; i++) {
-            scheduleData[className][day].push({
-                number: i,
-                name: `Урок ${i}`,
-                teacher: ''
-            });
-        }
-    });
-}
-
-// Создаем кнопки классов
-function createClassButtons() {
-    const middleContainer = document.getElementById('classButtonsMiddle');
-    const highContainer = document.getElementById('classButtonsHigh');
-    
-    classes.middle.forEach(className => {
-        const btn = document.createElement('button');
-        btn.className = 'class-btn';
-        btn.textContent = className;
-        btn.dataset.class = className;
-        btn.addEventListener('click', () => selectClass(className));
-        middleContainer.appendChild(btn);
-    });
-    
-    classes.high.forEach(className => {
-        const btn = document.createElement('button');
-        btn.className = 'class-btn';
-        btn.textContent = className;
-        btn.dataset.class = className;
-        btn.addEventListener('click', () => selectClass(className));
-        highContainer.appendChild(btn);
-    });
-}
-
-// Выбор класса
-function selectClass(className) {
-    // Убираем активный класс у всех кнопок
-    document.querySelectorAll('.class-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    
-    // Добавляем активный класс выбранной кнопке
-    document.querySelectorAll(`.class-btn[data-class="${className}"]`).forEach(btn => {
-        btn.classList.add('active');
-    });
-    
-    // Показываем расписание
-    document.getElementById('scheduleDisplay').style.display = 'block';
-    document.getElementById('selectedClass').textContent = `${className} класс`;
-    
-    // Загружаем расписание
-    displaySchedule(className);
-}
-
-// Отображаем расписание
-function displaySchedule(className) {
-    const container = document.getElementById('scheduleContainer');
-    container.innerHTML = '';
-    
-    const classData = scheduleData[className] || createEmptySchedule(className);
-    
-    days.forEach(day => {
-        const dayDiv = document.createElement('div');
-        dayDiv.className = 'schedule-day';
-        dayDiv.innerHTML = `<h3>${daysRussian[day]}</h3>`;
-        
-        const lessonsDiv = document.createElement('div');
-        lessonsDiv.className = 'lessons-list';
-        
-        classData[day].forEach(lesson => {
-            const lessonDiv = document.createElement('div');
-            lessonDiv.className = 'lesson-item';
-            lessonDiv.innerHTML = `
-                <span class="lesson-number">${lesson.number}</span>
-                <span class="lesson-name">${lesson.name}</span>
-                <span class="lesson-teacher">
-                    <i class="fas fa-user"></i>
-                    <input type="text" class="teacher-input" data-class="${className}" data-day="${day}" data-lesson="${lesson.number}" value="${lesson.teacher || ''}" placeholder="Учитель">
-                </span>
-            `;
-            lessonsDiv.appendChild(lessonDiv);
-        });
-        
-        dayDiv.appendChild(lessonsDiv);
-        container.appendChild(dayDiv);
-    });
-    
-    // Добавляем обработчики для полей учителей
-    document.querySelectorAll('.teacher-input').forEach(input => {
-        input.addEventListener('change', function() {
-            const className = this.dataset.class;
-            const day = this.dataset.day;
-            const lessonNum = parseInt(this.dataset.lesson);
-            const value = this.value;
-            
-            if (scheduleData[className] && scheduleData[className][day]) {
-                const lesson = scheduleData[className][day].find(l => l.number === lessonNum);
-                if (lesson) {
-                    lesson.teacher = value;
-                    localStorage.setItem(`schedule_${className}`, JSON.stringify(scheduleData[className]));
-                }
-            }
-        });
-    });
-}
-
-// Инициализация расписания
-loadScheduleData();
-createClassButtons();
-</script>
-</body>
-</html>
+            database.ref('users/' + userIP.replace(/\./g, '_') + '/
