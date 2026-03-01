@@ -2200,12 +2200,12 @@ const daysRussian = {
 const lessonTimes = [
     '8:00 - 8:40',
     '8:50 - 9:30',
-    '9:40 - 10:20',
-    '10:35 - 11:15',
-    '11:25 - 12:05',
-    '12:15 - 12:55',
-    '13:05 - 13:45',
-    '13:55 - 14:35'
+    '9:50 - 10:30',
+    '10:50 - 11:30',
+    '11:50 - 12:30',
+    '12:50 - 13:30',
+    '13:40 - 14:20',
+    '14:30 - 15:10'
 ];
 
 // Данные расписания (пустые, заполняются через localStorage)
@@ -2339,6 +2339,78 @@ function displaySchedule(className) {
 // Инициализация расписания
 loadScheduleData();
 createClassButtons();
+fillAllSchedule();
+
+// ========== ЗАПОЛНЕНИЕ РАСПИСАНИЯ ==========
+// Добавь эту функцию после createClassButtons();
+
+function fillAllSchedule() {
+    // Создаем шаблон расписания
+    const scheduleTemplate = {
+        // 7А класс
+        '7А': {
+            monday: [
+                { number: 1, name: 'Алгебра', teacher: 'Иванова М.И.' },
+                { number: 2, name: 'Русский язык', teacher: 'Петрова А.С.' },
+                { number: 3, name: 'Литература', teacher: 'Петрова А.С.' },
+                { number: 4, name: 'История', teacher: 'Сидоров В.П.' },
+                { number: 5, name: 'Английский', teacher: 'Смирнова Е.Н.' },
+                { number: 6, name: 'Физкультура', teacher: 'Козлов Д.М.' },
+                { number: 7, name: 'География', teacher: 'Васильева О.В.' },
+                { number: 8, name: 'Музыка', teacher: 'Андреева К.П.' }
+            ],
+            tuesday: [
+                { number: 1, name: 'Геометрия', teacher: 'Иванова М.И.' },
+                { number: 2, name: 'Физика', teacher: 'Николаев С.В.' },
+                { number: 3, name: 'Русский язык', teacher: 'Петрова А.С.' },
+                { number: 4, name: 'Биология', teacher: 'Михайлова Е.А.' },
+                { number: 5, name: 'Английский', teacher: 'Смирнова Е.Н.' },
+                { number: 6, name: 'История', teacher: 'Сидоров В.П.' },
+                { number: 7, name: 'Информатика', teacher: 'Новиков Д.С.' },
+                { number: 8, name: 'ОБЖ', teacher: 'Федоров И.И.' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Алгебра', teacher: 'Иванова М.И.' },
+                { number: 2, name: 'Литература', teacher: 'Петрова А.С.' },
+                { number: 3, name: 'Физика', teacher: 'Николаев С.В.' },
+                { number: 4, name: 'География', teacher: 'Васильева О.В.' },
+                { number: 5, name: 'Физкультура', teacher: 'Козлов Д.М.' },
+                { number: 6, name: 'Химия', teacher: 'Соколова Т.В.' },
+                { number: 7, name: 'Музыка', teacher: 'Андреева К.П.' },
+                { number: 8, name: 'Технология', teacher: 'Макаров С.Н.' }
+            ],
+            thursday: [
+                { number: 1, name: 'Русский язык', teacher: 'Петрова А.С.' },
+                { number: 2, name: 'Геометрия', teacher: 'Иванова М.И.' },
+                { number: 3, name: 'История', teacher: 'Сидоров В.П.' },
+                { number: 4, name: 'Биология', teacher: 'Михайлова Е.А.' },
+                { number: 5, name: 'Английский', teacher: 'Смирнова Е.Н.' },
+                { number: 6, name: 'Информатика', teacher: 'Новиков Д.С.' },
+                { number: 7, name: 'ИЗО', teacher: 'Белова Н.В.' },
+                { number: 8, name: 'Физкультура', teacher: 'Козлов Д.М.' }
+            ],
+            friday: [
+                { number: 1, name: 'Алгебра', teacher: 'Иванова М.И.' },
+                { number: 2, name: 'Физика', teacher: 'Николаев С.В.' },
+                { number: 3, name: 'Русский язык', teacher: 'Петрова А.С.' },
+                { number: 4, name: 'Литература', teacher: 'Петрова А.С.' },
+                { number: 5, name: 'Химия', teacher: 'Соколова Т.В.' },
+                { number: 6, name: 'Обществознание', teacher: 'Сидоров В.П.' },
+                { number: 7, name: 'Физкультура', teacher: 'Козлов Д.М.' },
+                { number: 8, name: 'Классный час', teacher: 'Иванова М.И.' }
+            ]
+        }
+
+    // Загружаем шаблон в данные
+    for (let className in scheduleTemplate) {
+        if (scheduleTemplate.hasOwnProperty(className)) {
+            scheduleData[className] = scheduleTemplate[className];
+            localStorage.setItem(`schedule_${className}`, JSON.stringify(scheduleTemplate[className]));
+        }
+    }
+    
+    console.log('✅ Расписание загружено для классов:', Object.keys(scheduleTemplate).join(', '));
+}
 </script>
 </body>
 </html>
