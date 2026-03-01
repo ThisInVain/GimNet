@@ -717,8 +717,8 @@ body.dark-theme .theme-option:hover {
 }
 
 body.dark-theme .theme-option.active {
-    color: #000 !important;
-    background: white !important;
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .theme-check {
@@ -764,197 +764,6 @@ body.dark-theme .links-submenu {
 body.dark-theme .links-submenu .dropdown-item:hover {
     background: rgba(255, 255, 255, 0.05);
     border-left: 3px solid rgba(255, 255, 255, 0.3);
-}
-
-/* ========== НОВЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ ========== */
-.schedule-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-.class-selector {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.class-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    margin: 15px 0;
-}
-
-.class-btn {
-    padding: 8px 16px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 20px;
-    color: var(--glass-text);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    min-width: 55px;
-    text-align: center;
-    will-change: transform;
-}
-
-.class-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-1px);
-}
-
-.class-btn.active {
-    background: var(--active-color);
-    color: white;
-    border-color: var(--active-color);
-}
-
-body.dark-theme .class-btn {
-    background: rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-body.dark-theme .class-btn:hover {
-    background: rgba(0, 0, 0, 0.4);
-}
-
-body.dark-theme .class-btn.active {
-    background: white;
-    color: black !important;
-    border-color: white;
-}
-
-.schedule-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.schedule-day {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 15px;
-    width: 100%;
-}
-
-body.dark-theme .schedule-day {
-    background: rgba(0, 0, 0, 0.2);
-}
-
-.schedule-day h3 {
-    margin-bottom: 12px;
-    color: var(--active-color);
-    font-size: 18px;
-    font-weight: 600;
-    text-align: left;
-}
-
-.lessons-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.lesson-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    font-size: 14px;
-    min-height: 40px;
-}
-
-body.dark-theme .lesson-item {
-    background: rgba(0, 0, 0, 0.15);
-}
-
-.lesson-number {
-    font-weight: 700;
-    color: var(--active-color);
-    min-width: 45px;
-    font-size: 13px;
-}
-
-.lesson-name {
-    flex: 2;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.lesson-time {
-    font-size: 12px;
-    color: var(--text-secondary);
-    min-width: 85px;
-    text-align: right;
-    white-space: nowrap;
-}
-
-.lesson-teacher {
-    font-size: 12px;
-    color: var(--text-secondary);
-    min-width: 100px;
-    text-align: right;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.no-schedule {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--text-secondary);
-    font-size: 16px;
-    width: 100%;
-}
-
-@media (max-width: 600px) {
-    .lesson-item {
-        flex-wrap: wrap;
-        gap: 4px;
-    }
-    .lesson-number {
-        min-width: 40px;
-    }
-    .lesson-name {
-        flex: 1;
-        min-width: 120px;
-    }
-    .lesson-time {
-        min-width: 75px;
-        text-align: right;
-    }
-    .lesson-teacher {
-        flex: 1;
-        min-width: 100px;
-        text-align: left;
-        margin-left: 48px;
-    }
-}
-
-@media (max-width: 480px) {
-    .lesson-time {
-        min-width: 70px;
-        font-size: 11px;
-    }
-    .lesson-teacher {
-        font-size: 11px;
-        margin-left: 44px;
-    }
 }
 
 /* ========== ОСТАЛЬНЫЕ СТИЛИ БЕЗ ИЗМЕНЕНИЙ ========== */
@@ -1091,9 +900,6 @@ body.dark-theme .tab-item.active .tab-label {
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
     overflow-x: hidden !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .content::-webkit-scrollbar {
@@ -1170,6 +976,36 @@ h1 {
 
 .data-table tr:hover {
     background: rgba(128, 128, 128, 0.05);
+}
+
+.schedule-day {
+    margin-bottom: 20px;
+}
+
+.day-header {
+    background: var(--active-color);
+    color: white;
+    padding: 12px 15px;
+    border-radius: 8px 8px 0 0;
+    font-weight: 600;
+}
+
+.schedule-item {
+    padding: 15px;
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-top: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.schedule-item:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+.time {
+    font-weight: 600;
+    color: var(--active-color);
 }
 
 .archive-list {
@@ -1373,7 +1209,7 @@ body {
     border-radius: 30px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     padding: 25px 25px;
-    max-width: 500px;
+    max-width: 300px;
     width: 100%;
     text-align: center;
 }
@@ -1734,33 +1570,402 @@ html, body {
             </div>
         </div>
         
-        <!-- Расписание -->
-        <div id="schedule" class="page">
-            <div class="glass-card" style="padding: 20px;">
-                <div class="class-selector">
-                    <h3 style="margin-bottom: 15px; text-align: center;">Выберите класс</h3>
-                    
-                    <!-- 7-9 классы (А, Б, В) -->
-                    <div style="margin-bottom: 20px;">
-                        <h4 style="margin-bottom: 10px; color: var(--active-color); text-align: center;">7-9 классы</h4>
-                        <div class="class-buttons" id="classButtonsMiddle"></div>
-                    </div>
-                    
-                    <!-- 10-11 классы (без букв) -->
-                    <div style="margin-bottom: 20px;">
-                        <h4 style="margin-bottom: 10px; color: var(--active-color); text-align: center;">10-11 классы</h4>
-                        <div class="class-buttons" id="classButtonsHigh"></div>
-                    </div>
-                </div>
+      <!-- Расписание -->
+<div id="schedule" class="page">
+    <!-- Выбор класса (без заголовка) -->
+    <div class="glass-card class-selector">
+        <h3 style="margin-bottom: 15px;">Выберите класс</h3>
+        
+        <!-- 7-9 классы (А, Б, В) -->
+        <div style="margin-bottom: 20px;">
+            <h4 style="margin-bottom: 10px; color: var(--active-color);">7-9 классы</h4>
+            <div class="class-buttons" id="classButtonsMiddle">
+                <!-- Кнопки создаются через JS -->
             </div>
-
-            <!-- Расписание для выбранного класса (скрыто по умолчанию) -->
-            <div id="scheduleDisplay" class="glass-card" style="margin-top: 20px; display: none; padding: 20px;">
-                <h2 id="selectedClass" style="text-align: center; margin-bottom: 20px;"></h2>
-                <div class="schedule-container" id="scheduleContainer"></div>
+        </div>
+        
+        <!-- 10-11 классы (без букв) -->
+        <div style="margin-bottom: 20px;">
+            <h4 style="margin-bottom: 10px; color: var(--active-color);">10-11 классы</h4>
+            <div class="class-buttons" id="classButtonsHigh">
+                <!-- Кнопки создаются через JS -->
             </div>
         </div>
     </div>
+
+    <!-- Расписание для выбранного класса (изначально скрыто) -->
+    <div id="scheduleDisplay" class="glass-card" style="margin-top: 20px; display: none;">
+        <h2 id="selectedClass" style="text-align: center; margin-bottom: 20px;"></h2>
+        <div class="schedule-container" id="scheduleContainer">
+            <!-- Дни недели заполняются через JS -->
+        </div>
+    </div>
+</div>
+
+<style>
+/* ========== СТИЛИ ДЛЯ РАСПИСАНИЯ ========== */
+.class-selector {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 500px;
+}
+
+.class-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+    justify-content: center;
+}
+
+.class-btn {
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    color: var(--glass-text);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 60px;
+    will-change: transform;
+}
+
+.class-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.class-btn.active {
+    background: var(--active-color);
+    color: #000000 !important; /* Черный текст для активной кнопки в любой теме */
+    border-color: var(--active-color);
+}
+
+body.dark-theme .class-btn.active {
+    color: #000000 !important; /* Черный текст в темной теме */
+}
+
+.schedule-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.schedule-day {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 15px;
+    width: 100%;
+}
+
+body.dark-theme .schedule-day {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.schedule-day h3 {
+    margin-bottom: 15px;
+    color: var(--active-color);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.lessons-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.lesson-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+    transform: translateZ(0); /* Hardware acceleration */
+    backface-visibility: hidden;
+}
+
+.lesson-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(5px) translateZ(0);
+}
+
+body.dark-theme .lesson-item {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+body.dark-theme .lesson-item:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.lesson-number {
+    font-weight: 700;
+    color: var(--active-color);
+    min-width: 30px;
+    font-size: 16px;
+}
+
+.lesson-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+    min-width: 70px;
+    text-align: center;
+    background: rgba(128, 128, 128, 0.1);
+    padding: 2px 6px;
+    border-radius: 12px;
+}
+
+.lesson-name {
+    flex: 2;
+    font-weight: 500;
+}
+
+.lesson-teacher {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .lesson-item {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    .lesson-number {
+        min-width: 25px;
+    }
+    .lesson-time {
+        min-width: 65px;
+        font-size: 11px;
+    }
+    .lesson-name {
+        flex: 1;
+    }
+    .lesson-teacher {
+        flex: 100%;
+        margin-left: 40px;
+        margin-top: -5px;
+        font-size: 12px;
+    }
+}
+
+#scheduleDisplay {
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+</style>
+
+<script>
+// ========== РАСПИСАНИЕ ==========
+// Список всех классов
+const classes = {
+    middle: ['7А', '7Б', '7В', '8А', '8Б', '8В', '9А', '9Б', '9В'],
+    high: ['10', '11']
+};
+
+// Дни недели
+const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+
+const daysRussian = {
+    monday: 'Понедельник',
+    tuesday: 'Вторник',
+    wednesday: 'Среда',
+    thursday: 'Четверг',
+    friday: 'Пятница'
+};
+
+// Время уроков
+const lessonTimes = [
+    { start: '8:00', end: '8:40' },
+    { start: '8:50', end: '9:30' },
+    { start: '9:40', end: '10:20' },
+    { start: '10:35', end: '11:15' },
+    { start: '11:30', end: '12:10' },
+    { start: '12:20', end: '13:00' },
+    { start: '13:10', end: '13:50' },
+    { start: '14:00', end: '14:40' }
+];
+
+// Данные расписания
+let scheduleData = {};
+
+// Предметы для разных классов (заполнишь сам)
+const defaultSubjects = {
+    '7А': {
+        monday: ['Математика', 'Русский язык', 'Литература', 'Английский язык', 'История', 'Физкультура', 'Музыка', 'Классный час'],
+        tuesday: ['Алгебра', 'Геометрия', 'Русский язык', 'Биология', 'География', 'ИЗО', 'Технология', 'Технология'],
+        wednesday: ['Физика', 'Химия', 'Английский язык', 'История', 'Обществознание', 'Физкультура', 'ОБЖ', 'Русский язык'],
+        thursday: ['Русский язык', 'Литература', 'Математика', 'Информатика', 'Биология', 'География', 'Физкультура', 'Английский язык'],
+        friday: ['Английский язык', 'История', 'Обществознание', 'Физика', 'Химия', 'Музыка', 'Классный час', 'Резерв']
+    },
+    '7Б': {
+        monday: ['Русский язык', 'Литература', 'Математика', 'Английский язык', 'История', 'Физкультура', 'Музыка', 'Классный час'],
+        tuesday: ['Алгебра', 'Геометрия', 'Русский язык', 'Биология', 'География', 'ИЗО', 'Технология', 'Технология'],
+        wednesday: ['Физика', 'Химия', 'Английский язык', 'История', 'Обществознание', 'Физкультура', 'ОБЖ', 'Русский язык'],
+        thursday: ['Русский язык', 'Литература', 'Математика', 'Информатика', 'Биология', 'География', 'Физкультура', 'Английский язык'],
+        friday: ['Английский язык', 'История', 'Обществознание', 'Физика', 'Химия', 'Музыка', 'Классный час', 'Резерв']
+    }
+    // Добавь остальные классы по аналогии
+};
+
+// Учителя (заполнишь сам)
+const teachers = {
+    '7А': {
+        monday: ['Иванова М.И', 'Петрова А.С', 'Сидорова Е.В', 'Козлова Н.П', 'Смирнов В.А', 'Васильев И.П', 'Михайлова О.В', 'Кузнецова Т.А'],
+        tuesday: ['Иванова М.И', 'Иванова М.И', 'Петрова А.С', 'Лебедева Н.К', 'Соколова Е.М', 'Григорьева Л.В', 'Николаев Д.С', 'Николаев Д.С'],
+        wednesday: ['Алексеев В.В', 'Морозова И.А', 'Козлова Н.П', 'Смирнов В.А', 'Федорова Е.И', 'Васильев И.П', 'Степанов А.Н', 'Петрова А.С'],
+        thursday: ['Петрова А.С', 'Сидорова Е.В', 'Иванова М.И', 'Новикова Т.В', 'Лебедева Н.К', 'Соколова Е.М', 'Васильев И.П', 'Козлова Н.П'],
+        friday: ['Козлова Н.П', 'Смирнов В.А', 'Федорова Е.И', 'Алексеев В.В', 'Морозова И.А', 'Михайлова О.В', 'Кузнецова Т.А', '']
+    }
+    // Добавь учителей для остальных классов
+};
+
+// Загружаем сохраненные данные
+function loadScheduleData() {
+    const allClasses = [...classes.middle, ...classes.high];
+    allClasses.forEach(className => {
+        createEmptySchedule(className);
+    });
+}
+
+// Создаем пустое расписание для класса
+function createEmptySchedule(className) {
+    scheduleData[className] = {};
+    days.forEach(day => {
+        scheduleData[className][day] = [];
+        const classSubjects = defaultSubjects[className]?.[day] || [];
+        const classTeachers = teachers[className]?.[day] || [];
+        
+        for (let i = 0; i < 8; i++) {
+            scheduleData[className][day].push({
+                number: i + 1,
+                name: classSubjects[i] || `Урок ${i + 1}`,
+                teacher: classTeachers[i] || 'Фамилия И.О',
+                time: lessonTimes[i]
+            });
+        }
+    });
+}
+
+// Создаем кнопки классов
+function createClassButtons() {
+    const middleContainer = document.getElementById('classButtonsMiddle');
+    const highContainer = document.getElementById('classButtonsHigh');
+    
+    if (!middleContainer || !highContainer) return;
+    
+    // Очищаем контейнеры
+    middleContainer.innerHTML = '';
+    highContainer.innerHTML = '';
+    
+    classes.middle.forEach(className => {
+        const btn = document.createElement('button');
+        btn.className = 'class-btn';
+        btn.textContent = className;
+        btn.dataset.class = className;
+        btn.addEventListener('click', () => selectClass(className));
+        middleContainer.appendChild(btn);
+    });
+    
+    classes.high.forEach(className => {
+        const btn = document.createElement('button');
+        btn.className = 'class-btn';
+        btn.textContent = className;
+        btn.dataset.class = className;
+        btn.addEventListener('click', () => selectClass(className));
+        highContainer.appendChild(btn);
+    });
+}
+
+// Выбор класса
+function selectClass(className) {
+    // Убираем активный класс у всех кнопок
+    document.querySelectorAll('.class-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Добавляем активный класс выбранной кнопке
+    document.querySelectorAll(`.class-btn[data-class="${className}"]`).forEach(btn => {
+        btn.classList.add('active');
+    });
+    
+    // Показываем расписание
+    document.getElementById('scheduleDisplay').style.display = 'block';
+    document.getElementById('selectedClass').textContent = `${className} класс`;
+    
+    // Загружаем расписание
+    displaySchedule(className);
+}
+
+// Отображаем расписание
+function displaySchedule(className) {
+    const container = document.getElementById('scheduleContainer');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    const classData = scheduleData[className];
+    if (!classData) return;
+    
+    // Используем DocumentFragment для оптимизации
+    const fragment = document.createDocumentFragment();
+    
+    days.forEach(day => {
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'schedule-day';
+        
+        const title = document.createElement('h3');
+        title.textContent = daysRussian[day];
+        dayDiv.appendChild(title);
+        
+        const lessonsDiv = document.createElement('div');
+        lessonsDiv.className = 'lessons-list';
+        
+        classData[day].forEach(lesson => {
+            const lessonDiv = document.createElement('div');
+            lessonDiv.className = 'lesson-item';
+            lessonDiv.innerHTML = `
+                <span class="lesson-number">${lesson.number}</span>
+                <span class="lesson-time">${lesson.time.start} - ${lesson.time.end}</span>
+                <span class="lesson-name">${lesson.name}</span>
+                <span class="lesson-teacher">${lesson.teacher}</span>
+            `;
+            lessonsDiv.appendChild(lessonDiv);
+        });
+        
+        dayDiv.appendChild(lessonsDiv);
+        fragment.appendChild(dayDiv);
+    });
+    
+    container.appendChild(fragment);
+}
+
+// Инициализация при загрузке страницы
+if (document.getElementById('schedule')) {
+    // Загружаем данные
+    loadScheduleData();
+    
+    // Создаем кнопки с небольшой задержкой для оптимизации
+    setTimeout(() => {
+        createClassButtons();
+    }, 100);
+}
+</script>
     
     <!-- Нижнее меню -->
     <nav class="tab-bar">
@@ -1994,4 +2199,163 @@ tabItems.forEach(tab => {
         document.getElementById(tabId).classList.add('active');
         
         if (userIP) {
-            database.ref('users/' + userIP.replace(/\./g, '_') + '/
+            database.ref('users/' + userIP.replace(/\./g, '_') + '/page').set(tabId);
+        }
+        
+        const content = document.querySelector('.content');
+        if (content) { content.scrollTo({ top: 0, behavior: 'smooth' }); }
+        
+        if (navigator.vibrate) { navigator.vibrate(10); }
+        
+        updateSearchButtonVisibility();
+    });
+});
+
+const activeTab = document.querySelector('.tab-item.active');
+if (activeTab) {
+    const tabId = activeTab.getAttribute('data-tab');
+    document.getElementById(tabId).classList.add('active');
+}
+
+setInterval(() => {
+    if (userIP) {
+        database.ref('users/' + userIP.replace(/\./g, '_') + '/lastSeen').set(Date.now());
+    }
+}, 60000);
+
+window.addEventListener('beforeunload', function() {
+    if (userIP) {
+        database.ref('users/' + userIP.replace(/\./g, '_')).remove();
+    }
+});
+
+window.addEventListener('load', function() {
+    if (typeof twemoji !== 'undefined') {
+        twemoji.parse(document.body, {
+            folder: 'svg',
+            ext: '.svg'
+        });
+    }
+});
+
+// ========== ПОДМЕНЮ ССЫЛОК (только Гимназия) ==========
+const linksBtn = document.getElementById('linksBtn');
+const linksSubmenu = document.getElementById('linksSubmenu');
+
+if (linksBtn) {
+    linksBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        linksSubmenu.classList.toggle('active');
+    });
+}
+
+// ========== НОВЫЙ ПОИСК (БЕЗ ДЕМО-ДАННЫХ) ==========
+const searchButton = document.getElementById('searchButton');
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const headerActions = document.getElementById('headerActions');
+
+let isSearchActive = false;
+
+// Функция обновления видимости кнопки поиска
+function updateSearchButtonVisibility() {
+    const activePage = document.querySelector('.page.active');
+    const isArchive = activePage && activePage.id === 'archive';
+    
+    if (isArchive) {
+        searchButton.classList.add('visible');
+    } else {
+        searchButton.classList.remove('visible');
+        if (isSearchActive) {
+            closeSearch();
+        }
+    }
+}
+
+// Функция закрытия поиска
+function closeSearch() {
+    isSearchActive = false;
+    searchButton.classList.remove('expanded');
+    headerActions.classList.remove('search-active');
+    pageTitle.classList.remove('search-hidden');
+    searchResults.classList.remove('active');
+    if (searchInput) {
+        searchInput.value = '';
+        searchInput.blur();
+    }
+}
+
+// Функция открытия поиска
+function openSearch() {
+    isSearchActive = true;
+    searchButton.classList.add('expanded');
+    headerActions.classList.add('search-active');
+    pageTitle.classList.add('search-hidden');
+    setTimeout(() => {
+        searchInput?.focus();
+    }, 50);
+}
+
+// Обработчик клика по кнопке поиска
+searchButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (!isSearchActive) {
+        openSearch();
+    } else {
+        searchInput?.focus();
+    }
+});
+
+// Обработчик ввода текста (УПРОЩЁННЫЙ)
+searchInput.addEventListener('input', function(e) {
+    e.stopPropagation();
+    const query = this.value.trim();
+    
+    if (query.length === 0) {
+        searchResults.classList.remove('active');
+        return;
+    }
+    
+    // Архив пуст — всегда показываем "ничего не найдено"
+    searchResults.classList.add('active');
+    searchResults.innerHTML = `
+        <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
+            Ничего не найдено по запросу "${query}"
+        </div>
+    `;
+});
+
+// Обработчик фокуса на поле ввода
+searchInput.addEventListener('focus', function() {
+    if (!isSearchActive) {
+        openSearch();
+    }
+});
+
+// Предотвращаем закрытие при клике на поле ввода
+searchInput.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+// Обработчик клика вне поиска
+document.addEventListener('click', function(e) {
+    if (isSearchActive && 
+        !searchButton.contains(e.target) && 
+        !searchResults.contains(e.target)) {
+        closeSearch();
+    }
+});
+
+// Обновляем видимость кнопки при смене страницы
+tabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+        setTimeout(updateSearchButtonVisibility, 50);
+    });
+});
+
+// При загрузке
+updateSearchButtonVisibility();
+  
+  </script>
+</body>
+</html>
