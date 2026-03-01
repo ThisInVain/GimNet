@@ -786,6 +786,20 @@ body.dark-theme .links-submenu .dropdown-item:hover {
     justify-content: flex-start;
 }
 
+/* Убираем отступы у всех контейнеров с классами */
+.class-selector > div {
+    margin-bottom: 20px;
+}
+
+.class-selector > div:last-child {
+    margin-bottom: 0;
+}
+
+/* Убираем заголовок для 7-9 классов */
+.class-selector h4 {
+    display: none;
+}
+
 .class-btn {
     padding: 8px 16px;
     background: rgba(255, 255, 255, 0.2);
@@ -932,18 +946,14 @@ body.dark-theme .lesson-time {
 #scheduleDisplay {
     width: 100%;
     margin-top: 20px;
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-/* Убираем подпись для 10-11 классов */
-#classButtonsHigh h4 {
-    display: none;
-}
-
-/* Сближаем кнопки 10 и 11 */
-#classButtonsHigh .class-buttons {
-    margin-top: 0;
-    gap: 5px;
+#scheduleDisplay.visible {
+    opacity: 1;
+    visibility: visible;
 }
 
 @media (max-width: 768px) {
@@ -1752,9 +1762,8 @@ html, body {
                 <div class="class-selector">
                     <h3 style="margin-bottom: 15px;">Выберите класс</h3>
                     
-                    <!-- 7-9 классы (А, Б, В) -->
+                    <!-- 7-9 классы (без подписи) -->
                     <div style="margin-bottom: 20px;">
-                        <h4 style="margin-bottom: 10px; color: var(--active-color);">7-9 классы</h4>
                         <div class="class-buttons" id="classButtonsMiddle">
                             <!-- Кнопки создаются через JS -->
                         </div>
@@ -1770,7 +1779,7 @@ html, body {
             </div>
 
             <!-- Расписание для выбранного класса (изначально скрыто) -->
-            <div id="scheduleDisplay" class="glass-card" style="margin-top: 20px; display: none;">
+            <div id="scheduleDisplay" class="glass-card" style="margin-top: 20px;">
                 <div class="schedule-container" id="scheduleContainer">
                     <!-- Дни недели заполняются через JS -->
                 </div>
@@ -2251,12 +2260,14 @@ function createClassButtons() {
 
 // Переключение класса (выбрать/снять)
 function toggleClass(className) {
+    const scheduleDisplay = document.getElementById('scheduleDisplay');
+    
     if (currentClass === className) {
         // Если кликнули на тот же класс - снимаем выделение
         document.querySelectorAll('.class-btn').forEach(btn => {
             btn.classList.remove('active');
         });
-        document.getElementById('scheduleDisplay').style.display = 'none';
+        scheduleDisplay.classList.remove('visible');
         currentClass = null;
     } else {
         // Если кликнули на другой класс - выделяем его
@@ -2266,9 +2277,11 @@ function toggleClass(className) {
         document.querySelectorAll(`.class-btn[data-class="${className}"]`).forEach(btn => {
             btn.classList.add('active');
         });
-        document.getElementById('scheduleDisplay').style.display = 'block';
-        currentClass = className;
+        
+        // Показываем расписание
         displaySchedule(className);
+        scheduleDisplay.classList.add('visible');
+        currentClass = className;
     }
 }
 
