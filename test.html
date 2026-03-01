@@ -788,7 +788,7 @@ body.dark-theme .links-submenu .dropdown-item:hover {
 
 /* Убираем отступы у всех контейнеров с классами */
 .class-selector > div {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .class-selector > div:last-child {
@@ -884,27 +884,31 @@ body.dark-theme .schedule-day {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.1);
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.25);  /* Увеличил прозрачность для светлой темы */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.1);  /* Добавил темную обводку для контраста */
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
     transition: background 0.2s ease;
     width: 100%;
     margin: 0 auto;
     transform: translateZ(0);
     backface-visibility: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);  /* Добавил легкую тень */
 }
 
 .lesson-item:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.35);
 }
 
 body.dark-theme .lesson-item {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 body.dark-theme .lesson-item:hover {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.35);
 }
 
 .lesson-number {
@@ -918,28 +922,50 @@ body.dark-theme .lesson-item:hover {
     font-size: 12px;
     color: var(--text-secondary);
     min-width: 85px;
-    background: rgba(0,0,0,0.05);
-    padding: 2px 6px;
+    background: rgba(0, 0, 0, 0.08);  /* Затемнил фон для времени */
+    padding: 4px 8px;
     border-radius: 12px;
     text-align: center;
+    white-space: nowrap;
+    font-weight: 500;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 body.dark-theme .lesson-time {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #ccc;
 }
 
 .lesson-name {
     flex: 2;
     font-weight: 500;
+    word-break: break-word;
+    padding: 0 5px;
+    color: #2c3e50;  /* Более темный цвет текста для светлой темы */
+}
+
+body.dark-theme .lesson-name {
+    color: #e0e0e0;
 }
 
 .lesson-teacher {
     font-size: 11px;
-    color: var(--text-secondary);
+    color: #4a5568;  /* Более темный цвет для учителя */
     min-width: 100px;
     text-align: right;
-    opacity: 0.8;
+    opacity: 1;  /* Убрал прозрачность */
     font-style: italic;
+    white-space: nowrap;
+    font-weight: 500;
+    background: rgba(0, 0, 0, 0.03);  /* Легкий фон */
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+body.dark-theme .lesson-teacher {
+    color: #aaa;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .no-schedule {
@@ -972,25 +998,51 @@ body.class-selected .content {
     overflow-y: scroll !important;
 }
 
+/* Адаптация для мобильных */
 @media (max-width: 768px) {
     .lesson-item {
         flex-wrap: wrap;
         gap: 8px;
+        padding: 10px 12px;
     }
     .lesson-number {
         min-width: 25px;
+        font-size: 15px;
     }
     .lesson-time {
         min-width: 75px;
         font-size: 11px;
+        padding: 3px 6px;
     }
     .lesson-name {
-        flex: 1;
+        flex: 1 1 100%;
+        order: 3;
+        margin-top: 5px;
+        padding-left: 35px;
+        font-size: 14px;
     }
     .lesson-teacher {
-        min-width: 80px;
-        font-size: 10px;
+        min-width: auto;
+        flex: 1;
         text-align: right;
+        font-size: 11px;
+        order: 2;
+        background: transparent;
+        padding: 0;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+    .lesson-item {
+        padding: 8px 10px;
+    }
+    .lesson-name {
+        font-size: 13px;
+        padding-left: 33px;
+    }
+    .lesson-teacher {
+        font-size: 10px;
     }
 }
 
