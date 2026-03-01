@@ -540,22 +540,31 @@ body.dark-theme .search-results {
     font-size: 20px;
 }
 
+/* ========== НОВЫЕ СТИЛИ ДЛЯ LIQUID GLASS МЕНЮ ========== */
 .settings-dropdown {
     position: absolute;
     top: 100%;
     right: 0;
-    background: linear-gradient(135deg, #3a3a3a 0%, #0a0a0a 50%, #3a3a3a 100%);
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 5px 15px rgba(255, 255, 255, 0.05) inset;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
     width: 280px;
-    padding: 15px 0;
+    padding: 12px 0;
     margin-top: 10px;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
     z-index: 1001;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-theme .settings-dropdown {
+    background: rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .settings-dropdown.active {
@@ -565,41 +574,60 @@ body.dark-theme .search-results {
 }
 
 .dropdown-header {
-    padding: 0 20px 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    margin-bottom: 10px;
+    padding: 0 16px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px;
+}
+
+body.dark-theme .dropdown-header {
+    border-bottom-color: rgba(255, 255, 255, 0.15);
 }
 
 .dropdown-header h3 {
-    color: #f0f0f0;
-    font-size: 18px;
+    color: #1a1a1a;
+    font-size: 16px;
     font-weight: 600;
     letter-spacing: 0.5px;
 }
 
+body.dark-theme .dropdown-header h3 {
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
 .settings-dropdown .dropdown-item {
-    padding: 12px 20px;
+    padding: 12px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #e0e0e0 !important;
+    color: #1a1a1a !important;
     text-decoration: none !important;
     transition: all 0.2s ease;
     cursor: pointer;
     font-weight: 500;
     border-left: 3px solid transparent;
-    background: none;
+    background: transparent;
     border: none;
     width: 100%;
     text-align: left;
-    font-size: 16px;
+    font-size: 15px;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.3);
+}
+
+body.dark-theme .settings-dropdown .dropdown-item {
+    color: white !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 .settings-dropdown .dropdown-item:hover {
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-    color: #ffffff !important;
+    background: rgba(0, 0, 0, 0.05);
+    border-left: 3px solid rgba(0, 0, 0, 0.3);
+    padding-left: 13px;
+}
+
+body.dark-theme .settings-dropdown .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
     border-left: 3px solid rgba(255, 255, 255, 0.5);
-    padding-left: 17px;
 }
 
 .dropdown-item-content {
@@ -608,39 +636,49 @@ body.dark-theme .search-results {
     gap: 12px;
 }
 
-.dropdown-item i {
+.settings-dropdown .dropdown-item i {
     width: 20px;
     text-align: center;
     font-size: 18px;
-    color: #cccccc;
+    color: #4a4a4a;
 }
 
-.dropdown-item:hover i {
-    color: #ffffff;
+body.dark-theme .settings-dropdown .dropdown-item i {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.settings-dropdown .dropdown-item:hover i {
+    color: #000;
     transform: scale(1.1);
     transition: transform 0.2s ease;
 }
 
+body.dark-theme .settings-dropdown .dropdown-item:hover i {
+    color: white;
+}
+
 .dropdown-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.2) 80%, transparent 100%);
-    margin: 10px 20px;
+    background: rgba(0, 0, 0, 0.1);
+    margin: 10px 16px;
 }
 
-.fa-telegram {
-    color: #cccccc;
+body.dark-theme .dropdown-divider {
+    background: rgba(255, 255, 255, 0.15);
 }
 
-.dropdown-item:hover .fa-telegram {
-    color: #27a7e7;
-}
-
+/* Подменю темы */
 .theme-submenu {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 0 0 8px 8px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 0 0 12px 12px;
+    margin: 0 8px;
+}
+
+body.dark-theme .theme-submenu {
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .theme-submenu.active {
@@ -648,23 +686,39 @@ body.dark-theme .search-results {
 }
 
 .theme-option {
-    padding: 10px 20px 10px 50px;
+    padding: 10px 16px 10px 44px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #e0e0e0;
+    color: #333;
     cursor: pointer;
     transition: all 0.2s ease;
+    border-radius: 12px;
+}
+
+body.dark-theme .theme-option {
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .theme-option:hover {
+    background: rgba(0, 0, 0, 0.03);
+    color: #000;
+}
+
+body.dark-theme .theme-option:hover {
     background: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
+    color: white;
 }
 
 .theme-option.active {
-    color: #ffffff;
-    font-weight: 500;
+    color: #000;
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+body.dark-theme .theme-option.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .theme-check {
@@ -678,6 +732,41 @@ body.dark-theme .search-results {
     opacity: 1;
 }
 
+/* Подменю ссылок (только одна ссылка) */
+.links-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 0 0 12px 12px;
+    margin: 0 8px;
+}
+
+body.dark-theme .links-submenu {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.links-submenu.active {
+    max-height: 70px;
+}
+
+.links-submenu .dropdown-item {
+    padding: 10px 16px 10px 44px !important;
+    font-size: 14px;
+}
+
+.links-submenu .dropdown-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+    border-left: 3px solid rgba(0, 0, 0, 0.2);
+    padding-left: 41px !important;
+}
+
+body.dark-theme .links-submenu .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+/* ========== ОСТАЛЬНЫЕ СТИЛИ БЕЗ ИЗМЕНЕНИЙ ========== */
 @media (max-width: 768px) {
     .header-container {
         padding: 0 15px;
@@ -1313,6 +1402,24 @@ html, body {
                                 <span>Новости</span>
                             </div>
                         </div>
+                        
+                        <!-- Ссылки с подменю (только Гимназия) -->
+                        <div class="dropdown-item" id="linksBtn">
+                            <div class="dropdown-item-content">
+                                <i class="fas fa-link"></i>
+                                <span>Ссылки</span>
+                            </div>
+                            <i class="fas fa-chevron-right" style="font-size: 14px;"></i>
+                        </div>
+                        <div class="links-submenu" id="linksSubmenu">
+                            <a href="https://vk.ru/gimnaziapushkin" target="_blank" class="dropdown-item" style="padding-left: 44px;">
+                                <div class="dropdown-item-content">
+                                    <i class="fas fa-school"></i>
+                                    <span>VK Гимназия</span>
+                                </div>
+                            </a>
+                        </div>
+                        
                         <div class="dropdown-divider"></div>
                         <a href="https://t.me/+ObOQyRCXbWwwMWIy" target="_blank" class="dropdown-item" id="telegramBtn">
                             <div class="dropdown-item-content">
@@ -1360,7 +1467,7 @@ html, body {
                         <p>- Новый движок приложения</p>
                         <p>- Интерфейс был полностью переработан</p>
                         <p>- Вкладка «Быстрые ссылки» была перенесена в настройки</p>
-                        <p>- «Быстрые ссылки» были переименованы в «VK ссылки»</p>
+                        <p>- «Быстрые ссылки» были переименованы в «Ссылки»</p>
                         <p>- Добавлена вкладка «Расписание»</p>
                         <p>- Верхнее меню было переработано</p>
                         <p>- Нижнее меню было переработано</p>
@@ -1682,13 +1789,14 @@ settingsBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
     settingsDropdown.classList.toggle('active');
-    themeSubmenu.classList.remove('active');
+    // НЕ закрываем подменю при открытии настроек
 });
 
 themeToggleBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
     themeSubmenu.classList.toggle('active');
+    // НЕ закрываем подменю ссылок
 });
 
 themeOptions.forEach(option => {
@@ -1704,17 +1812,16 @@ themeOptions.forEach(option => {
             database.ref('users/' + userIP.replace(/\./g, '_') + '/theme').set(theme);
         }
         
-        setTimeout(() => { 
-            themeSubmenu.classList.remove('active'); 
-            settingsDropdown.classList.remove('active'); 
-        }, 300);
+        // НЕ закрываем настройки при смене темы
     });
 });
 
 document.addEventListener('click', function(e) {
+    // Закрываем всё только при клике вне меню
     if (!settingsDropdown.contains(e.target) && !settingsBtn.contains(e.target)) {
         settingsDropdown.classList.remove('active');
         themeSubmenu.classList.remove('active');
+        document.getElementById('linksSubmenu')?.classList.remove('active');
     }
 });
 
@@ -1800,6 +1907,17 @@ window.addEventListener('load', function() {
         });
     }
 });
+
+// ========== ПОДМЕНЮ ССЫЛОК (только Гимназия) ==========
+const linksBtn = document.getElementById('linksBtn');
+const linksSubmenu = document.getElementById('linksSubmenu');
+
+if (linksBtn) {
+    linksBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        linksSubmenu.classList.toggle('active');
+    });
+}
 
 // ========== НОВЫЙ ПОИСК (БЕЗ ДЕМО-ДАННЫХ) ==========
 const searchButton = document.getElementById('searchButton');
@@ -1910,4 +2028,4 @@ updateSearchButtonVisibility();
   
   </script>
 </body>
-</html> 
+</html>
