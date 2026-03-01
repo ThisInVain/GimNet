@@ -1571,71 +1571,383 @@ html, body {
         </div>
         
         <!-- Расписание -->
-        <div id="schedule" class="page">
-            <div class="page-header">
-                <h1>Расписание</h1>
-                <div class="page-actions">
-                    <button class="action-btn">Неделя</button>
-                    <button class="action-btn">Месяц</button>
+<div id="schedule" class="page">
+    <div class="page-header">
+        <h1>Расписание</h1>
+        <div class="page-actions">
+            <button class="action-btn" onclick="showClassSelector()">Выбрать класс</button>
+        </div>
+    </div>
+
+    <!-- Выбор класса (скрыт по умолчанию) -->
+    <div id="classSelector" class="glass-card" style="display: none; margin-bottom: 20px; padding: 20px;">
+        <h3 style="margin-bottom: 15px;">Выберите класс</h3>
+        
+        <!-- 7-9 классы (А, Б, В) -->
+        <div style="margin-bottom: 20px;">
+            <h4 style="margin-bottom: 10px; color: var(--active-color);">7-9 классы</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <button class="class-btn" data-class="7А">7А</button>
+                <button class="class-btn" data-class="7Б">7Б</button>
+                <button class="class-btn" data-class="7В">7В</button>
+                <button class="class-btn" data-class="8А">8А</button>
+                <button class="class-btn" data-class="8Б">8Б</button>
+                <button class="class-btn" data-class="8В">8В</button>
+                <button class="class-btn" data-class="9А">9А</button>
+                <button class="class-btn" data-class="9Б">9Б</button>
+                <button class="class-btn" data-class="9В">9В</button>
+            </div>
+        </div>
+        
+        <!-- 10-11 классы (без букв) -->
+        <div style="margin-bottom: 20px;">
+            <h4 style="margin-bottom: 10px; color: var(--active-color);">10-11 классы</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <button class="class-btn" data-class="10">10</button>
+                <button class="class-btn" data-class="11">11</button>
+            </div>
+        </div>
+        
+        <div style="text-align: right;">
+            <button class="action-btn" onclick="hideClassSelector()">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Расписание для выбранного класса -->
+    <div id="scheduleDisplay" class="glass-card" style="padding: 20px;">
+        <div id="selectedClassTitle" style="font-size: 24px; font-weight: 700; margin-bottom: 20px; text-align: center;">Выберите класс</div>
+        
+        <!-- Дни недели -->
+        <div class="schedule-days">
+            <!-- Понедельник -->
+            <div class="schedule-day">
+                <div class="day-header">Понедельник</div>
+                <div class="lessons-list" id="monday-lessons">
+                    <!-- Здесь будут уроки -->
                 </div>
             </div>
-            <div class="card">
-                <h3>Расписание на неделю</h3>
-                <p>Планирование и управление временем.</p>
-                <div class="schedule-day">
-                    <div class="day-header">Понедельник, 18 декабря</div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Совещание команды</strong>
-                            <p>Обсуждение текущих проектов</p>
-                        </div>
-                        <div class="time">09:00 - 10:30</div>
-                    </div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Работа над проектом</strong>
-                            <p>Разработка нового функционала</p>
-                        </div>
-                        <div class="time">11:00 - 13:00</div>
-                    </div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Обзор кода</strong>
-                            <p>Проверка Pull Request'ов</p>
-                        </div>
-                        <div class="time">14:00 - 15:30</div>
-                    </div>
-                </div>
-                <div class="schedule-day">
-                    <div class="day-header">Вторник, 19 декабря</div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Встреча с клиентом</strong>
-                            <p>Презентация нового функционала</p>
-                        </div>
-                        <div class="time">10:00 - 11:30</div>
-                    </div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Обучение</strong>
-                            <p>Изучение новых технологий</p>
-                        </div>
-                        <div class="time">12:00 - 14:00</div>
-                    </div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Планирование</strong>
-                            <p>Составление плана на следующую неделю</p>
-                        </div>
-                        <div class="time">15:00 - 16:30</div>
-                    </div>
-                </div>
-                <div style="margin-top: 20px; text-align: center;">
-                    <button class="action-btn" style="width: 200px;">Добавить событие</button>
-                </div>
+            
+            <!-- Вторник -->
+            <div class="schedule-day">
+                <div class="day-header">Вторник</div>
+                <div class="lessons-list" id="tuesday-lessons"></div>
+            </div>
+            
+            <!-- Среда -->
+            <div class="schedule-day">
+                <div class="day-header">Среда</div>
+                <div class="lessons-list" id="wednesday-lessons"></div>
+            </div>
+            
+            <!-- Четверг -->
+            <div class="schedule-day">
+                <div class="day-header">Четверг</div>
+                <div class="lessons-list" id="thursday-lessons"></div>
+            </div>
+            
+            <!-- Пятница -->
+            <div class="schedule-day">
+                <div class="day-header">Пятница</div>
+                <div class="lessons-list" id="friday-lessons"></div>
             </div>
         </div>
     </div>
+</div>
+
+<style>
+/* ========== СТИЛИ ДЛЯ РАСПИСАНИЯ ========== */
+.class-btn {
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    color: var(--glass-text);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 60px;
+}
+
+.class-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+body.dark-theme .class-btn {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .class-btn:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.schedule-days {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.lessons-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.lesson-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+}
+
+.lesson-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(5px);
+}
+
+.lesson-number {
+    font-weight: 700;
+    color: var(--active-color);
+    min-width: 30px;
+    font-size: 16px;
+}
+
+.lesson-name {
+    flex: 2;
+    font-weight: 500;
+}
+
+.lesson-teacher {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.lesson-teacher i {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.lesson-teacher input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed rgba(128, 128, 128, 0.3);
+    color: var(--glass-text);
+    font-size: 13px;
+    padding: 2px 4px;
+    outline: none;
+}
+
+.lesson-teacher input:focus {
+    border-bottom-color: var(--active-color);
+}
+
+body.dark-theme .lesson-item {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+body.dark-theme .lesson-item:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    .lesson-item {
+        flex-wrap: wrap;
+    }
+    .lesson-number {
+        min-width: 25px;
+    }
+    .lesson-name {
+        flex: 1;
+    }
+    .lesson-teacher {
+        flex: 100%;
+        margin-left: 40px;
+        margin-top: -5px;
+    }
+}
+</style>
+
+<script>
+// ========== ДАННЫЕ ДЛЯ РАСПИСАНИЯ ==========
+// Структура: scheduleData[класс][день][урок] = { name: "Предмет", teacher: "Учитель" }
+
+const scheduleData = {
+    // 7А класс
+    '7А': {
+        monday: [
+            { number: 1, name: 'Математика', teacher: '' },
+            { number: 2, name: 'Русский язык', teacher: '' },
+            { number: 3, name: 'Литература', teacher: '' },
+            { number: 4, name: 'Английский язык', teacher: '' },
+            { number: 5, name: 'История', teacher: '' },
+            { number: 6, name: 'Физкультура', teacher: '' },
+            { number: 7, name: 'Музыка', teacher: '' }
+        ],
+        tuesday: [
+            { number: 1, name: 'Алгебра', teacher: '' },
+            { number: 2, name: 'Геометрия', teacher: '' },
+            { number: 3, name: 'Русский язык', teacher: '' },
+            { number: 4, name: 'Биология', teacher: '' },
+            { number: 5, name: 'География', teacher: '' },
+            { number: 6, name: 'ИЗО', teacher: '' },
+            { number: 7, name: 'Технология', teacher: '' }
+        ],
+        wednesday: [
+            { number: 1, name: 'Физика', teacher: '' },
+            { number: 2, name: 'Химия', teacher: '' },
+            { number: 3, name: 'Английский язык', teacher: '' },
+            { number: 4, name: 'История', teacher: '' },
+            { number: 5, name: 'Обществознание', teacher: '' },
+            { number: 6, name: 'Физкультура', teacher: '' },
+            { number: 7, name: 'ОБЖ', teacher: '' }
+        ],
+        thursday: [
+            { number: 1, name: 'Русский язык', teacher: '' },
+            { number: 2, name: 'Литература', teacher: '' },
+            { number: 3, name: 'Математика', teacher: '' },
+            { number: 4, name: 'Информатика', teacher: '' },
+            { number: 5, name: 'Биология', teacher: '' },
+            { number: 6, name: 'География', teacher: '' },
+            { number: 7, name: 'Физкультура', teacher: '' }
+        ],
+        friday: [
+            { number: 1, name: 'Английский язык', teacher: '' },
+            { number: 2, name: 'История', teacher: '' },
+            { number: 3, name: 'Обществознание', teacher: '' },
+            { number: 4, name: 'Физика', teacher: '' },
+            { number: 5, name: 'Химия', teacher: '' },
+            { number: 6, name: 'Музыка', teacher: '' },
+            { number: 7, name: 'Классный час', teacher: '' }
+        ]
+    },
+    // 7Б класс
+    '7Б': {
+        monday: [
+            { number: 1, name: 'Русский язык', teacher: '' },
+            { number: 2, name: 'Литература', teacher: '' },
+            { number: 3, name: 'Математика', teacher: '' },
+            { number: 4, name: 'Английский язык', teacher: '' },
+            { number: 5, name: 'История', teacher: '' },
+            { number: 6, name: 'Физкультура', teacher: '' },
+            { number: 7, name: 'Музыка', teacher: '' }
+        ],
+        // ... остальные дни (скопируй и измени по желанию)
+    },
+    // 7В, 8А, 8Б, 8В, 9А, 9Б, 9В, 10, 11
+    // Добавь аналогично
+};
+
+// Функция показа выбора класса
+function showClassSelector() {
+    document.getElementById('classSelector').style.display = 'block';
+}
+
+// Функция скрытия выбора класса
+function hideClassSelector() {
+    document.getElementById('classSelector').style.display = 'none';
+}
+
+// Функция загрузки расписания для выбранного класса
+function loadSchedule(className) {
+    document.getElementById('selectedClassTitle').textContent = `${className} класс`;
+    hideClassSelector();
+    
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+    const daysRu = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+    
+    // Если для класса нет данных, создаем пустой шаблон
+    if (!scheduleData[className]) {
+        scheduleData[className] = {};
+        days.forEach(day => {
+            scheduleData[className][day] = [];
+            for (let i = 1; i <= 8; i++) {
+                scheduleData[className][day].push({
+                    number: i,
+                    name: `Урок ${i}`,
+                    teacher: ''
+                });
+            }
+        });
+    }
+    
+    // Заполняем каждый день
+    days.forEach(day => {
+        const dayData = scheduleData[className][day] || [];
+        const container = document.getElementById(`${day}-lessons`);
+        container.innerHTML = '';
+        
+        dayData.forEach(lesson => {
+            const lessonElement = document.createElement('div');
+            lessonElement.className = 'lesson-item';
+            lessonElement.innerHTML = `
+                <span class="lesson-number">${lesson.number}</span>
+                <span class="lesson-name">${lesson.name}</span>
+                <span class="lesson-teacher">
+                    <i class="fas fa-user"></i>
+                    <input type="text" class="teacher-input" data-class="${className}" data-day="${day}" data-lesson="${lesson.number}" value="${lesson.teacher}" placeholder="Учитель">
+                </span>
+            `;
+            container.appendChild(lessonElement);
+        });
+    });
+    
+    // Добавляем обработчики для сохранения учителей
+    document.querySelectorAll('.teacher-input').forEach(input => {
+        input.addEventListener('change', function() {
+            const className = this.dataset.class;
+            const day = this.dataset.day;
+            const lessonNum = parseInt(this.dataset.lesson);
+            const value = this.value;
+            
+            if (scheduleData[className] && scheduleData[className][day]) {
+                const lesson = scheduleData[className][day].find(l => l.number === lessonNum);
+                if (lesson) {
+                    lesson.teacher = value;
+                    // Сохраняем в localStorage
+                    localStorage.setItem(`schedule_${className}`, JSON.stringify(scheduleData[className]));
+                }
+            }
+        });
+    });
+}
+
+// Добавляем обработчики на кнопки классов
+document.addEventListener('DOMContentLoaded', function() {
+    const classButtons = document.querySelectorAll('.class-btn');
+    classButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const className = this.dataset.class;
+            loadSchedule(className);
+        });
+    });
+    
+    // Загружаем сохраненные данные из localStorage
+    const classes = ['7А', '7Б', '7В', '8А', '8Б', '8В', '9А', '9Б', '9В', '10', '11'];
+    classes.forEach(className => {
+        const saved = localStorage.getItem(`schedule_${className}`);
+        if (saved) {
+            try {
+                scheduleData[className] = JSON.parse(saved);
+            } catch(e) {
+                console.log('Ошибка загрузки данных для', className);
+            }
+        }
+    });
+});
+</script>
     
     <!-- Нижнее меню -->
     <nav class="tab-bar">
