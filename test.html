@@ -885,16 +885,16 @@ body.dark-theme .schedule-day {
     align-items: center;
     gap: 12px;
     padding: 12px 15px;
-    background: rgba(255, 255, 255, 0.25);  /* Увеличил прозрачность для светлой темы */
+    background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 0, 0, 0.1);  /* Добавил темную обводку для контраста */
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     transition: background 0.2s ease;
     width: 100%;
     margin: 0 auto;
     transform: translateZ(0);
     backface-visibility: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);  /* Добавил легкую тень */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .lesson-item:hover {
@@ -922,7 +922,7 @@ body.dark-theme .lesson-item:hover {
     font-size: 12px;
     color: var(--text-secondary);
     min-width: 85px;
-    background: rgba(0, 0, 0, 0.08);  /* Затемнил фон для времени */
+    background: rgba(0, 0, 0, 0.08);
     padding: 4px 8px;
     border-radius: 12px;
     text-align: center;
@@ -942,7 +942,7 @@ body.dark-theme .lesson-time {
     font-weight: 500;
     word-break: break-word;
     padding: 0 5px;
-    color: #2c3e50;  /* Более темный цвет текста для светлой темы */
+    color: #2c3e50;
 }
 
 body.dark-theme .lesson-name {
@@ -951,16 +951,19 @@ body.dark-theme .lesson-name {
 
 .lesson-teacher {
     font-size: 11px;
-    color: #4a5568;  /* Более темный цвет для учителя */
+    color: #4a5568;
     min-width: 100px;
-    text-align: right;
-    opacity: 1;  /* Убрал прозрачность */
+    text-align: center;
+    opacity: 1;
     font-style: italic;
     white-space: nowrap;
     font-weight: 500;
-    background: rgba(0, 0, 0, 0.03);  /* Легкий фон */
+    background: rgba(0, 0, 0, 0.03);
     padding: 4px 8px;
     border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 body.dark-theme .lesson-teacher {
@@ -998,6 +1001,15 @@ body.class-selected .content {
     overflow-y: scroll !important;
 }
 
+/* Плавная смена темы */
+body {
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.glass-card, .schedule-day, .lesson-item, .class-btn {
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
 /* Адаптация для мобильных */
 @media (max-width: 768px) {
     .lesson-item {
@@ -1024,11 +1036,12 @@ body.class-selected .content {
     .lesson-teacher {
         min-width: auto;
         flex: 1;
-        text-align: right;
+        text-align: center;
         font-size: 11px;
         order: 2;
         background: transparent;
         padding: 0;
+        display: inline-block;
     }
 }
 
@@ -2020,12 +2033,27 @@ themeOptions.forEach(option => {
         e.stopPropagation();
         e.preventDefault();
         const theme = this.getAttribute('data-theme');
+        
+        // Запоминаем состояние перед сменой темы
+        const hadSelectedClass = currentClass !== null;
+        const selectedClass = currentClass;
+        
         document.body.className = theme + '-theme';
         updateActiveTheme(theme);
         localStorage.setItem('theme', theme);
         
         if (userIP) {
             database.ref('users/' + userIP.replace(/\./g, '_') + '/theme').set(theme);
+        }
+        
+        // Восстанавливаем состояние после смены темы
+        if (hadSelectedClass && selectedClass) {
+            setTimeout(() => {
+                document.body.classList.add('class-selected');
+                if (document.getElementById('scheduleDisplay').classList.contains('visible')) {
+                    displaySchedule(selectedClass);
+                }
+            }, 50);
         }
     });
 });
@@ -2356,10 +2384,12 @@ function toggleClass(className) {
     }
 }
 
-// Отображаем расписание
+// Отображаем расписание - оптимизированная версия
 function displaySchedule(className) {
     const container = document.getElementById('scheduleContainer');
-    container.innerHTML = '';
+    
+    // Используем DocumentFragment для оптимизации
+    const fragment = document.createDocumentFragment();
     
     const classData = scheduleData[className] || createEmptySchedule(className);
     
@@ -2384,8 +2414,11 @@ function displaySchedule(className) {
         });
         
         dayDiv.appendChild(lessonsDiv);
-        container.appendChild(dayDiv);
+        fragment.appendChild(dayDiv);
     });
+    
+    container.innerHTML = '';
+    container.appendChild(fragment);
 }
 
 // ========== ЗАПОЛНЕНИЕ РАСПИСАНИЯ ==========
@@ -2459,10 +2492,10 @@ function fillAllSchedule() {
     console.log('✅ Расписание загружено для классов:', Object.keys(scheduleTemplate).join(', '));
 }
 
-// Инициализация расписания - ВАЖНО: сначала определяем функции, потом вызываем
+// Инициализация расписания
 loadScheduleData();
 createClassButtons();
-fillAllSchedule(); // Теперь функция определена до вызова
+fillAllSchedule();
 </script>
 </body>
 </html>
