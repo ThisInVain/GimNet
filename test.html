@@ -798,6 +798,7 @@ body.dark-theme .links-submenu .dropdown-item:hover {
     cursor: pointer;
     transition: all 0.2s ease;
     min-width: 60px;
+    will-change: transform, background;
 }
 
 .class-btn:hover {
@@ -807,7 +808,7 @@ body.dark-theme .links-submenu .dropdown-item:hover {
 
 .class-btn.active {
     background: var(--active-color);
-    color: #000000 !important;
+    color: #ffffff !important;
     border-color: var(--active-color);
 }
 
@@ -840,6 +841,7 @@ body.dark-theme .class-btn.active {
     border-radius: 20px;
     padding: 15px;
     width: 100%;
+    margin: 0 auto;
 }
 
 body.dark-theme .schedule-day {
@@ -858,6 +860,7 @@ body.dark-theme .schedule-day {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    width: 100%;
 }
 
 .lesson-item {
@@ -868,13 +871,13 @@ body.dark-theme .schedule-day {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.2s ease;
+    transition: background 0.2s ease;
     width: 100%;
+    margin: 0 auto;
 }
 
 .lesson-item:hover {
     background: rgba(255, 255, 255, 0.15);
-    transform: translateX(5px);
 }
 
 body.dark-theme .lesson-item {
@@ -912,10 +915,12 @@ body.dark-theme .lesson-time {
 }
 
 .lesson-teacher {
-    font-size: 13px;
+    font-size: 11px;
     color: var(--text-secondary);
     min-width: 100px;
     text-align: right;
+    opacity: 0.8;
+    font-style: italic;
 }
 
 .no-schedule {
@@ -927,6 +932,18 @@ body.dark-theme .lesson-time {
 #scheduleDisplay {
     width: 100%;
     margin-top: 20px;
+    display: none;
+}
+
+/* Убираем подпись для 10-11 классов */
+#classButtonsHigh h4 {
+    display: none;
+}
+
+/* Сближаем кнопки 10 и 11 */
+#classButtonsHigh .class-buttons {
+    margin-top: 0;
+    gap: 5px;
 }
 
 @media (max-width: 768px) {
@@ -946,7 +963,7 @@ body.dark-theme .lesson-time {
     }
     .lesson-teacher {
         min-width: 80px;
-        font-size: 12px;
+        font-size: 10px;
         text-align: right;
     }
 }
@@ -1085,6 +1102,9 @@ body.dark-theme .tab-item.active .tab-label {
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
     overflow-x: hidden !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .content::-webkit-scrollbar {
@@ -1367,6 +1387,7 @@ body {
     max-width: 300px;
     width: 100%;
     text-align: center;
+    margin: 0 auto;
 }
 
 body.dark-theme .glass-card {
@@ -1739,9 +1760,8 @@ html, body {
                         </div>
                     </div>
                     
-                    <!-- 10-11 классы (без букв) -->
+                    <!-- 10-11 классы (без подписи) -->
                     <div style="margin-bottom: 20px;">
-                        <h4 style="margin-bottom: 10px; color: var(--active-color);">10-11 классы</h4>
                         <div class="class-buttons" id="classButtonsHigh">
                             <!-- Кнопки создаются через JS -->
                         </div>
@@ -1910,14 +1930,12 @@ settingsBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
     settingsDropdown.classList.toggle('active');
-    // НЕ закрываем подменю при открытии настроек
 });
 
 themeToggleBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
     themeSubmenu.classList.toggle('active');
-    // НЕ закрываем подменю ссылок
 });
 
 themeOptions.forEach(option => {
@@ -1932,13 +1950,10 @@ themeOptions.forEach(option => {
         if (userIP) {
             database.ref('users/' + userIP.replace(/\./g, '_') + '/theme').set(theme);
         }
-        
-        // НЕ закрываем настройки при смене темы
     });
 });
 
 document.addEventListener('click', function(e) {
-    // Закрываем всё только при клике вне меню
     if (!settingsDropdown.contains(e.target) && !settingsBtn.contains(e.target)) {
         settingsDropdown.classList.remove('active');
         themeSubmenu.classList.remove('active');
@@ -2048,7 +2063,6 @@ const headerActions = document.getElementById('headerActions');
 
 let isSearchActive = false;
 
-// Функция обновления видимости кнопки поиска
 function updateSearchButtonVisibility() {
     const activePage = document.querySelector('.page.active');
     const isArchive = activePage && activePage.id === 'archive';
@@ -2063,7 +2077,6 @@ function updateSearchButtonVisibility() {
     }
 }
 
-// Функция закрытия поиска
 function closeSearch() {
     isSearchActive = false;
     searchButton.classList.remove('expanded');
@@ -2076,7 +2089,6 @@ function closeSearch() {
     }
 }
 
-// Функция открытия поиска
 function openSearch() {
     isSearchActive = true;
     searchButton.classList.add('expanded');
@@ -2087,7 +2099,6 @@ function openSearch() {
     }, 50);
 }
 
-// Обработчик клика по кнопке поиска
 searchButton.addEventListener('click', function(e) {
     e.stopPropagation();
     if (!isSearchActive) {
@@ -2097,7 +2108,6 @@ searchButton.addEventListener('click', function(e) {
     }
 });
 
-// Обработчик ввода текста (УПРОЩЁННЫЙ)
 searchInput.addEventListener('input', function(e) {
     e.stopPropagation();
     const query = this.value.trim();
@@ -2107,7 +2117,6 @@ searchInput.addEventListener('input', function(e) {
         return;
     }
     
-    // Архив пуст — всегда показываем "ничего не найдено"
     searchResults.classList.add('active');
     searchResults.innerHTML = `
         <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
@@ -2116,19 +2125,16 @@ searchInput.addEventListener('input', function(e) {
     `;
 });
 
-// Обработчик фокуса на поле ввода
 searchInput.addEventListener('focus', function() {
     if (!isSearchActive) {
         openSearch();
     }
 });
 
-// Предотвращаем закрытие при клике на поле ввода
 searchInput.addEventListener('click', function(e) {
     e.stopPropagation();
 });
 
-// Обработчик клика вне поиска
 document.addEventListener('click', function(e) {
     if (isSearchActive && 
         !searchButton.contains(e.target) && 
@@ -2137,14 +2143,12 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Обновляем видимость кнопки при смене страницы
 tabItems.forEach(tab => {
     tab.addEventListener('click', function() {
         setTimeout(updateSearchButtonVisibility, 50);
     });
 });
 
-// При загрузке
 updateSearchButtonVisibility();
 
 // ========== НОВОЕ РАСПИСАНИЕ ==========
@@ -2181,6 +2185,9 @@ const lessonTimes = [
 
 // Данные расписания (пустые, заполняются через localStorage)
 let scheduleData = {};
+
+// Текущий выбранный класс
+let currentClass = null;
 
 // Загружаем сохраненные данные
 function loadScheduleData() {
@@ -2220,7 +2227,6 @@ function createClassButtons() {
     const middleContainer = document.getElementById('classButtonsMiddle');
     const highContainer = document.getElementById('classButtonsHigh');
     
-    // Очищаем контейнеры
     middleContainer.innerHTML = '';
     highContainer.innerHTML = '';
     
@@ -2229,7 +2235,7 @@ function createClassButtons() {
         btn.className = 'class-btn';
         btn.textContent = className;
         btn.dataset.class = className;
-        btn.addEventListener('click', () => selectClass(className));
+        btn.addEventListener('click', () => toggleClass(className));
         middleContainer.appendChild(btn);
     });
     
@@ -2238,28 +2244,32 @@ function createClassButtons() {
         btn.className = 'class-btn';
         btn.textContent = className;
         btn.dataset.class = className;
-        btn.addEventListener('click', () => selectClass(className));
+        btn.addEventListener('click', () => toggleClass(className));
         highContainer.appendChild(btn);
     });
 }
 
-// Выбор класса
-function selectClass(className) {
-    // Убираем активный класс у всех кнопок
-    document.querySelectorAll('.class-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    
-    // Добавляем активный класс выбранной кнопке
-    document.querySelectorAll(`.class-btn[data-class="${className}"]`).forEach(btn => {
-        btn.classList.add('active');
-    });
-    
-    // Показываем расписание
-    document.getElementById('scheduleDisplay').style.display = 'block';
-    
-    // Загружаем расписание
-    displaySchedule(className);
+// Переключение класса (выбрать/снять)
+function toggleClass(className) {
+    if (currentClass === className) {
+        // Если кликнули на тот же класс - снимаем выделение
+        document.querySelectorAll('.class-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.getElementById('scheduleDisplay').style.display = 'none';
+        currentClass = null;
+    } else {
+        // Если кликнули на другой класс - выделяем его
+        document.querySelectorAll('.class-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelectorAll(`.class-btn[data-class="${className}"]`).forEach(btn => {
+            btn.classList.add('active');
+        });
+        document.getElementById('scheduleDisplay').style.display = 'block';
+        currentClass = className;
+        displaySchedule(className);
+    }
 }
 
 // Отображаем расписание
@@ -2284,7 +2294,7 @@ function displaySchedule(className) {
                 <span class="lesson-number">${lesson.number}</span>
                 <span class="lesson-time">${lessonTimes[index] || ''}</span>
                 <span class="lesson-name">${lesson.name}</span>
-                <span class="lesson-teacher">${lesson.teacher || ''}</span>
+                <span class="lesson-teacher">${lesson.teacher || 'Фамилия И.О.'}</span>
             `;
             lessonsDiv.appendChild(lessonDiv);
         });
