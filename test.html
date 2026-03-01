@@ -810,14 +810,15 @@ body.dark-theme .links-submenu .dropdown-item:hover {
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background 0.2s ease, transform 0.2s ease;
     min-width: 60px;
-    will-change: transform, background;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .class-btn:hover {
     background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
+    transform: translateY(-2px) translateZ(0);
 }
 
 .class-btn.active {
@@ -856,6 +857,8 @@ body.dark-theme .class-btn.active {
     padding: 15px;
     width: 100%;
     margin: 0 auto;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 body.dark-theme .schedule-day {
@@ -888,6 +891,8 @@ body.dark-theme .schedule-day {
     transition: background 0.2s ease;
     width: 100%;
     margin: 0 auto;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .lesson-item:hover {
@@ -949,11 +954,22 @@ body.dark-theme .lesson-time {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 #scheduleDisplay.visible {
     opacity: 1;
     visibility: visible;
+}
+
+/* Запрещаем скролл когда класс не выбран */
+body:not(.class-selected) .content {
+    overflow-y: hidden !important;
+}
+
+body.class-selected .content {
+    overflow-y: scroll !important;
 }
 
 @media (max-width: 768px) {
@@ -2261,6 +2277,7 @@ function createClassButtons() {
 // Переключение класса (выбрать/снять)
 function toggleClass(className) {
     const scheduleDisplay = document.getElementById('scheduleDisplay');
+    const body = document.body;
     
     if (currentClass === className) {
         // Если кликнули на тот же класс - снимаем выделение
@@ -2268,6 +2285,7 @@ function toggleClass(className) {
             btn.classList.remove('active');
         });
         scheduleDisplay.classList.remove('visible');
+        body.classList.remove('class-selected');
         currentClass = null;
     } else {
         // Если кликнули на другой класс - выделяем его
@@ -2281,6 +2299,7 @@ function toggleClass(className) {
         // Показываем расписание
         displaySchedule(className);
         scheduleDisplay.classList.add('visible');
+        body.classList.add('class-selected');
         currentClass = className;
     }
 }
