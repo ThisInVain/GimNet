@@ -782,13 +782,13 @@ body.dark-theme .links-submenu .dropdown-item:hover {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin: 15px 0;
+    margin: 10px 0;
     justify-content: flex-start;
 }
 
 /* Убираем отступы у всех контейнеров с классами */
 .class-selector > div {
-    margin-bottom: 10px;
+    margin-bottom: 5px; /* Уменьшил отступ между группами */
 }
 
 .class-selector > div:last-child {
@@ -800,10 +800,16 @@ body.dark-theme .links-submenu .dropdown-item:hover {
     display: none;
 }
 
+/* Убираем лишние отступы */
+#classButtonsMiddle,
+#classButtonsHigh {
+    margin: 0;
+    padding: 0;
+}
+
 .class-btn {
     padding: 8px 16px;
     background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 20px;
     color: var(--glass-text);
@@ -812,13 +818,14 @@ body.dark-theme .links-submenu .dropdown-item:hover {
     cursor: pointer;
     transition: background 0.2s ease, transform 0.2s ease;
     min-width: 60px;
-    transform: translateZ(0);
-    backface-visibility: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .class-btn:hover {
     background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px) translateZ(0);
+    transform: translateY(-2px);
 }
 
 .class-btn.active {
@@ -851,14 +858,14 @@ body.dark-theme .class-btn.active {
 
 .schedule-day {
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     padding: 15px;
     width: 100%;
     margin: 0 auto;
-    transform: translateZ(0);
-    backface-visibility: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body.dark-theme .schedule-day {
@@ -886,15 +893,14 @@ body.dark-theme .schedule-day {
     gap: 12px;
     padding: 12px 15px;
     background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(10px);
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     transition: background 0.2s ease;
     width: 100%;
     margin: 0 auto;
-    transform: translateZ(0);
-    backface-visibility: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .lesson-item:hover {
@@ -905,6 +911,8 @@ body.dark-theme .lesson-item {
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body.dark-theme .lesson-item:hover {
@@ -983,8 +991,6 @@ body.dark-theme .lesson-teacher {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    transform: translateZ(0);
-    backface-visibility: hidden;
 }
 
 #scheduleDisplay.visible {
@@ -1844,14 +1850,14 @@ html, body {
                     <h3 style="margin-bottom: 15px;">Выберите класс</h3>
                     
                     <!-- 7-9 классы (без подписи) -->
-                    <div style="margin-bottom: 20px;">
+                    <div style="margin-bottom: 5px;">
                         <div class="class-buttons" id="classButtonsMiddle">
                             <!-- Кнопки создаются через JS -->
                         </div>
                     </div>
                     
                     <!-- 10-11 классы (без подписи) -->
-                    <div style="margin-bottom: 20px;">
+                    <div style="margin-bottom: 0px;">
                         <div class="class-buttons" id="classButtonsHigh">
                             <!-- Кнопки создаются через JS -->
                         </div>
