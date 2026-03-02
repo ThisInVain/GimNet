@@ -809,7 +809,9 @@ body.dark-theme .links-submenu .dropdown-item:hover {
 
 .class-btn {
     padding: 8px 16px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 20px;
     color: var(--glass-text);
@@ -818,13 +820,11 @@ body.dark-theme .links-submenu .dropdown-item:hover {
     cursor: pointer;
     transition: background-color 0.2s ease;
     min-width: 60px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .class-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.4);
 }
 
 .class-btn.active {
@@ -834,12 +834,14 @@ body.dark-theme .links-submenu .dropdown-item:hover {
 }
 
 body.dark-theme .class-btn {
-    background: rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 body.dark-theme .class-btn:hover {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
 }
 
 body.dark-theme .class-btn.active {
@@ -850,162 +852,88 @@ body.dark-theme .class-btn.active {
 .schedule-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
     margin-top: 20px;
     width: 100%;
 }
 
+/* Стили для дня */
 .schedule-day {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
     width: 100%;
-    margin: 0 auto;
-    overflow: hidden;
+}
+
+.day-header {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
-body.dark-theme .schedule-day {
-    background: rgba(0, 0, 0, 0.2);
-}
-
-.schedule-day-header {
-    padding: 15px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color 0.2s ease;
-}
-
-.schedule-day-header:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-body.dark-theme .schedule-day-header:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.schedule-day-header h3 {
+.day-header h3 {
     color: var(--active-color);
     font-size: 18px;
     font-weight: 600;
     margin: 0;
 }
 
-.schedule-day-header i {
-    color: var(--active-color);
-    font-size: 16px;
-    transition: transform 0.3s ease;
+body.dark-theme .day-header {
+    background: rgba(0, 0, 0, 0.35);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
-.schedule-day-header.active i {
-    transform: rotate(180deg);
+/* Стили для уроков */
+.lesson-card {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.lessons-list {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
-    padding: 0 15px;
+.lesson-card:first-of-type {
+    margin-top: 0;
 }
 
-.lessons-list.visible {
-    max-height: 1000px;
-    opacity: 1;
-    padding: 0 15px 15px 15px;
-}
-
-.lesson-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 15px;
-    background: rgba(255, 255, 255, 0.25);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    width: 100%;
-    margin: 0 auto;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.lesson-item:not(:last-child) {
-    margin-bottom: 8px;
-}
-
-body.dark-theme .lesson-item {
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+body.dark-theme .lesson-card {
+    background: rgba(0, 0, 0, 0.35);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 .lesson-number {
+    font-size: 18px;
     font-weight: 700;
     color: var(--active-color);
-    min-width: 30px;
-    font-size: 16px;
-}
-
-.lesson-time {
-    font-size: 12px;
-    color: var(--text-secondary);
-    min-width: 85px;
-    background: rgba(0, 0, 0, 0.08);
-    padding: 4px 8px;
-    border-radius: 12px;
-    text-align: center;
-    white-space: nowrap;
-    font-weight: 500;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-body.dark-theme .lesson-time {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    color: #ccc;
+    margin-bottom: 4px;
 }
 
 .lesson-name {
-    flex: 2;
-    font-weight: 500;
-    word-break: break-word;
-    padding: 0 5px;
-    color: #2c3e50;
-}
-
-body.dark-theme .lesson-name {
-    color: #e0e0e0;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--glass-text);
+    margin-bottom: 8px;
 }
 
 .lesson-teacher {
-    font-size: 11px;
-    color: #4a5568;
-    min-width: 100px;
-    text-align: center;
-    opacity: 1;
-    font-style: italic;
-    white-space: nowrap;
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
     font-weight: 500;
-    background: rgba(0, 0, 0, 0.03);
-    padding: 4px 8px;
-    border-radius: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-body.dark-theme .lesson-teacher {
-    color: #aaa;
-    background: rgba(255, 255, 255, 0.05);
+.lesson-time {
+    font-size: 14px;
+    color: var(--text-secondary);
+    opacity: 0.9;
 }
 
+/* Стили для пустого расписания */
 .no-schedule {
     text-align: center;
     padding: 40px;
@@ -1039,56 +967,23 @@ body {
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.glass-card, .schedule-day, .lesson-item, .class-btn {
+.glass-card, .class-btn {
     transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Адаптация для мобильных */
 @media (max-width: 768px) {
-    .lesson-item {
-        flex-wrap: wrap;
-        gap: 8px;
-        padding: 10px 12px;
-    }
     .lesson-number {
-        min-width: 25px;
+        font-size: 16px;
+    }
+    .lesson-name {
+        font-size: 18px;
+    }
+    .lesson-teacher {
         font-size: 15px;
     }
     .lesson-time {
-        min-width: 75px;
-        font-size: 11px;
-        padding: 3px 6px;
-    }
-    .lesson-name {
-        flex: 1 1 100%;
-        order: 3;
-        margin-top: 5px;
-        padding-left: 35px;
-        font-size: 14px;
-    }
-    .lesson-teacher {
-        min-width: auto;
-        flex: 1;
-        text-align: center;
-        font-size: 11px;
-        order: 2;
-        background: transparent;
-        padding: 0;
-        display: inline-block;
-    }
-}
-
-/* Для очень маленьких экранов */
-@media (max-width: 480px) {
-    .lesson-item {
-        padding: 8px 10px;
-    }
-    .lesson-name {
         font-size: 13px;
-        padding-left: 33px;
-    }
-    .lesson-teacher {
-        font-size: 10px;
     }
 }
 
@@ -1893,7 +1788,7 @@ html, body {
             </div>
 
             <!-- Расписание для выбранного класса -->
-            <div id="scheduleDisplay" class="glass-card" style="margin-top: 20px;">
+            <div id="scheduleDisplay" class="glass-card" style="margin-top: 20px; padding: 20px;">
                 <div class="schedule-container" id="scheduleContainer">
                     <!-- Дни недели заполняются через JS -->
                 </div>
@@ -2084,8 +1979,7 @@ themeOptions.forEach(option => {
             setTimeout(() => {
                 document.body.classList.add('class-selected');
                 if (document.getElementById('scheduleDisplay').classList.contains('visible')) {
-                    // Не обновляем расписание, просто показываем
-                    document.getElementById('scheduleDisplay').classList.add('visible');
+                    displaySchedule(selectedClass);
                 }
             }, 50);
         }
@@ -2303,23 +2197,23 @@ const days = [
 ];
 
 const daysRussian = {
-    monday: 'Понедельник',
-    tuesday: 'Вторник',
-    wednesday: 'Среда',
-    thursday: 'Четверг',
-    friday: 'Пятница'
+    monday: 'Понедельник, 2 марта',
+    tuesday: 'Вторник, 3 марта',
+    wednesday: 'Среда, 4 марта',
+    thursday: 'Четверг, 5 марта',
+    friday: 'Пятница, 6 марта'
 };
 
 // Время уроков
 const lessonTimes = [
-    '8:00 - 8:40',
-    '8:50 - 9:30',
-    '9:50 - 10:30',
-    '10:50 - 11:30',
-    '11:50 - 12:30',
-    '12:50 - 13:30',
-    '13:40 - 14:20',
-    '14:30 - 15:10'
+    '08:00—08:40',
+    '08:50—09:30',
+    '09:50—10:30',
+    '10:50—11:30',
+    '11:50—12:30',
+    '12:50—13:30',
+    '13:40—14:20',
+    '14:30—15:10'
 ];
 
 // Данные расписания (загружаются при старте)
@@ -2355,7 +2249,8 @@ function createEmptySchedule(className) {
             scheduleData[className][day].push({
                 number: i,
                 name: `Урок ${i}`,
-                teacher: ''
+                teacher: '',
+                time: lessonTimes[i-1]
             });
         }
     });
@@ -2410,65 +2305,51 @@ function toggleClass(className) {
             btn.classList.add('active');
         });
         
-        // Показываем расписание (данные уже загружены)
+        // Показываем расписание
         scheduleDisplay.classList.add('visible');
         body.classList.add('class-selected');
         currentClass = className;
+        
+        // Отображаем расписание для выбранного класса
+        displaySchedule(className);
     }
 }
 
-// Функция для переключения дня
-function toggleDay(dayHeader) {
-    const lessonsList = dayHeader.nextElementSibling;
-    const icon = dayHeader.querySelector('i');
-    
-    dayHeader.classList.toggle('active');
-    lessonsList.classList.toggle('visible');
-}
-
-// Отображаем расписание (только заголовки дней)
+// Отображаем расписание
 function displaySchedule(className) {
     const container = document.getElementById('scheduleContainer');
-    
-    // Очищаем контейнер
     container.innerHTML = '';
     
-    const classData = scheduleData[className] || createEmptySchedule(className);
+    const classData = scheduleData[className];
+    if (!classData) return;
     
-    // Создаем заголовки дней
-    days.forEach(day => {
+    days.forEach((day, dayIndex) => {
+        // Создаем заголовок дня
         const dayDiv = document.createElement('div');
         dayDiv.className = 'schedule-day';
         
         const dayHeader = document.createElement('div');
-        dayHeader.className = 'schedule-day-header';
-        dayHeader.innerHTML = `
-            <h3>${daysRussian[day]}</h3>
-            <i class="fas fa-chevron-down"></i>
-        `;
+        dayHeader.className = 'day-header';
+        dayHeader.innerHTML = `<h3>${daysRussian[day]}</h3>`;
+        dayDiv.appendChild(dayHeader);
         
-        const lessonsDiv = document.createElement('div');
-        lessonsDiv.className = 'lessons-list';
-        
-        // Создаем уроки (они будут скрыты)
-        classData[day].forEach((lesson, index) => {
-            const lessonDiv = document.createElement('div');
-            lessonDiv.className = 'lesson-item';
-            lessonDiv.innerHTML = `
-                <span class="lesson-number">${lesson.number}</span>
-                <span class="lesson-time">${lessonTimes[index] || ''}</span>
-                <span class="lesson-name">${lesson.name}</span>
-                <span class="lesson-teacher">${lesson.teacher || 'Фамилия И.О.'}</span>
-            `;
-            lessonsDiv.appendChild(lessonDiv);
+        // Добавляем уроки
+        const lessons = classData[day];
+        lessons.forEach((lesson, index) => {
+            if (lesson.name && lesson.name.trim() !== '' && lesson.name !== ' ') {
+                const lessonCard = document.createElement('div');
+                lessonCard.className = 'lesson-card';
+                lessonCard.innerHTML = `
+                    <div class="lesson-number">${lesson.number}</div>
+                    <div class="lesson-name">${lesson.name}</div>
+                    <div class="lesson-teacher">${lesson.teacher || 'Фамилия И.О.'}</div>
+                    <div class="lesson-time">${lessonTimes[index] || ''}</div>
+                `;
+                dayDiv.appendChild(lessonCard);
+            }
         });
         
-        dayDiv.appendChild(dayHeader);
-        dayDiv.appendChild(lessonsDiv);
         container.appendChild(dayDiv);
-        
-        // Добавляем обработчик клика на заголовок
-        dayHeader.addEventListener('click', () => toggleDay(dayHeader));
     });
 }
 
@@ -2479,14 +2360,12 @@ function fillAllSchedule() {
         // 7А класс
         '7А': {
             monday: [
-                { number: 1, name: 'Разговоры о Важном', teacher: 'Лапшина И.В.' },
-                { number: 2, name: 'Русский язык', teacher: 'Ленская Н.А.' },
-                { number: 3, name: 'Англ.Язык / Информатика', teacher: '-' },
-                { number: 4, name: 'Англ.Язык / Информатика', teacher: '-' },
-                { number: 5, name: 'Алгебра', teacher: '-' },
-                { number: 6, name: 'Русская словесность', teacher: 'Ленская Н.А.' },
-                { number: 7, name: 'История', teacher: '-' },
-                { number: 8, name: ' ', teacher: ' ' }
+                { number: 2, name: 'Биология', teacher: 'Зорина Наталья Николаевна' },
+                { number: 3, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна' },
+                { number: 4, name: 'Литература', teacher: 'Ленская Надежда Андреевна' },
+                { number: 5, name: 'География', teacher: 'Зорина Наталья Николаевна' },
+                { number: 6, name: 'История', teacher: 'Торопова Алёна Петровна' },
+                { number: 7, name: 'Физика', teacher: 'Платова Татьяна Александровна' }
             ],
             tuesday: [
                 { number: 1, name: 'ИЗО', teacher: 'Лапшина И.Н.' },
@@ -2495,8 +2374,7 @@ function fillAllSchedule() {
                 { number: 4, name: 'Литература', teacher: 'Ленская Н.А.' },
                 { number: 5, name: 'Английский язык', teacher: '-' },
                 { number: 6, name: 'Геометрия', teacher: '-' },
-                { number: 7, name: 'Физкультура', teacher: '-' },
-                { number: 8, name: ' ', teacher: ' ' }
+                { number: 7, name: 'Физкультура', teacher: '-' }
             ],
             wednesday: [
                 { number: 1, name: 'Алгебра', teacher: '-' },
@@ -2504,9 +2382,7 @@ function fillAllSchedule() {
                 { number: 3, name: 'Вероятность и Статистика', teacher: '-' },
                 { number: 4, name: 'Русская словесность', teacher: 'Ленская Н.А.' },
                 { number: 5, name: 'География', teacher: '-' },
-                { number: 6, name: 'Английский язык', teacher: '-' },
-                { number: 7, name: ' ', teacher: ' ' },
-                { number: 8, name: ' ', teacher: ' ' }
+                { number: 6, name: 'Английский язык', teacher: '-' }
             ],
             thursday: [
                 { number: 1, name: 'Геометрия', teacher: '-' },
@@ -2515,8 +2391,7 @@ function fillAllSchedule() {
                 { number: 4, name: 'Русский язык', teacher: 'Ленская Н.А.' },
                 { number: 5, name: 'Литература', teacher: 'Ленская Н.А.' },
                 { number: 6, name: 'История', teacher: '-' },
-                { number: 7, name: 'Музыка', teacher: 'Карташова А.В.' },
-                { number: 8, name: ' ', teacher: ' ' }
+                { number: 7, name: 'Музыка', teacher: 'Карташова А.В.' }
             ],
             friday: [
                 { number: 1, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.' },
@@ -2524,9 +2399,7 @@ function fillAllSchedule() {
                 { number: 3, name: 'Алгебра', teacher: '-' },
                 { number: 4, name: 'География', teacher: '-' },
                 { number: 5, name: 'Русский язык', teacher: 'Ленская Н.А.' },
-                { number: 6, name: 'История', teacher: '-' },
-                { number: 7, name: ' ', teacher: ' ' },
-                { number: 8, name: ' ', teacher: ' ' }
+                { number: 6, name: 'История', teacher: '-' }
             ]
         }
         // Здесь можно добавить другие классы через запятую
@@ -2543,7 +2416,7 @@ function fillAllSchedule() {
     console.log('✅ Расписание загружено для классов:', Object.keys(scheduleTemplate).join(', '));
 }
 
-// Инициализация расписания - загружаем все данные сразу
+// Инициализация расписания
 loadScheduleData();
 createClassButtons();
 fillAllSchedule();
@@ -2552,33 +2425,7 @@ fillAllSchedule();
 const allClasses = [...classes.middle, ...classes.high];
 allClasses.forEach(className => {
     if (scheduleData[className]) {
-        // Создаем DOM элементы для каждого класса (но не показываем)
-        const tempContainer = document.createElement('div');
-        days.forEach(day => {
-            const dayDiv = document.createElement('div');
-            dayDiv.className = 'schedule-day';
-            const dayHeader = document.createElement('div');
-            dayHeader.className = 'schedule-day-header';
-            dayHeader.innerHTML = `<h3>${daysRussian[day]}</h3><i class="fas fa-chevron-down"></i>`;
-            const lessonsDiv = document.createElement('div');
-            lessonsDiv.className = 'lessons-list';
-            
-            scheduleData[className][day].forEach((lesson, index) => {
-                const lessonDiv = document.createElement('div');
-                lessonDiv.className = 'lesson-item';
-                lessonDiv.innerHTML = `
-                    <span class="lesson-number">${lesson.number}</span>
-                    <span class="lesson-time">${lessonTimes[index] || ''}</span>
-                    <span class="lesson-name">${lesson.name}</span>
-                    <span class="lesson-teacher">${lesson.teacher || 'Фамилия И.О.'}</span>
-                `;
-                lessonsDiv.appendChild(lessonDiv);
-            });
-            
-            dayDiv.appendChild(dayHeader);
-            dayDiv.appendChild(lessonsDiv);
-            tempContainer.appendChild(dayDiv);
-        });
+        // Данные уже загружены в память
     }
 });
 </script>
