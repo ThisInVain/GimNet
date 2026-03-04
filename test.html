@@ -776,8 +776,17 @@ body.dark-theme .links-submenu .dropdown-item:hover {
     text-align: left;
     margin-bottom: 15px;
     font-size: 18px;
-    color: #000000;
     font-weight: 600;
+}
+
+/* Светлая тема */
+body.light-theme .class-selector h3 {
+    color: #4a4a4a; /* Темно-серый для светлой темы */
+}
+
+/* Темная тема */
+body.dark-theme .class-selector h3 {
+    color: var(--active-color); /* Белый для темной темы */
 }
 
 .class-section {
@@ -788,8 +797,17 @@ body.dark-theme .links-submenu .dropdown-item:hover {
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 12px;
-    color: #000000;
     padding-left: 5px;
+}
+
+/* Светлая тема */
+body.light-theme .class-section h4 {
+    color: #6b6b6b; /* Серый для светлой темы */
+}
+
+/* Темная тема */
+body.dark-theme .class-section h4 {
+    color: var(--text-secondary); /* Светло-серый для темной темы */
 }
 
 .class-buttons {
