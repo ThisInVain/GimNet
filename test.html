@@ -2359,11 +2359,12 @@ function toggleClass(className) {
             btn.classList.remove('active');
         });
         
-        // Плавно скрываем расписание
+        // Плавно скрываем расписание (transition сработает автоматически)
         scheduleDisplay.classList.remove('visible');
         
         // Убираем класс-selected после завершения анимации
         setTimeout(() => {
+            // Проверяем, что расписание действительно скрыто
             if (!scheduleDisplay.classList.contains('visible')) {
                 body.classList.remove('class-selected');
             }
