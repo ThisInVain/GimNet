@@ -2354,20 +2354,24 @@ function toggleClass(className) {
     const body = document.body;
     
     if (currentClass === className) {
-        // Снимаем выделение с плавной анимацией
+        // Если кликнули на тот же класс - плавно скрываем
         document.querySelectorAll('.class-btn').forEach(btn => {
             btn.classList.remove('active');
         });
+        
+        // Плавно скрываем расписание
         scheduleDisplay.classList.remove('visible');
-        // Убираем класс class-selected после завершения анимации
+        
+        // Убираем класс-selected после завершения анимации
         setTimeout(() => {
             if (!scheduleDisplay.classList.contains('visible')) {
                 body.classList.remove('class-selected');
             }
-        }, 300);
+        }, 300); // 300мс - длительность анимации из CSS
+        
         currentClass = null;
     } else {
-        // Выделяем новый класс
+        // Если кликнули на другой класс - показываем новое расписание
         document.querySelectorAll('.class-btn').forEach(btn => {
             btn.classList.remove('active');
         });
@@ -2375,10 +2379,13 @@ function toggleClass(className) {
             btn.classList.add('active');
         });
         
-        // Показываем расписание
+        // Отображаем расписание для выбранного класса
         displaySchedule(className);
+        
+        // Плавно показываем расписание
         scheduleDisplay.classList.add('visible');
         body.classList.add('class-selected');
+        
         currentClass = className;
     }
 }
