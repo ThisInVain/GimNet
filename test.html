@@ -2453,46 +2453,47 @@ function fillAllSchedule() {
     const scheduleTemplate = {
         '7А': {
             monday: [
-                { number: 2, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '' },
-                { number: 3, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '' },
-                { number: 4, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '' },
-                { number: 5, name: 'География', teacher: 'Зорина Наталья Николаевна', room: '' },
-                { number: 6, name: 'История', teacher: 'Торопова Алёна Петровна', room: '' },
-                { number: 7, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '' }
+                { number: 1, name: 'Разговоры о Важном', teacher: '', room: '' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Англ. Язык / Информатика', teacher: '', room: '' },
+                { number: 4, name: 'Англ.Язык / Информатика', teacher: '', room: '' },
+                { number: 5, name: 'Алгебра', teacher: '', room: '' },
+                { number: 6, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 7, name: 'История', teacher: '', room: '' }
             ],
             tuesday: [
-                { number: 1, name: 'ИЗО', teacher: 'Лапшина И.Н.', room: '' },
-                { number: 2, name: 'Русский язык', teacher: 'Ленская Н.А.', room: '' },
-                { number: 3, name: 'Биология', teacher: 'Зорина Н.Н.', room: '' },
-                { number: 4, name: 'Литература', teacher: 'Ленская Н.А.', room: '' },
-                { number: 5, name: 'Английский язык', teacher: '-', room: '' },
-                { number: 6, name: 'Геометрия', teacher: '-', room: '' },
-                { number: 7, name: 'Физкультура', teacher: '-', room: '' }
+                { number: 1, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '' },
+                { number: 4, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Английский язык', teacher: 'Мухачёва Ю.П / Морозова Н.В.', room: '' },
+                { number: 6, name: 'Геометрия', teacher: '', room: '' },
+                { number: 7, name: 'Физкультура', teacher: '', room: '' }
             ],
             wednesday: [
-                { number: 1, name: 'Алгебра', teacher: '-', room: '' },
-                { number: 2, name: 'Физика', teacher: 'Платова Т.А.', room: '' },
-                { number: 3, name: 'Вероятность и Статистика', teacher: '-', room: '' },
-                { number: 4, name: 'Русская словесность', teacher: 'Ленская Н.А.', room: '' },
-                { number: 5, name: 'География', teacher: '-', room: '' },
-                { number: 6, name: 'Английский язык', teacher: '-', room: '' }
+                { number: 1, name: 'Алгебра', teacher: '', room: '' },
+                { number: 2, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '' },
+                { number: 3, name: 'Вероятность и Статистика', teacher: '', room: '' },
+                { number: 4, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'География', teacher: '', room: '' },
+                { number: 6, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Морозова Н.В.', room: '' }
             ],
             thursday: [
-                { number: 1, name: 'Геометрия', teacher: '-', room: '' },
-                { number: 2, name: 'Физкультура', teacher: '-', room: '' },
-                { number: 3, name: 'Физика', teacher: 'Платова Т.А.', room: '' },
-                { number: 4, name: 'Русский язык', teacher: 'Ленская Н.А.', room: '' },
-                { number: 5, name: 'Литература', teacher: 'Ленская Н.А.', room: '' },
-                { number: 6, name: 'История', teacher: '-', room: '' },
-                { number: 7, name: 'Музыка', teacher: 'Карташова А.В.', room: '' }
+                { number: 1, name: 'Геометрия', teacher: '', room: '' },
+                { number: 2, name: 'Физкультура', teacher: '', room: '' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '' },
+                { number: 4, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: '', room: '' },
+                { number: 7, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '' }
             ],
             friday: [
                 { number: 1, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '' },
                 { number: 2, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '' },
-                { number: 3, name: 'Алгебра', teacher: '-', room: '' },
-                { number: 4, name: 'География', teacher: '-', room: '' },
-                { number: 5, name: 'Русский язык', teacher: 'Ленская Н.А.', room: '' },
-                { number: 6, name: 'История', teacher: '-', room: '' }
+                { number: 3, name: 'Алгебра', teacher: '', room: '' },
+                { number: 4, name: 'География', teacher: '', room: '' },
+                { number: 5, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: '', room: '' }
             ]
         }
     };
