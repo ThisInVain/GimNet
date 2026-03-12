@@ -1619,6 +1619,233 @@ html, body {
     -webkit-overflow-scrolling: touch;
 }
 
+/* ===============================
+   GIMNET ULTRA UI OPTIMIZATION
+   =============================== */
+
+/* GPU ускорение элементов */
+
+.app-header,
+.settings-dropdown,
+.glass-card,
+.class-btn,
+.lesson-item,
+.day-lessons,
+.tab-bar,
+.tab-item,
+.content,
+.page {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+}
+
+/* ===============================
+   TELEGRAM iOS GLASS HEADER
+   =============================== */
+
+.app-header {
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    background: rgba(255,255,255,0.08);
+
+    border: 1px solid rgba(255,255,255,0.15);
+
+    border-radius: 28px;
+
+    margin: 8px;
+
+    transition: background .25s ease, backdrop-filter .25s ease;
+
+}
+
+/* ===============================
+   LIQUID GLASS CARDS
+   =============================== */
+
+.glass-card {
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    background: rgba(255,255,255,0.06);
+
+    border: 1px solid rgba(255,255,255,0.1);
+
+    border-radius: 18px;
+
+    transition: transform .18s ease, box-shadow .18s ease;
+
+}
+
+.glass-card:hover {
+
+    transform: translateY(-2px);
+
+}
+
+/* ===============================
+   SETTINGS MENU SMOOTH
+   =============================== */
+
+.settings-dropdown {
+
+    opacity: 0;
+    transform: translateY(-10px) scale(.96);
+
+    pointer-events: none;
+
+    transition:
+    opacity .18s ease,
+    transform .18s ease;
+
+}
+
+.settings-dropdown.active {
+
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
+
+    pointer-events: auto;
+
+}
+
+/* ===============================
+   FAST BUTTON RESPONSE
+   =============================== */
+
+button,
+.class-btn,
+.tab-item {
+
+    transition:
+    transform .12s ease,
+    background .15s ease,
+    box-shadow .15s ease;
+
+}
+
+button:active,
+.class-btn:active,
+.tab-item:active {
+
+    transform: scale(0.96);
+
+}
+
+/* ===============================
+   FAST TAB SWITCH
+   =============================== */
+
+.page {
+
+    opacity: 0;
+
+    transition: opacity .18s ease;
+
+}
+
+.page.active {
+
+    opacity: 1;
+
+}
+
+/* ===============================
+   SCHEDULE OPTIMIZATION
+   =============================== */
+
+.day-lessons {
+
+    will-change: max-height, opacity;
+
+}
+
+.lesson-item {
+
+    transform: translateZ(0);
+
+    transition: transform .15s ease;
+
+}
+
+.lesson-item:hover {
+
+    transform: translateY(-2px);
+
+}
+
+/* ===============================
+   THEME SWITCH PERFORMANCE
+   =============================== */
+
+body {
+
+    transition:
+    background .25s ease,
+    color .25s ease;
+
+}
+
+/* ===============================
+   SMOOTH SCROLL
+   =============================== */
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+/* ===============================
+   BOTTOM TAB BAR GLASS
+   =============================== */
+
+.tab-bar {
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    background: rgba(20,20,20,0.55);
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+
+}
+
+/* ===============================
+   SCROLL PERFORMANCE
+   =============================== */
+
+.content {
+
+    transform: translateZ(0);
+
+}
+
+/* ===============================
+   REDUCE HEAVY SHADOW LAG
+   =============================== */
+
+.glass-card,
+.lesson-item,
+.settings-dropdown {
+
+    box-shadow:
+    0 4px 12px rgba(0,0,0,0.12);
+
+}
+
+/* ===============================
+   MOBILE PERFORMANCE
+   =============================== */
+
+* {
+
+    -webkit-tap-highlight-color: transparent;
+
+}
     </style>
 </head>
 <body class="light-theme">
