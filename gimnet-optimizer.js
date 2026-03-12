@@ -1,93 +1,39 @@
-/* GIMNET PERFORMANCE PATCH */
+/* GIMNET SAFE OPTIMIZER */
 
-document.addEventListener("DOMContentLoaded",()=>{
+document.addEventListener("DOMContentLoaded", function () {
 
-/* FAST TABS */
+  /* ---------- FAST THEME SWITCH ---------- */
 
-const tabs=document.querySelectorAll(".tab")
-const buttons=document.querySelectorAll("[data-tab]")
+  const themeButtons = document.querySelectorAll("[data-theme]");
 
-buttons.forEach(btn=>{
+  themeButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
 
-btn.addEventListener("click",()=>{
+      requestAnimationFrame(() => {
+        document.body.setAttribute("data-theme", btn.dataset.theme);
+      });
 
-const target=btn.dataset.tab
+    });
+  });
 
-tabs.forEach(t=>{
-t.style.display="none"
-})
+  /* ---------- SETTINGS MENU SMOOTH ---------- */
 
-const tab=document.getElementById(target)
+  const settingsBtn = document.querySelector(".settings-button");
+  const settingsMenu = document.querySelector(".settings-menu");
 
-if(tab) tab.style.display="block"
+  if (settingsBtn && settingsMenu) {
 
-})
+    settingsBtn.addEventListener("click", () => {
 
-})
+      settingsMenu.classList.toggle("open");
 
-})
+    });
 
-/* SPLASH OPTIMIZATION */
+  }
 
-window.addEventListener("load",()=>{
+});
 
-const splash=document.getElementById("splash")
 
-if(!splash) return
+/* ---------- SMOOTH ANIMATIONS ---------- */
 
-requestAnimationFrame(()=>{
-
-setTimeout(()=>{
-
-splash.style.opacity="0"
-
-setTimeout(()=>{
-splash.remove()
-},300)
-
-},500)
-
-})
-
-})
-
-/* SCHEDULE PERFORMANCE */
-
-window.loadScheduleFast=function(data,container){
-
-const frag=document.createDocumentFragment()
-
-data.forEach(l=>{
-
-const el=document.createElement("div")
-
-el.className="lesson"
-
-el.innerHTML=
-`<b>${l.lesson}</b><br>
-${l.teacher} • ${l.room}`
-
-frag.appendChild(el)
-
-})
-
-container.innerHTML=""
-container.appendChild(frag)
-
-}
-
-/* THEME SWITCH FAST */
-
-window.toggleThemeFast=function(){
-
-document.body.classList.toggle("dark")
-
-}
-
-/* SERVICE WORKER */
-
-if("serviceWorker" in navigator){
-
-navigator.serviceWorker.register("sw.js")
-
-}
+document.documentElement.style.scrollBehavior = "smooth";
