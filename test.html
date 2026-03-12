@@ -320,7 +320,7 @@ padding: 0 16px;
 border-radius: 28px;
 
 /* настоящий liquid glass */
-background: rgba(255,255,255,0.35);
+background: rgba(255,255,255,0.18);
 backdrop-filter: blur(20px) saturate(180%);
 -webkit-backdrop-filter: blur(20px) saturate(180%);
 
@@ -339,6 +339,24 @@ background-attachment: fixed;
 
 .page {
 padding-top: 90px;
+}
+.app-header::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+right:0;
+height:50%;
+
+border-radius:32px 32px 0 0;
+
+background:linear-gradient(
+to bottom,
+rgba(255,255,255,0.6),
+rgba(255,255,255,0.05)
+);
+
+pointer-events:none;
 }
 /* ========== НОВЫЙ ПОИСК ========== */
 .search-button {
@@ -1937,6 +1955,22 @@ padding-top:90px;
 .lesson-item{
 transform:translateZ(0);
 will-change:transform;
+}
+/* iOS Liquid Glass blur layer */
+
+.app-header::after{
+content:"";
+position:absolute;
+inset:0;
+
+border-radius:32px;
+
+backdrop-filter:blur(35px) saturate(180%);
+-webkit-backdrop-filter:blur(35px) saturate(180%);
+
+background:rgba(255,255,255,0.15);
+
+z-index:-1;
 }
     </style>
 </head>
