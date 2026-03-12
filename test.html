@@ -187,6 +187,17 @@ img.emoji {
     letter-spacing: -0.02em;
 }
 
+.glass-card,
+.tab-item,
+.header-btn,
+.lesson-item{
+transform:translateZ(0);
+}
+
+.app-header{
+will-change: backdrop-filter;
+}
+
 .glass{
 backdrop-filter: blur(25px);
 background: rgba(255,255,255,0.08);
@@ -1009,7 +1020,9 @@ body.dark-theme .lesson-item {
     padding: 40px;
     color: var(--text-secondary);
 }
-
+.day-lessons{
+contain:content;
+}
 /* Запрещаем скролл когда класс не выбран */
 body:not(.class-selected) .content {
     overflow-y: hidden !important;
@@ -1125,7 +1138,7 @@ contain: content;
     height: 100%;
     color: #666;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: background 0.25s ease, color 0.25s ease;
     cursor: pointer;
     padding: 0;
     -webkit-tap-highlight-color: transparent;
@@ -1136,7 +1149,7 @@ contain: content;
 .tab-icon {
     font-size: 22px;
     margin-bottom: 2px;
-    transition: transform 0.2s ease;
+    transition: background 0.25s ease, color 0.25s ease;
     color: #a9a9a9;
 }
 
@@ -1245,7 +1258,7 @@ h1 {
     border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
-    transition: all 0.2s ease;
+    transition: background 0.25s ease, color 0.25s ease;
 }
 
 .action-btn:hover {
@@ -1290,7 +1303,7 @@ h1 {
     background: var(--card-bg);
     border-radius: 8px;
     box-shadow: var(--card-shadow);
-    transition: all 0.2s ease;
+    transition: background 0.25s ease, color 0.25s ease;
 }
 
 .archive-item:hover {
@@ -1838,6 +1851,92 @@ transition: background 0.25s ease, color 0.25s ease;
 * {
 transition-property: background, color, border-color;
 transition-duration: 0.25s;
+}
+/* ===== GIMNET TELEGRAM IOS HEADER ===== */
+
+.app-header{
+position:fixed;
+top:12px;
+left:12px;
+right:12px;
+height:64px;
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+padding:0 16px;
+
+border-radius:32px;
+
+background:rgba(255,255,255,0.25);
+
+backdrop-filter:blur(24px) saturate(180%);
+-webkit-backdrop-filter:blur(24px) saturate(180%);
+
+border:1px solid rgba(255,255,255,0.35);
+
+box-shadow:
+0 10px 35px rgba(0,0,0,0.15),
+inset 0 1px 1px rgba(255,255,255,0.6);
+
+z-index:1000;
+}
+
+/* левая часть */
+.header-left{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:600;
+}
+
+/* центр */
+.header-title{
+position:absolute;
+left:50%;
+transform:translateX(-50%);
+font-size:18px;
+font-weight:600;
+}
+
+/* правая часть */
+.header-right{
+display:flex;
+gap:14px;
+align-items:center;
+}
+
+/* кнопки */
+.header-btn{
+width:36px;
+height:36px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:50%;
+
+background:rgba(255,255,255,0.35);
+
+backdrop-filter:blur(10px);
+
+cursor:pointer;
+transition:transform 0.2s ease;
+}
+
+.header-btn:active{
+transform:scale(0.9);
+}
+
+/* чтобы контент не залезал под меню */
+.page{
+padding-top:90px;
+}
+.lesson-item{
+transform:translateZ(0);
+will-change:transform;
 }
     </style>
 </head>
