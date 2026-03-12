@@ -294,81 +294,41 @@ body.dark-theme {
 
 /* ========== ВЕРХНЕЕ МЕНЮ ========== */
 .app-header {
-    background: var(--header-gradient);
-    color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    height: 64px;
+position: fixed;
+top: 12px;
+left: 12px;
+right: 12px;
+height: 64px;
+
+display: flex;
+align-items: center;
+justify-content: space-between;
+
+padding: 0 16px;
+
+border-radius: 28px;
+
+/* настоящий liquid glass */
+background: rgba(255,255,255,0.35);
+backdrop-filter: blur(20px) saturate(180%);
+-webkit-backdrop-filter: blur(20px) saturate(180%);
+
+border: 1px solid rgba(255,255,255,0.4);
+
+box-shadow:
+0 8px 30px rgba(0,0,0,0.15),
+inset 0 1px 1px rgba(255,255,255,0.6);
+
+z-index: 1000;
 }
 
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    height: 64px;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
+body {
+background-attachment: fixed;
 }
 
-.app-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: relative;
+.page {
+padding-top: 90px;
 }
-
-.app-logo {
-    width: 36px;
-    height: 36px;
-    background: var(--logo-gradient);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    font-size: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    user-select: none;
-    z-index: 1002;
-}
-
-.app-logo:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.app-logo:active {
-    transform: scale(0.95);
-}
-
-#pageTitle {
-    font-size: 18px;
-    font-weight: 700;
-    color: white;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    cursor: pointer;
-    padding: 10px 15px;
-    transition: opacity 0.4s ease;
-    opacity: 1;
-}
-
-#pageTitle.search-hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
 /* ========== НОВЫЙ ПОИСК ========== */
 .search-button {
     width: 36px;
@@ -583,7 +543,7 @@ body.dark-theme .search-results {
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
-    transition: all 0.3s ease;
+    transition: background 0.25s ease, color 0.25s ease;
     z-index: 1001;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
@@ -629,7 +589,7 @@ body.dark-theme .dropdown-header h3 {
     justify-content: space-between;
     color: #1a1a1a !important;
     text-decoration: none !important;
-    transition: all 0.2s ease;
+    transition: background 0.25s ease, color 0.25s ease;
     cursor: pointer;
     font-weight: 500;
     border-left: 3px solid transparent;
@@ -719,7 +679,7 @@ body.dark-theme .theme-submenu {
     justify-content: space-between;
     color: #333;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background 0.25s ease, color 0.25s ease;
     border-radius: 12px;
 }
 
@@ -791,6 +751,22 @@ body.dark-theme .links-submenu {
 body.dark-theme .links-submenu .dropdown-item:hover {
     background: rgba(255, 255, 255, 0.05);
     border-left: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.app-header::before {
+content: "";
+position: absolute;
+inset: 0;
+
+border-radius: 28px;
+
+background: linear-gradient(
+180deg,
+rgba(255,255,255,0.5),
+rgba(255,255,255,0.1)
+);
+
+pointer-events: none;
 }
 
 /* ========== НОВЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ ========== */
@@ -1052,6 +1028,14 @@ body {
     transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.lesson-item {
+transform: translateZ(0);
+will-change: transform;
+}
+
+.day-lessons {
+contain: content;
+}
 /* Адаптация для мобильных */
 @media (max-width: 768px) {
     .lesson-number {
@@ -1845,6 +1829,15 @@ html {
 
     -webkit-tap-highlight-color: transparent;
 
+}
+
+body {
+transition: background 0.25s ease, color 0.25s ease;
+}
+
+* {
+transition-property: background, color, border-color;
+transition-duration: 0.25s;
 }
     </style>
 </head>
