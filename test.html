@@ -189,13 +189,9 @@ img.emoji {
 
 .glass-card,
 .tab-item,
-.header-btn,
+.header-icon,
 .lesson-item{
 transform:translateZ(0);
-}
-
-.app-header{
-will-change: backdrop-filter;
 }
 
 .glass{
@@ -277,7 +273,7 @@ body {
     line-height: 1.6;
     transition: all 0.3s ease;
     min-height: 100vh;
-    padding-top: 64px;
+    padding-top: 70px !important; /* Изменено для нового меню */
     overflow: hidden !important;
     height: 100% !important;
     width: 100% !important;
@@ -303,74 +299,60 @@ body.dark-theme {
     color: #e0e0e0;
 }
 
-/* ========== ВЕРХНЕЕ МЕНЮ ========== */
-.app-header{
-position:fixed;
-top:0;
-left:0;
-right:0;
-
-height:64px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-backdrop-filter:blur(20px);
--webkit-backdrop-filter:blur(20px);
-
-background:rgba(255,255,255,0.55);
-
-border-bottom:1px solid rgba(255,255,255,0.2);
-
-z-index:1000;
+/* ========== НОВОЕ ВЕРХНЕЕ МЕНЮ ========== */
+.app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    z-index: 1000;
 }
 
 .header-container {
     width: 100%;
-    max-width: 1100px;
+    max-width: 900px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 16px;
 }
 
-.app-logo {
-    font-size: 20px;
+.logo-btn {
+    font-size: 18px;
     font-weight: 600;
+    cursor: pointer;
+}
+
+.page-title {
+    font-size: 20px;
+    font-weight: 700;
 }
 
 .header-actions {
     display: flex;
+    gap: 12px;
+}
+
+.header-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
     align-items: center;
-    gap: 14px;
+    justify-content: center;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
 }
 
-body {
-background-attachment: fixed;
-}
-
-.page {
-padding-top: 90px;
-}
-.app-header::before{
-content:"";
-position:absolute;
-top:0;
-left:0;
-right:0;
-height:50%;
-
-border-radius:32px 32px 0 0;
-
-background:linear-gradient(
-to bottom,
-rgba(255,255,255,0.6),
-rgba(255,255,255,0.05)
-);
-
-pointer-events:none;
-}
 /* ========== НОВЫЙ ПОИСК ========== */
 .search-button {
     width: 36px;
@@ -788,22 +770,6 @@ body.dark-theme .links-submenu .dropdown-item:hover {
     border-left: 3px solid rgba(255, 255, 255, 0.3);
 }
 
-.app-header::before {
-content: "";
-position: absolute;
-inset: 0;
-
-border-radius: 28px;
-
-background: linear-gradient(
-180deg,
-rgba(255,255,255,0.5),
-rgba(255,255,255,0.1)
-);
-
-pointer-events: none;
-}
-
 /* ========== НОВЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ ========== */
 .class-selector {
     margin-bottom: 20px;
@@ -901,7 +867,7 @@ body.dark-theme .class-btn.active {
     margin-top: 20px;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease; /* Этот transition должен быть */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -1105,16 +1071,16 @@ contain: content;
         height: 56px;
     }
     .app-header { height: 56px; }
-    .app-logo {
+    .logo-btn {
         width: 32px;
         height: 32px;
     }
-    #pageTitle { font-size: 16px; }
+    .page-title { font-size: 16px; }
     .settings-dropdown {
         width: 260px;
         right: -10px;
     }
-    body { padding-top: 56px; }
+    body { padding-top: 70px; }
 }
 
 /* ========== ОСНОВНОЙ КОНТЕНТ ========== */
@@ -1227,7 +1193,7 @@ body.dark-theme .tab-item.active .tab-label {
     padding: 20px;
     padding-bottom: 0 !important;
     overflow-y: scroll !important;
-    height: calc(100vh - 64px - 60px) !important;
+    height: calc(100vh - 58px - 60px) !important; /* Обновлено под новую высоту меню */
     -webkit-overflow-scrolling: touch !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
@@ -1446,12 +1412,12 @@ html, body {
 }
 
 body {
-    padding-top: 64px !important;
+    padding-top: 70px !important;
     padding-bottom: 0 !important;
 }
 
 .content {
-    height: calc(100vh - 64px - 60px) !important;
+    height: calc(100vh - 70px - 60px) !important;
     padding-bottom: 0 !important;
     margin-bottom: 0 !important;
 }
@@ -1471,7 +1437,7 @@ body {
     }
     
     .content {
-        height: calc(100vh - 64px - 60px - env(safe-area-inset-bottom)) !important;
+        height: calc(100vh - 70px - 60px - env(safe-area-inset-bottom)) !important;
     }
 }
 
@@ -1503,7 +1469,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: calc(100vh - 64px - 60px - 40px);
+    min-height: calc(100vh - 70px - 60px - 40px);
 }
 
 .glass-card {
@@ -1661,79 +1627,6 @@ html, body {
 }
 
 /* ===============================
-   TELEGRAM iOS GLASS HEADER
-   =============================== */
-
-.app-header {
-
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
-
-    background: rgba(255,255,255,0.08);
-
-    border: 1px solid rgba(255,255,255,0.15);
-
-    border-radius: 28px;
-
-    margin: 8px;
-
-    transition: background .25s ease, backdrop-filter .25s ease;
-
-}
-
-/* ===============================
-   LIQUID GLASS CARDS
-   =============================== */
-
-.glass-card {
-
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-
-    background: rgba(255,255,255,0.06);
-
-    border: 1px solid rgba(255,255,255,0.1);
-
-    border-radius: 18px;
-
-    transition: transform .18s ease, box-shadow .18s ease;
-
-}
-
-.glass-card:hover {
-
-    transform: translateY(-2px);
-
-}
-
-/* ===============================
-   SETTINGS MENU SMOOTH
-   =============================== */
-
-.settings-dropdown {
-
-    opacity: 0;
-    transform: translateY(-10px) scale(.96);
-
-    pointer-events: none;
-
-    transition:
-    opacity .18s ease,
-    transform .18s ease;
-
-}
-
-.settings-dropdown.active {
-
-    opacity: 1;
-
-    transform: translateY(0) scale(1);
-
-    pointer-events: auto;
-
-}
-
-/* ===============================
    FAST BUTTON RESPONSE
    =============================== */
 
@@ -1792,12 +1685,6 @@ button:active,
 
 }
 
-.lesson-item:hover {
-
-    transform: translateY(-2px);
-
-}
-
 /* ===============================
    THEME SWITCH PERFORMANCE
    =============================== */
@@ -1817,21 +1704,6 @@ body {
 html {
 
     scroll-behavior: smooth;
-
-}
-
-/* ===============================
-   BOTTOM TAB BAR GLASS
-   =============================== */
-
-.tab-bar {
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-
-    background: rgba(20,20,20,0.55);
-
-    border-top: 1px solid rgba(255,255,255,0.08);
 
 }
 
@@ -1876,108 +1748,6 @@ transition: background 0.25s ease, color 0.25s ease;
 transition-property: background, color, border-color;
 transition-duration: 0.25s;
 }
-/* ===== GIMNET TELEGRAM IOS HEADER ===== */
-
-.app-header{
-position:fixed;
-top:12px;
-left:12px;
-right:12px;
-height:64px;
-
-display:flex;
-align-items:center;
-justify-content:space-between;
-
-padding:0 16px;
-
-border-radius:32px;
-
-background:rgba(255,255,255,0.25);
-
-backdrop-filter:blur(24px) saturate(180%);
--webkit-backdrop-filter:blur(24px) saturate(180%);
-
-border:1px solid rgba(255,255,255,0.35);
-
-box-shadow:
-0 10px 35px rgba(0,0,0,0.15),
-inset 0 1px 1px rgba(255,255,255,0.6);
-
-z-index:1000;
-}
-
-/* левая часть */
-.header-left{
-display:flex;
-align-items:center;
-gap:10px;
-font-weight:600;
-}
-
-/* центр */
-.header-title{
-position:absolute;
-left:50%;
-transform:translateX(-50%);
-font-size:18px;
-font-weight:600;
-}
-
-/* правая часть */
-.header-right{
-display:flex;
-gap:14px;
-align-items:center;
-}
-
-/* кнопки */
-.header-btn{
-width:36px;
-height:36px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-border-radius:50%;
-
-background:rgba(255,255,255,0.35);
-
-backdrop-filter:blur(10px);
-
-cursor:pointer;
-transition:transform 0.2s ease;
-}
-
-.header-btn:active{
-transform:scale(0.9);
-}
-
-/* чтобы контент не залезал под меню */
-.page{
-padding-top:90px;
-}
-.lesson-item{
-transform:translateZ(0);
-will-change:transform;
-}
-/* iOS Liquid Glass blur layer */
-
-.app-header::after{
-content:"";
-position:absolute;
-inset:0;
-
-border-radius:32px;
-
-backdrop-filter:blur(35px) saturate(180%);
--webkit-backdrop-filter:blur(35px) saturate(180%);
-
-background:rgba(255,255,255,0.15);
-
-z-index:-1;
-}
     </style>
 </head>
 <body class="light-theme">
@@ -1994,84 +1764,18 @@ z-index:-1;
     <!-- Верхнее меню -->
     <header class="app-header">
         <div class="header-container">
-            <div class="app-brand">
-                <div class="app-logo" id="logoBtn">GimNet</div>
-                <!-- Кнопка поиска -->
-                <button class="search-button" id="searchButton">
-                    <i class="fas fa-search"></i>
-                    <span class="search-placeholder"></span>
-                    <input type="text" class="search-input" id="searchInput" placeholder="Поиск в архиве...">
-                </button>
+            <div class="logo-btn" onclick="scrollToTop()">
+                GimNet
             </div>
-            <div id="pageTitle">Главная</div>
-            <div class="header-actions" id="headerActions">
-                <!-- Колокольчик переключает на новости -->
-                <div class="notification-btn" onclick="switchToNews()">
+            <div class="page-title" id="pageTitle">
+                Главная
+            </div>
+            <div class="header-actions">
+                <div class="header-icon" onclick="switchToNews()">
                     <i class="far fa-bell"></i>
                 </div>
-                <div class="settings-container">
-                    <button class="settings-btn" id="settingsBtn">
-                        <i class="fas fa-cog settings-icon"></i>
-                    </button>
-                    <div class="settings-dropdown" id="settingsDropdown">
-                        <div class="dropdown-header">
-                            <h3>Настройки</h3>
-                        </div>
-                        <div class="dropdown-item" id="themeToggleBtn">
-                            <div class="dropdown-item-content">
-                                <i class="fas fa-palette"></i>
-                                <span>Тема оформления</span>
-                            </div>
-                            <i class="fas fa-chevron-right" style="font-size: 14px;"></i>
-                        </div>
-                        <div class="theme-submenu" id="themeSubmenu">
-                            <div class="theme-option" data-theme="light">
-                                <div class="dropdown-item-content">
-                                    <i class="fas fa-sun"></i>
-                                    <span>Светлая</span>
-                                </div>
-                                <i class="fas fa-check theme-check"></i>
-                            </div>
-                            <div class="theme-option" data-theme="dark">
-                                <div class="dropdown-item-content">
-                                    <i class="fas fa-moon"></i>
-                                    <span>Темная</span>
-                                </div>
-                                <i class="fas fa-check theme-check"></i>
-                            </div>
-                        </div>
-                        <div class="dropdown-item" onclick="switchToNews()">
-                            <div class="dropdown-item-content">
-                                <i class="fas fa-bell"></i>
-                                <span>Новости</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Ссылки с подменю (только Гимназия) -->
-                        <div class="dropdown-item" id="linksBtn">
-                            <div class="dropdown-item-content">
-                                <i class="fas fa-link"></i>
-                                <span>Ссылки</span>
-                            </div>
-                            <i class="fas fa-chevron-right" style="font-size: 14px;"></i>
-                        </div>
-                        <div class="links-submenu" id="linksSubmenu">
-                            <a href="https://vk.ru/gimnaziapushkin" target="_blank" class="dropdown-item" style="padding-left: 44px;">
-                                <div class="dropdown-item-content">
-                                    <i class="fas fa-school"></i>
-                                    <span>VK Гимназия</span>
-                                </div>
-                            </a>
-                        </div>
-                        
-                        <div class="dropdown-divider"></div>
-                        <a href="https://t.me/+ObOQyRCXbWwwMWIy" target="_blank" class="dropdown-item" id="telegramBtn">
-                            <div class="dropdown-item-content">
-                                <i class="fab fa-telegram"></i>
-                                <span>Telegram</span>
-                            </div>
-                        </a>
-                    </div>
+                <div class="header-icon" id="settingsBtn">
+                    <i class="fas fa-cog"></i>
                 </div>
             </div>
         </div>
@@ -2266,6 +1970,14 @@ z-index:-1;
     </nav>
     
     <script>
+// Функция скролла наверх
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
 // ========== ТВОЙ ВЕСЬ ОРИГИНАЛЬНЫЙ КОД ==========
 const firebaseConfig = {
     apiKey: "AIzaSyDVHgEuMdlx7op-cAwwYmt6TO8iW-rXb7o",
@@ -2470,12 +2182,8 @@ titleTabItems.forEach(tab => {
 
 updatePageTitle();
 
-pageTitle.addEventListener('click', function() {
-    const content = document.querySelector('.content');
-    if (content) {
-        content.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-});
+// Убираем старый обработчик на pageTitle, так как теперь это не элемент для клика
+// pageTitle.addEventListener('click', function() { ... });
 
 tabItems.forEach(tab => {
     tab.addEventListener('click', function() {
