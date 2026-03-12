@@ -766,6 +766,290 @@ body.dark-theme .links-submenu .dropdown-item:hover {
     border-left: 3px solid rgba(255, 255, 255, 0.3);
 }
 
+/* ========== НОВЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ ========== */
+.class-selector {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.class-selector h3 {
+    text-align: left;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Светлая тема */
+body.light-theme .class-selector h3 {
+    color: #4a4a4a; /* Темно-серый для светлой темы */
+}
+
+/* Темная тема */
+body.dark-theme .class-selector h3 {
+    color: var(--active-color); /* Белый для темной темы */
+}
+
+.class-section {
+    margin-bottom: 25px;
+}
+
+.class-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding-left: 5px;
+}
+
+/* Светлая тема */
+body.light-theme .class-section h4 {
+    color: #6b6b6b; /* Серый для светлой темы */
+}
+
+/* Темная тема */
+body.dark-theme .class-section h4 {
+    color: var(--text-secondary); /* Светло-серый для темной темы */
+}
+
+.class-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.class-btn {
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    color: var(--glass-text);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    min-width: 60px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.class-btn:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.class-btn.active {
+    background: var(--active-color);
+    color: #ffffff !important;
+    border-color: var(--active-color);
+}
+
+body.dark-theme .class-btn {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .class-btn:hover {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+body.dark-theme .class-btn.active {
+    background: var(--active-color);
+    color: #000000 !important;
+}
+
+/* Контейнер для расписания */
+#scheduleDisplay {
+    width: 100%;
+    margin-top: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Этот transition должен быть */
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 24px;
+    padding: 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+#scheduleDisplay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+body.dark-theme #scheduleDisplay {
+    background: rgba(0, 0, 0, 0.35);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.schedule-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Стили для дня */
+.schedule-day {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.schedule-day:last-child {
+    border-bottom: none;
+}
+
+body.dark-theme .schedule-day {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.day-header {
+    padding: 14px 20px;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.day-header:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.day-header h3 {
+    color: var(--active-color);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+body.dark-theme .day-header {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+body.dark-theme .day-header:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Контейнер для уроков дня */
+.day-lessons {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.day-lessons.visible {
+    max-height: 2000px;
+    opacity: 1;
+}
+
+body.dark-theme .day-lessons {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для урока */
+.lesson-item {
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.lesson-item:last-child {
+    border-bottom: none;
+}
+
+body.dark-theme .lesson-item {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.lesson-number {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--active-color);
+    margin-bottom: 4px;
+}
+
+.lesson-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--glass-text);
+    margin-bottom: 6px;
+}
+
+.lesson-teacher {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.lesson-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.lesson-time {
+    opacity: 0.9;
+}
+
+.lesson-room {
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+/* Стили для пустого расписания */
+.no-schedule {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+}
+
+/* Запрещаем скролл когда класс не выбран */
+body:not(.class-selected) .content {
+    overflow-y: hidden !important;
+}
+
+body.class-selected .content {
+    overflow-y: scroll !important;
+}
+
+/* Плавная смена темы */
+body {
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.glass-card, .class-btn, #scheduleDisplay, .day-header, .lesson-item, .schedule-day {
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .lesson-number {
+        font-size: 14px;
+    }
+    .lesson-name {
+        font-size: 16px;
+    }
+    .lesson-teacher {
+        font-size: 13px;
+    }
+    .lesson-details {
+        font-size: 12px;
+    }
+    .day-header {
+        padding: 12px 16px;
+    }
+    .day-header h3 {
+        font-size: 15px;
+    }
+    .lesson-item {
+        padding: 10px 16px;
+    }
+}
+
 /* ========== ОСТАЛЬНЫЕ СТИЛИ БЕЗ ИЗМЕНЕНИЙ ========== */
 @media (max-width: 768px) {
     .header-container {
@@ -900,6 +1184,9 @@ body.dark-theme .tab-item.active .tab-label {
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
     overflow-x: hidden !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .content::-webkit-scrollbar {
@@ -976,36 +1263,6 @@ h1 {
 
 .data-table tr:hover {
     background: rgba(128, 128, 128, 0.05);
-}
-
-.schedule-day {
-    margin-bottom: 20px;
-}
-
-.day-header {
-    background: var(--active-color);
-    color: white;
-    padding: 12px 15px;
-    border-radius: 8px 8px 0 0;
-    font-weight: 600;
-}
-
-.schedule-item {
-    padding: 15px;
-    border: 1px solid rgba(128, 128, 128, 0.2);
-    border-top: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.schedule-item:last-child {
-    border-radius: 0 0 8px 8px;
-}
-
-.time {
-    font-weight: 600;
-    color: var(--active-color);
 }
 
 .archive-list {
@@ -1212,6 +1469,7 @@ body {
     max-width: 300px;
     width: 100%;
     text-align: center;
+    margin: 0 auto;
 }
 
 body.dark-theme .glass-card {
@@ -1572,66 +1830,30 @@ html, body {
         
         <!-- Расписание -->
         <div id="schedule" class="page">
-            <div class="page-header">
-                <h1>Расписание</h1>
-                <div class="page-actions">
-                    <button class="action-btn">Неделя</button>
-                    <button class="action-btn">Месяц</button>
+            <div class="class-selector">
+                <h3>Выберите класс</h3>
+                
+                <!-- 7-9 классы -->
+                <div class="class-section">
+                    <h4>7-9 классы</h4>
+                    <div class="class-buttons" id="classButtonsMiddle">
+                        <!-- Кнопки создаются через JS -->
+                    </div>
+                </div>
+                
+                <!-- 10-11 классы -->
+                <div class="class-section">
+                    <h4>10-11 классы</h4>
+                    <div class="class-buttons" id="classButtonsHigh">
+                        <!-- Кнопки создаются через JS -->
+                    </div>
                 </div>
             </div>
-            <div class="card">
-                <h3>Расписание на неделю</h3>
-                <p>Планирование и управление временем.</p>
-                <div class="schedule-day">
-                    <div class="day-header">Понедельник, 18 декабря</div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Совещание команды</strong>
-                            <p>Обсуждение текущих проектов</p>
-                        </div>
-                        <div class="time">09:00 - 10:30</div>
-                    </div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Работа над проектом</strong>
-                            <p>Разработка нового функционала</p>
-                        </div>
-                        <div class="time">11:00 - 13:00</div>
-                    </div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Обзор кода</strong>
-                            <p>Проверка Pull Request'ов</p>
-                        </div>
-                        <div class="time">14:00 - 15:30</div>
-                    </div>
-                </div>
-                <div class="schedule-day">
-                    <div class="day-header">Вторник, 19 декабря</div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Встреча с клиентом</strong>
-                            <p>Презентация нового функционала</p>
-                        </div>
-                        <div class="time">10:00 - 11:30</div>
-                    </div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Обучение</strong>
-                            <p>Изучение новых технологий</p>
-                        </div>
-                        <div class="time">12:00 - 14:00</div>
-                    </div>
-                    <div class="schedule-item">
-                        <div>
-                            <strong>Планирование</strong>
-                            <p>Составление плана на следующую неделю</p>
-                        </div>
-                        <div class="time">15:00 - 16:30</div>
-                    </div>
-                </div>
-                <div style="margin-top: 20px; text-align: center;">
-                    <button class="action-btn" style="width: 200px;">Добавить событие</button>
+
+            <!-- Расписание для выбранного класса -->
+            <div id="scheduleDisplay">
+                <div class="schedule-container" id="scheduleContainer">
+                    <!-- Дни недели заполняются через JS -->
                 </div>
             </div>
         </div>
@@ -1789,14 +2011,12 @@ settingsBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
     settingsDropdown.classList.toggle('active');
-    // НЕ закрываем подменю при открытии настроек
 });
 
 themeToggleBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
     themeSubmenu.classList.toggle('active');
-    // НЕ закрываем подменю ссылок
 });
 
 themeOptions.forEach(option => {
@@ -1804,6 +2024,11 @@ themeOptions.forEach(option => {
         e.stopPropagation();
         e.preventDefault();
         const theme = this.getAttribute('data-theme');
+        
+        // Запоминаем состояние перед сменой темы
+        const hadSelectedClass = currentClass !== null;
+        const selectedClass = currentClass;
+        
         document.body.className = theme + '-theme';
         updateActiveTheme(theme);
         localStorage.setItem('theme', theme);
@@ -1812,12 +2037,20 @@ themeOptions.forEach(option => {
             database.ref('users/' + userIP.replace(/\./g, '_') + '/theme').set(theme);
         }
         
-        // НЕ закрываем настройки при смене темы
+        // Восстанавливаем состояние после смены темы
+        if (hadSelectedClass && selectedClass) {
+            setTimeout(() => {
+                document.body.classList.add('class-selected');
+                if (document.getElementById('scheduleDisplay').classList.contains('visible')) {
+                    // Не обновляем расписание, просто показываем
+                    document.getElementById('scheduleDisplay').classList.add('visible');
+                }
+            }, 50);
+        }
     });
 });
 
 document.addEventListener('click', function(e) {
-    // Закрываем всё только при клике вне меню
     if (!settingsDropdown.contains(e.target) && !settingsBtn.contains(e.target)) {
         settingsDropdown.classList.remove('active');
         themeSubmenu.classList.remove('active');
@@ -1927,7 +2160,6 @@ const headerActions = document.getElementById('headerActions');
 
 let isSearchActive = false;
 
-// Функция обновления видимости кнопки поиска
 function updateSearchButtonVisibility() {
     const activePage = document.querySelector('.page.active');
     const isArchive = activePage && activePage.id === 'archive';
@@ -1942,7 +2174,6 @@ function updateSearchButtonVisibility() {
     }
 }
 
-// Функция закрытия поиска
 function closeSearch() {
     isSearchActive = false;
     searchButton.classList.remove('expanded');
@@ -1955,7 +2186,6 @@ function closeSearch() {
     }
 }
 
-// Функция открытия поиска
 function openSearch() {
     isSearchActive = true;
     searchButton.classList.add('expanded');
@@ -1966,7 +2196,6 @@ function openSearch() {
     }, 50);
 }
 
-// Обработчик клика по кнопке поиска
 searchButton.addEventListener('click', function(e) {
     e.stopPropagation();
     if (!isSearchActive) {
@@ -1976,7 +2205,6 @@ searchButton.addEventListener('click', function(e) {
     }
 });
 
-// Обработчик ввода текста (УПРОЩЁННЫЙ)
 searchInput.addEventListener('input', function(e) {
     e.stopPropagation();
     const query = this.value.trim();
@@ -1986,7 +2214,6 @@ searchInput.addEventListener('input', function(e) {
         return;
     }
     
-    // Архив пуст — всегда показываем "ничего не найдено"
     searchResults.classList.add('active');
     searchResults.innerHTML = `
         <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
@@ -1995,19 +2222,16 @@ searchInput.addEventListener('input', function(e) {
     `;
 });
 
-// Обработчик фокуса на поле ввода
 searchInput.addEventListener('focus', function() {
     if (!isSearchActive) {
         openSearch();
     }
 });
 
-// Предотвращаем закрытие при клике на поле ввода
 searchInput.addEventListener('click', function(e) {
     e.stopPropagation();
 });
 
-// Обработчик клика вне поиска
 document.addEventListener('click', function(e) {
     if (isSearchActive && 
         !searchButton.contains(e.target) && 
@@ -2016,16 +2240,474 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Обновляем видимость кнопки при смене страницы
 tabItems.forEach(tab => {
     tab.addEventListener('click', function() {
         setTimeout(updateSearchButtonVisibility, 50);
     });
 });
 
-// При загрузке
 updateSearchButtonVisibility();
-  
-  </script>
+
+// ========== НОВОЕ РАСПИСАНИЕ ==========
+// Список всех классов
+const classes = {
+    middle: ['7А', '7Б', '7В', '8А', '8Б', '8В', '9А', '9Б', '9В'],
+    high: ['10', '11']
+};
+
+// Дни недели
+const days = [
+    'monday', 'tuesday', 'wednesday', 'thursday', 'friday'
+];
+
+const daysRussian = {
+    monday: 'Понедельник',
+    tuesday: 'Вторник',
+    wednesday: 'Среда',
+    thursday: 'Четверг',
+    friday: 'Пятница'
+};
+
+// Время уроков
+const lessonTimes = [
+    '08:00—08:40',
+    '08:50—09:30',
+    '09:50—10:30',
+    '10:50—11:30',
+    '11:50—12:30',
+    '12:50—13:30',
+    '13:40—14:20',
+    '14:30—15:10'
+];
+
+// Данные расписания
+let scheduleData = {};
+
+// Текущий выбранный класс
+let currentClass = null;
+
+// Загружаем сохраненные данные
+function loadScheduleData() {
+    const allClasses = [...classes.middle, ...classes.high];
+    allClasses.forEach(className => {
+        const saved = localStorage.getItem(`schedule_${className}`);
+        if (saved) {
+            try {
+                scheduleData[className] = JSON.parse(saved);
+            } catch(e) {
+                console.log('Ошибка загрузки для', className);
+                createEmptySchedule(className);
+            }
+        } else {
+            createEmptySchedule(className);
+        }
+    });
+}
+
+// Создаем пустое расписание для класса
+function createEmptySchedule(className) {
+    scheduleData[className] = {};
+    days.forEach(day => {
+        scheduleData[className][day] = [];
+        // Создаем 8 пустых уроков
+        for (let i = 1; i <= 8; i++) {
+            scheduleData[className][day].push({
+                number: i,
+                name: '',
+                teacher: '',
+                room: ''
+            });
+        }
+    });
+}
+
+// Создаем кнопки классов
+function createClassButtons() {
+    const middleContainer = document.getElementById('classButtonsMiddle');
+    const highContainer = document.getElementById('classButtonsHigh');
+    
+    middleContainer.innerHTML = '';
+    highContainer.innerHTML = '';
+    
+    classes.middle.forEach(className => {
+        const btn = document.createElement('button');
+        btn.className = 'class-btn';
+        btn.textContent = className;
+        btn.dataset.class = className;
+        btn.addEventListener('click', () => toggleClass(className));
+        middleContainer.appendChild(btn);
+    });
+    
+    classes.high.forEach(className => {
+        const btn = document.createElement('button');
+        btn.className = 'class-btn';
+        btn.textContent = className;
+        btn.dataset.class = className;
+        btn.addEventListener('click', () => toggleClass(className));
+        highContainer.appendChild(btn);
+    });
+}
+
+// Переключение класса
+function toggleClass(className) {
+    const scheduleDisplay = document.getElementById('scheduleDisplay');
+    const body = document.body;
+    
+    if (currentClass === className) {
+        // Если кликнули на тот же класс - плавно скрываем
+        document.querySelectorAll('.class-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Плавно скрываем расписание (transition сработает автоматически)
+        scheduleDisplay.classList.remove('visible');
+        
+        // Убираем класс-selected после завершения анимации
+        setTimeout(() => {
+            // Проверяем, что расписание действительно скрыто
+            if (!scheduleDisplay.classList.contains('visible')) {
+                body.classList.remove('class-selected');
+            }
+        }, 300); // 300мс - длительность анимации из CSS
+        
+        currentClass = null;
+    } else {
+        // Если кликнули на другой класс - показываем новое расписание
+        document.querySelectorAll('.class-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelectorAll(`.class-btn[data-class="${className}"]`).forEach(btn => {
+            btn.classList.add('active');
+        });
+        
+        // Отображаем расписание для выбранного класса
+        displaySchedule(className);
+        
+        // Плавно показываем расписание
+        scheduleDisplay.classList.add('visible');
+        body.classList.add('class-selected');
+        
+        currentClass = className;
+    }
+}
+
+// Функция для переключения дня
+function toggleDay(dayHeader) {
+    const dayLessons = dayHeader.nextElementSibling;
+    dayLessons.classList.toggle('visible');
+}
+
+// Отображаем расписание
+function displaySchedule(className) {
+    const container = document.getElementById('scheduleContainer');
+    container.innerHTML = '';
+    
+    const classData = scheduleData[className];
+    if (!classData) return;
+    
+    days.forEach(day => {
+        // Создаем день
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'schedule-day';
+        
+        // Заголовок дня
+        const dayHeader = document.createElement('div');
+        dayHeader.className = 'day-header';
+        dayHeader.innerHTML = `<h3>${daysRussian[day]}</h3>`;
+        dayHeader.addEventListener('click', () => toggleDay(dayHeader));
+        
+        // Контейнер для уроков дня
+        const dayLessons = document.createElement('div');
+        dayLessons.className = 'day-lessons';
+        
+        // Добавляем уроки
+        const lessons = classData[day];
+        if (lessons && lessons.length > 0) {
+            lessons.forEach(lesson => {
+                if (lesson.name && lesson.name.trim() !== '') {
+                    const lessonDiv = document.createElement('div');
+                    lessonDiv.className = 'lesson-item';
+                    lessonDiv.innerHTML = `
+                        <div class="lesson-number">${lesson.number}</div>
+                        <div class="lesson-name">${lesson.name}</div>
+                        <div class="lesson-teacher">${lesson.teacher || 'Фамилия И.О.'}</div>
+                        <div class="lesson-details">
+                            <span class="lesson-time">${lessonTimes[lesson.number-1] || ''}</span>
+                            <span class="lesson-room">${lesson.room ? 'Каб. ' + lesson.room : ''}</span>
+                        </div>
+                    `;
+                    dayLessons.appendChild(lessonDiv);
+                }
+            });
+        }
+        
+        dayDiv.appendChild(dayHeader);
+        dayDiv.appendChild(dayLessons);
+        container.appendChild(dayDiv);
+    });
+}
+
+// ========== ЗАПОЛНЕНИЕ РАСПИСАНИЯ ==========
+function fillAllSchedule() {
+    // Создаем шаблон с твоими данными
+    const scheduleTemplate = {
+        '7А': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Англ. Язык / Информатика', teacher: '/Лебедева О.А.', room: '/226' },
+                { number: 4, name: 'Англ.Язык / Информатика', teacher: '/Лебедева О.А.', room: '/226' },
+                { number: 5, name: 'Алгебра', teacher: ' ', room: '' },
+                { number: 6, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 7, name: 'История', teacher: ' ', room: '' }
+            ],
+            tuesday: [
+                { number: 1, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 4, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Английский язык', teacher: 'Мухачёва Ю.П / Морозова Н.В.', room: '221/347' },
+                { number: 6, name: 'Геометрия', teacher: ' ', room: '' },
+                { number: 7, name: 'Физкультура', teacher: ' ', room: '' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Алгебра', teacher: ' ', room: '' },
+                { number: 2, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 3, name: 'Вероятность и Статистика', teacher: ' ', room: '' },
+                { number: 4, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'География', teacher: ' ', room: '' },
+                { number: 6, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Морозова Н.В.', room: '221/347' }
+            ],
+            thursday: [
+                { number: 1, name: 'Геометрия', teacher: ' ', room: '' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: ' ', room: '' },
+                { number: 7, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '355' }
+            ],
+            friday: [
+                { number: 1, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '' },
+                { number: 2, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '' },
+                { number: 3, name: 'Алгебра', teacher: ' ', room: '' },
+                { number: 4, name: 'География', teacher: ' ', room: '' },
+                { number: 5, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: ' ', room: '' }
+            ]
+        },
+
+'7Б': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Алгебра', teacher: ' ', room: '' },
+                { number: 3, name: 'Русский язык', teacher: ' ', room: '' },
+                { number: 4, name: 'Литература', teacher: ' ', room: '' },
+                { number: 5, name: 'Англ.Язык / Информатика', teacher: '/Лебедева О.А.', room: '/226' },
+                { number: 6, name: 'История', teacher: ' ', room: '' },
+                { number: 7, name: 'Англ.Язык / Информатика', teacher: '/ Лебедева О.А.', room: '/226' }
+            ],
+            tuesday: [
+                { number: 1, name: 'Русский язык', teacher: ' ', room: '' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Геометрия', teacher: ' ', room: '' },
+                { number: 4, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 5, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 6, name: 'Литература', teacher: ' ', room: '' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Английский язык', teacher: ' ', room: '' },
+                { number: 2, name: 'Русский язык', teacher: ' ', room: '' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'Алгебра', teacher: ' ', room: '' },
+                { number: 5, name: 'География', teacher: ' ', room: '' },
+                { number: 6, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 7, name: 'Русская словесность', teacher: ' ', room: '' }
+            ],
+            thursday: [
+                { number: 1, name: 'Русский язык', teacher: ' ', room: '' },
+                { number: 2, name: 'История', teacher: ' ', room: '' },
+                { number: 3, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '355' },
+                { number: 4, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 5, name: 'Англ. Язык', teacher: ' ', room: '' },
+                { number: 6, name: 'Русская словестность', teacher: ' ', room: '' },
+                { number: 7, name: 'Геометрия', teacher: ' ', room: '' }
+            ],
+            friday: [
+                { number: 1, name: 'История', teacher: ' ', room: '' },
+                { number: 2, name: 'Алгебра', teacher: ' ', room: '' },
+                { number: 3, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А. ', room: '' },
+                { number: 4, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '' },
+                { number: 5, name: 'География', teacher: ' ', room: '' },
+                { number: 6, name: 'Вероятность и Статистика', teacher: ' ', room: '' }
+            ]
+        },
+
+'7В': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'История', teacher: ' ', room: '' },
+                { number: 3, name: 'Английский язык', teacher: 'Челнокова Н.С. /  ', room: '108/' },
+                { number: 4, name: 'Алгебра', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 5, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '' },
+                { number: 6, name: 'Русская словестность', teacher: 'Шарыгина Надежда Александровна', room: '' }
+            ],
+            tuesday: [
+                { number: 1, name: 'Геометрия', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 2, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '' },
+                { number: 3, name: 'Англ.язык / Информатика', teacher: '/Лебедева О.А.', room: '/226' },
+                { number: 4, name: 'Русская словесность', teacher: 'Шарыгина Надежда Александровна', room: '' },
+                { number: 5, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 6, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 7, name: 'Англ.язык / Информатика', teacher: ' ', room: '/226' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 2, name: 'Алгебра', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 3, name: 'Физкультура', teacher: 'Жарков Александр Леонидович', room: '' },
+                { number: 4, name: 'История', teacher: ' ', room: '' },
+                { number: 5, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '' },
+                { number: 6, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 7, name: 'География', teacher: 'Мальцева Татьяна Григорьевна', room: '225' }
+            ],
+            thursday: [
+                { number: 1, name: 'История', teacher: ' ', room: '' },
+                { number: 2, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '' },
+                { number: 3, name: 'Литература', teacher: 'Шарыгина Надежда Александровна', room: '' },
+                { number: 4, name: 'Геометрия', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 5, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 6, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '355' },
+                { number: 7, name: 'Вероятность и Статистика', teacher: 'Челнокова Елена Александровна', room: '345' }
+            ],
+            friday: [
+                { number: 1, name: 'Английский язык', teacher: 'Челнокова Н.С. /', room: '108/' },
+                { number: 2, name: 'Алгебра', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 3, name: 'География', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 4, name: 'Литература', teacher: 'Шарыгина Надежда Александровна', room: '' },
+                { number: 5, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '' },
+                { number: 6, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '' },
+                { number: 7, name: 'Физкультура', teacher: 'Жарков Александр Леонидович', room: '' } 
+            ]
+        },
+
+'8А': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 4, name: 'Английский язык', teacher: ' ', room: '' },
+                { number: 5, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 6, name: 'Русский язык', teacher: ' ', room: '' },
+                { number: 7, name: 'Алгебра', teacher: ' ', room: '' }
+            ],
+            tuesday: [
+                { number: 1, name: 'Англ.Язык / Информатика', teacher: '/Лебедева О.А.', room: '/226' },
+                { number: 2, name: 'Англ.Язык / Информатика', teacher: '/Лебедева О.А.', room: '/226' },
+                { number: 3, name: 'Геометрия', teacher: ' ', room: '' },
+                { number: 4, name: 'Русский язык', teacher: ' ', room: '' },
+                { number: 5, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 6, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '' },
+                { number: 7, name: 'Обществознание', teacher: ' ', room: '' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Литература', teacher: ' ', room: '' },
+                { number: 2, name: 'ОБЗР', teacher: 'Коновалов Андрей Александрович', room: '' },
+                { number: 3, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 4, name: 'Алгебра', teacher: ' ', room: '' },
+                { number: 5, name: 'Английский язык', teacher: ' ', room: '' },
+                { number: 6, name: 'География', teacher: ' ', room: '' },
+                { number: 7, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '355' }
+            ],
+            thursday: [
+                { number: 1, name: 'География', teacher: ' ', room: '' },
+                { number: 2, name: 'Русская словесность', teacher: ' ', room: '' },
+                { number: 3, name: 'Литература', teacher: ' ', room: '' },
+                { number: 4, name: 'История', teacher: ' ', room: '' },
+                { number: 5, name: 'Геометрия', teacher: ' ', room: '' },
+                { number: 6, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 7, name: 'Физкультура', teacher: ' ', room: '' }
+            ],
+            friday: [
+                { number: 1, name: ' ', teacher: ' ', room: ' ' },
+                { number: 2, name: 'История', teacher: ' ', room: '' },
+                { number: 3, name: 'Русская словесность', teacher: ' ', room: '' },
+                { number: 4, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 5, name: 'Алгебра', teacher: ' ', room: '' },
+                { number: 6, name: 'Русский язык', teacher: ' ', room: '' },
+                { number: 7, name: 'Вероятность и Ститистика', teacher: ' ', room: '' }
+            ]
+        },
+
+'8Б': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Русский язык', teacher: ' ', room: '' },
+                { number: 3, name: 'Литература', teacher: ' ', room: '' },
+                { number: 4, name: 'Обществознание', teacher: ' ', room: '' },
+                { number: 5, name: 'Алгебра', teacher: ' ', room: '' },
+                { number: 6, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' }          
+            ],
+            tuesday: [
+                { number: 1, name: 'Геометрия', teacher: ' ', room: '' },
+                { number: 2, name: 'Труд', teacher: ' ', room: '' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'История', teacher: ' ', room: '' },
+                { number: 5, name: 'Англ.Язык / Информатика', teacher: '/Лебедева О.А.', room: '/226' },
+                { number: 6, name: 'Англ.Язык / Информатика', teacher: '/ Лебедева О.А.', room: '/226' },
+                { number: 7, name: 'Русская словесность', teacher: ' ', room: '' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Алгебра', teacher: ' ', room: '' },
+                { number: 2, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 3, name: 'Русский язык', teacher: ' ', room: '' },
+                { number: 4, name: 'География', teacher: ' ', room: '' },
+                { number: 5, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 6, name: 'Английский язык', teacher: ' ', room: '' },
+                { number: 7, name: 'ОБЗР', teacher: 'Коновалов Андрей Александрович', room: '' }
+            ],
+            thursday: [
+                { number: 1, name: 'Геометрия', teacher: ' ', room: '' },
+                { number: 2, name: 'География', teacher: ' ', room: '' },
+                { number: 3, name: 'История', teacher: ' ', room: '' },
+                { number: 4, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 5, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '355' },
+                { number: 6, name: 'Русский язык', teacher: ' ', room: '' },
+                { number: 7, name: 'Литература', teacher: ' ', room: '' }
+            ],
+            friday: [
+                { number: 1, name: 'Алгебра', teacher: ' ', room: '' },
+                { number: 2, name: 'Английский язык', teacher: ' ', room: '' },
+                { number: 3, name: 'Вероятность и Статистика', teacher: ' ', room: '' },
+                { number: 4, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 5, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 6, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 7, name: 'Русская словесность', teacher: ' ', room: '' }
+            ]
+        }
+
+    };
+
+    // Загружаем шаблон
+    for (let className in scheduleTemplate) {
+        if (scheduleTemplate.hasOwnProperty(className)) {
+            // Для каждого дня проверяем наличие массива уроков
+            days.forEach(day => {
+                if (!scheduleTemplate[className][day]) {
+                    scheduleTemplate[className][day] = [];
+                }
+            });
+            scheduleData[className] = scheduleTemplate[className];
+            localStorage.setItem(`schedule_${className}`, JSON.stringify(scheduleTemplate[className]));
+        }
+    }
+    
+    console.log('✅ Расписание загружено.');
+}
+
+// Инициализация
+loadScheduleData();
+createClassButtons();
+fillAllSchedule();
+</script>
 </body>
 </html>
