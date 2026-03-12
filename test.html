@@ -273,7 +273,7 @@ body {
     line-height: 1.6;
     transition: all 0.3s ease;
     min-height: 100vh;
-    padding-top: 70px !important; /* Изменено для нового меню */
+    padding-top: 70px !important;
     overflow: hidden !important;
     height: 100% !important;
     width: 100% !important;
@@ -329,16 +329,19 @@ body.dark-theme {
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
+    z-index: 1001;
 }
 
 .page-title {
     font-size: 20px;
     font-weight: 700;
+    z-index: 1001;
 }
 
 .header-actions {
     display: flex;
     gap: 12px;
+    z-index: 1001;
 }
 
 .header-icon {
@@ -351,6 +354,8 @@ body.dark-theme {
     background: rgba(255, 255, 255, 0.35);
     backdrop-filter: blur(10px);
     cursor: pointer;
+    z-index: 1001;
+    position: relative;
 }
 
 /* ========== НОВЫЙ ПОИСК ========== */
@@ -785,12 +790,12 @@ body.dark-theme .links-submenu .dropdown-item:hover {
 
 /* Светлая тема */
 body.light-theme .class-selector h3 {
-    color: #4a4a4a; /* Темно-серый для светлой темы */
+    color: #4a4a4a;
 }
 
 /* Темная тема */
 body.dark-theme .class-selector h3 {
-    color: var(--active-color); /* Белый для темной темы */
+    color: var(--active-color);
 }
 
 .class-section {
@@ -806,12 +811,12 @@ body.dark-theme .class-selector h3 {
 
 /* Светлая тема */
 body.light-theme .class-section h4 {
-    color: #6b6b6b; /* Серый для светлой темы */
+    color: #6b6b6b;
 }
 
 /* Темная тема */
 body.dark-theme .class-section h4 {
-    color: var(--text-secondary); /* Светло-серый для темной темы */
+    color: var(--text-secondary);
 }
 
 .class-buttons {
@@ -835,6 +840,8 @@ body.dark-theme .class-section h4 {
     transition: background-color 0.2s ease;
     min-width: 60px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    z-index: 10;
+    position: relative;
 }
 
 .class-btn:hover {
@@ -876,6 +883,8 @@ body.dark-theme .class-btn.active {
     padding: 0;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     overflow: hidden;
+    z-index: 10;
+    position: relative;
 }
 
 #scheduleDisplay.visible {
@@ -913,6 +922,8 @@ body.dark-theme .schedule-day {
     background: rgba(255, 255, 255, 0.3);
     cursor: pointer;
     transition: background-color 0.2s ease;
+    z-index: 11;
+    position: relative;
 }
 
 .day-header:hover {
@@ -956,6 +967,8 @@ body.dark-theme .day-lessons {
 .lesson-item {
     padding: 12px 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    z-index: 12;
+    position: relative;
 }
 
 .lesson-item:last-child {
@@ -1010,9 +1023,7 @@ body.dark-theme .lesson-item {
     padding: 40px;
     color: var(--text-secondary);
 }
-.day-lessons{
-contain:content;
-}
+
 /* Запрещаем скролл когда класс не выбран */
 body:not(.class-selected) .content {
     overflow-y: hidden !important;
@@ -1032,13 +1043,14 @@ body {
 }
 
 .lesson-item {
-transform: translateZ(0);
-will-change: transform;
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 .day-lessons {
-contain: content;
+    contain: content;
 }
+
 /* Адаптация для мобильных */
 @media (max-width: 768px) {
     .lesson-number {
@@ -1068,14 +1080,12 @@ contain: content;
 @media (max-width: 768px) {
     .header-container {
         padding: 0 15px;
-        height: 56px;
     }
     .app-header { height: 56px; }
     .logo-btn {
-        width: 32px;
-        height: 32px;
+        font-size: 16px;
     }
-    .page-title { font-size: 16px; }
+    .page-title { font-size: 18px; }
     .settings-dropdown {
         width: 260px;
         right: -10px;
@@ -1134,6 +1144,7 @@ contain: content;
     -webkit-tap-highlight-color: transparent;
     position: relative;
     top: 8px;
+    z-index: 1000;
 }
 
 .tab-icon {
@@ -1193,7 +1204,7 @@ body.dark-theme .tab-item.active .tab-label {
     padding: 20px;
     padding-bottom: 0 !important;
     overflow-y: scroll !important;
-    height: calc(100vh - 58px - 60px) !important; /* Обновлено под новую высоту меню */
+    height: calc(100vh - 58px - 60px) !important;
     -webkit-overflow-scrolling: touch !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
@@ -1201,6 +1212,8 @@ body.dark-theme .tab-item.active .tab-label {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
 .content::-webkit-scrollbar {
@@ -1222,6 +1235,8 @@ h1 {
     margin-bottom: 15px;
     box-shadow: var(--card-shadow);
     color: var(--text-color);
+    position: relative;
+    z-index: 5;
 }
 
 .card:last-child {
@@ -1374,7 +1389,7 @@ body.dark-theme .tab-bar {
     right: 0;
     height: 4px;
     background: var(--card-bg);
-    z-index: 1000;
+    z-index: 999;
     pointer-events: none;
 }
 
@@ -1484,6 +1499,8 @@ body {
     width: 100%;
     text-align: center;
     margin: 0 auto;
+    z-index: 5;
+    position: relative;
 }
 
 body.dark-theme .glass-card {
@@ -1972,10 +1989,13 @@ transition-duration: 0.25s;
     <script>
 // Функция скролла наверх
 function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+    const content = document.querySelector('.content');
+    if (content) {
+        content.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
 }
 
 // ========== ТВОЙ ВЕСЬ ОРИГИНАЛЬНЫЙ КОД ==========
@@ -2059,19 +2079,7 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 setTimeout(function() {
-    const logo = document.getElementById('logoBtn');
-    if (logo) {
-        logo.onclick = function(e) {
-            e.preventDefault();
-            const content = document.querySelector('.content');
-            if (content) {
-                content.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-            this.style.transform = 'scale(0.9)';
-            setTimeout(() => { this.style.transform = ''; }, 150);
-            return false;
-        };
-    }
+    // Убираем старый код для logoBtn, так как теперь используем logo-btn
 }, 500);
 
 const settingsBtn = document.getElementById('settingsBtn');
@@ -2123,7 +2131,6 @@ themeOptions.forEach(option => {
         e.preventDefault();
         const theme = this.getAttribute('data-theme');
         
-        // Запоминаем состояние перед сменой темы
         const hadSelectedClass = currentClass !== null;
         const selectedClass = currentClass;
         
@@ -2135,12 +2142,10 @@ themeOptions.forEach(option => {
             database.ref('users/' + userIP.replace(/\./g, '_') + '/theme').set(theme);
         }
         
-        // Восстанавливаем состояние после смены темы
         if (hadSelectedClass && selectedClass) {
             setTimeout(() => {
                 document.body.classList.add('class-selected');
                 if (document.getElementById('scheduleDisplay').classList.contains('visible')) {
-                    // Не обновляем расписание, просто показываем
                     document.getElementById('scheduleDisplay').classList.add('visible');
                 }
             }, 50);
@@ -2181,9 +2186,6 @@ titleTabItems.forEach(tab => {
 });
 
 updatePageTitle();
-
-// Убираем старый обработчик на pageTitle, так как теперь это не элемент для клика
-// pageTitle.addEventListener('click', function() { ... });
 
 tabItems.forEach(tab => {
     tab.addEventListener('click', function() {
@@ -2403,7 +2405,6 @@ function createEmptySchedule(className) {
     scheduleData[className] = {};
     days.forEach(day => {
         scheduleData[className][day] = [];
-        // Создаем 8 пустых уроков
         for (let i = 1; i <= 8; i++) {
             scheduleData[className][day].push({
                 number: i,
@@ -2448,25 +2449,20 @@ function toggleClass(className) {
     const body = document.body;
     
     if (currentClass === className) {
-        // Если кликнули на тот же класс - плавно скрываем
         document.querySelectorAll('.class-btn').forEach(btn => {
             btn.classList.remove('active');
         });
         
-        // Плавно скрываем расписание (transition сработает автоматически)
         scheduleDisplay.classList.remove('visible');
         
-        // Убираем класс-selected после завершения анимации
         setTimeout(() => {
-            // Проверяем, что расписание действительно скрыто
             if (!scheduleDisplay.classList.contains('visible')) {
                 body.classList.remove('class-selected');
             }
-        }, 300); // 300мс - длительность анимации из CSS
+        }, 300);
         
         currentClass = null;
     } else {
-        // Если кликнули на другой класс - показываем новое расписание
         document.querySelectorAll('.class-btn').forEach(btn => {
             btn.classList.remove('active');
         });
@@ -2474,10 +2470,8 @@ function toggleClass(className) {
             btn.classList.add('active');
         });
         
-        // Отображаем расписание для выбранного класса
         displaySchedule(className);
         
-        // Плавно показываем расписание
         scheduleDisplay.classList.add('visible');
         body.classList.add('class-selected');
         
@@ -2500,21 +2494,17 @@ function displaySchedule(className) {
     if (!classData) return;
     
     days.forEach(day => {
-        // Создаем день
         const dayDiv = document.createElement('div');
         dayDiv.className = 'schedule-day';
         
-        // Заголовок дня
         const dayHeader = document.createElement('div');
         dayHeader.className = 'day-header';
         dayHeader.innerHTML = `<h3>${daysRussian[day]}</h3>`;
         dayHeader.addEventListener('click', () => toggleDay(dayHeader));
         
-        // Контейнер для уроков дня
         const dayLessons = document.createElement('div');
         dayLessons.className = 'day-lessons';
         
-        // Добавляем уроки
         const lessons = classData[day];
         if (lessons && lessons.length > 0) {
             lessons.forEach(lesson => {
@@ -2543,7 +2533,6 @@ function displaySchedule(className) {
 
 // ========== ЗАПОЛНЕНИЕ РАСПИСАНИЯ ==========
 function fillAllSchedule() {
-    // Создаем шаблон с твоими данными
     const scheduleTemplate = {
         '7А': {
             monday: [
@@ -2590,8 +2579,7 @@ function fillAllSchedule() {
                 { number: 6, name: 'История', teacher: ' ', room: '' }
             ]
         },
-
-'7Б': {
+        '7Б': {
             monday: [
                 { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
                 { number: 2, name: 'Алгебра', teacher: ' ', room: '' },
@@ -2636,8 +2624,7 @@ function fillAllSchedule() {
                 { number: 6, name: 'Вероятность и Статистика', teacher: ' ', room: '' }
             ]
         },
-
-'7В': {
+        '7В': {
             monday: [
                 { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
                 { number: 2, name: 'История', teacher: ' ', room: '' },
@@ -2683,8 +2670,7 @@ function fillAllSchedule() {
                 { number: 7, name: 'Физкультура', teacher: 'Жарков Александр Леонидович', room: '' } 
             ]
         },
-
-'8А': {
+        '8А': {
             monday: [
                 { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
                 { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
@@ -2731,8 +2717,7 @@ function fillAllSchedule() {
                 { number: 7, name: 'Вероятность и Статистика', teacher: ' ', room: '' }
             ]
         },
-
-'8Б': {
+        '8Б': {
             monday: [
                 { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
                 { number: 2, name: 'Русский язык', teacher: ' ', room: '' },
@@ -2778,13 +2763,10 @@ function fillAllSchedule() {
                 { number: 7, name: 'Русская словесность', teacher: ' ', room: '' }
             ]
         }
-
     };
 
-    // Загружаем шаблон
     for (let className in scheduleTemplate) {
         if (scheduleTemplate.hasOwnProperty(className)) {
-            // Для каждого дня проверяем наличие массива уроков
             days.forEach(day => {
                 if (!scheduleTemplate[className][day]) {
                     scheduleTemplate[className][day] = [];
