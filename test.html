@@ -539,7 +539,7 @@ body.dark-theme .search-results {
 .settings-icon {
     font-size: 20px;
 }
-/* ===== таблицы ===== */
+/* ===== ТАБЛИЦЫ ===== */
 .tables-container{
 padding:20px;
 display:flex;
@@ -551,6 +551,48 @@ gap:20px;
 display:flex;
 flex-wrap:wrap;
 gap:10px;
+}
+
+.tables-title{
+
+font-size:18px;
+font-weight:700;
+
+margin-bottom:6px;
+
+}
+
+.class-info{
+
+opacity:0;
+
+transform:translateY(15px) scale(.97);
+
+transition:transform .35s ease, opacity .35s ease;
+
+pointer-events:none;
+
+}
+
+.class-info.visible{
+
+opacity:1;
+
+transform:translateY(0) scale(1);
+
+pointer-events:auto;
+
+}
+
+.tables-group{
+
+font-size:13px;
+
+opacity:.6;
+
+margin-top:8px;
+margin-bottom:6px;
+
 }
 
 .class-btn{
@@ -565,17 +607,20 @@ font-weight:600;
 
 cursor:pointer;
 
-background:rgba(255,255,255,0.15);
-backdrop-filter:blur(14px);
+background:rgba(255,255,255,0.14);
 
-color:var(--text-color);
+backdrop-filter:blur(10px);
 
-transition:transform .2s, background .2s;
+transition:transform .2s ease, background .25s ease;
+
 }
 
-.class-btn:hover{
-transform:scale(1.05);
+.class-btn:active{
+
+transform:scale(.9);
+
 background:rgba(255,255,255,0.25);
+
 }
 
 .class-info{
@@ -644,7 +689,23 @@ border-top:1px solid rgba(255,255,255,0.08);
 background:rgba(255,255,255,0.06);
 
 }
+.students-table{
 
+background:rgba(255,255,255,0.18);
+
+backdrop-filter:blur(16px);
+-webkit-backdrop-filter:blur(16px);
+
+border-radius:14px;
+
+padding:6px;
+
+max-height:260px;
+overflow:auto;
+
+transition:all .35s ease;
+
+}
 /* ========== НОВЫЕ СТИЛИ ДЛЯ LIQUID GLASS МЕНЮ ========== */
 .settings-dropdown {
     position: absolute;
@@ -1880,6 +1941,10 @@ transform:translateY(0);
 
 <div class="tables-container">
 
+<div class="tables-title">Выбор класса</div>
+
+<div class="tables-group">7–9 классы</div>
+
 <div class="class-selector" id="classSelectorTables">
 <button class="class-btn" onclick="showClassTable('7a')">7А</button>
 <button class="class-btn" onclick="showClassTable('7b')">7Б</button>
@@ -1890,6 +1955,9 @@ transform:translateY(0);
 <button class="class-btn" onclick="showClassTable('9a')">9А</button>
 <button class="class-btn" onclick="showClassTable('9b')">9Б</button>
 <button class="class-btn" onclick="showClassTable('9v')">9В</button>
+
+<div class="tables-group">10–11 классы</div>
+
 <button class="class-btn" onclick="showClassTable('10')">10</button>
 <button class="class-btn" onclick="showClassTable('11')">11</button>
 </div>
@@ -2360,11 +2428,25 @@ students:[]
 
 };
 
+let openedClass = null;
+
 function showClassTable(classId){
 
-const data = classData[classId];
+const table = document.querySelector(".class-info");
 
-if(!data) return;
+if(openedClass === classId){
+
+table.classList.remove("visible");
+
+openedClass = null;
+
+return;
+
+}
+
+openedClass = classId;
+
+const data = classData[classId];
 
 document.getElementById("classTeacher").textContent = data.teacher;
 
@@ -2384,6 +2466,8 @@ row.innerHTML = `
 body.appendChild(row);
 
 });
+
+table.classList.add("visible");
 
 }
 
