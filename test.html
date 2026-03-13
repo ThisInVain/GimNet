@@ -539,6 +539,111 @@ body.dark-theme .search-results {
 .settings-icon {
     font-size: 20px;
 }
+/* ===== таблицы ===== */
+.tables-container{
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.class-selector{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.class-btn{
+
+padding:8px 16px;
+
+border-radius:20px;
+
+border:none;
+
+font-weight:600;
+
+cursor:pointer;
+
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(14px);
+
+color:var(--text-color);
+
+transition:transform .2s, background .2s;
+}
+
+.class-btn:hover{
+transform:scale(1.05);
+background:rgba(255,255,255,0.25);
+}
+
+.class-info{
+
+background:rgba(255,255,255,0.12);
+
+backdrop-filter:blur(18px);
+
+border-radius:18px;
+
+padding:16px;
+
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+.class-teacher{
+
+font-size:14px;
+font-weight:600;
+
+opacity:.8;
+
+}
+
+.students-table{
+
+max-height:260px;
+overflow:auto;
+
+border-radius:12px;
+}
+
+.students-table table{
+
+width:100%;
+border-collapse:collapse;
+
+font-size:14px;
+
+}
+
+.students-table th{
+
+text-align:left;
+
+font-weight:700;
+
+padding:8px;
+
+opacity:.7;
+
+}
+
+.students-table td{
+
+padding:8px;
+
+border-top:1px solid rgba(255,255,255,0.08);
+
+}
+
+.students-table tr:hover{
+
+background:rgba(255,255,255,0.06);
+
+}
 
 /* ========== НОВЫЕ СТИЛИ ДЛЯ LIQUID GLASS МЕНЮ ========== */
 .settings-dropdown {
@@ -1771,73 +1876,53 @@ transform:translateY(0);
         </div>
         
         <!-- Таблицы -->
-        <div id="tables" class="page">
-            <div class="page-header">
-                <h1>Таблицы</h1>
-                <div class="page-actions">
-                    <button class="action-btn">Экспорт</button>
-                    <button class="action-btn">Новая таблица</button>
-                </div>
-            </div>
-            <div class="card">
-                <h3>Таблица данных</h3>
-                <p>Управление таблицами с информацией.</p>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Название</th>
-                            <th>Тип</th>
-                            <th>Дата создания</th>
-                            <th>Статус</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>001</td>
-                            <td>Пользователи</td>
-                            <td>Основная</td>
-                            <td>15.11.2023</td>
-                            <td><span style="color: #4CAF50; font-weight: bold;">Активна</span></td>
-                        </tr>
-                        <tr>
-                            <td>002</td>
-                            <td>Продукты</td>
-                            <td>Каталог</td>
-                            <td>20.11.2023</td>
-                            <td><span style="color: #4CAF50; font-weight: bold;">Активна</span></td>
-                        </tr>
-                        <tr>
-                            <td>003</td>
-                            <td>Заказы</td>
-                            <td>Транзакции</td>
-                            <td>25.11.2023</td>
-                            <td><span style="color: #FF9800; font-weight: bold;">На проверке</span></td>
-                        </tr>
-                        <tr>
-                            <td>004</td>
-                            <td>Статистика</td>
-                            <td>Аналитика</td>
-                            <td>01.12.2023</td>
-                            <td><span style="color: #4CAF50; font-weight: bold;">Активна</span></td>
-                        </tr>
-                        <tr>
-                            <td>005</td>
-                            <td>Архив 2022</td>
-                            <td>Историческая</td>
-                            <td>10.12.2023</td>
-                            <td><span style="color: #9E9E9E; font-weight: bold;">Завершена</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button class="action-btn" style="background: #4CAF50;">Добавить запись</button>
-                    <button class="action-btn" style="background: #FF9800;">Редактировать</button>
-                    <button class="action-btn" style="background: #F44336;">Удалить</button>
-                </div>
-            </div>
-        </div>
-        
+        <div id="tablesPage" class="page">
+
+<div class="tables-container">
+
+<div class="class-selector" id="classSelectorTables">
+<button class="class-btn" onclick="showClassTable('7a')">7А</button>
+<button class="class-btn" onclick="showClassTable('7b')">7Б</button>
+<button class="class-btn" onclick="showClassTable('7v')">7В</button>
+<button class="class-btn" onclick="showClassTable('8a')">8А</button>
+<button class="class-btn" onclick="showClassTable('8b')">8Б</button>
+<button class="class-btn" onclick="showClassTable('8v')">8В</button>
+<button class="class-btn" onclick="showClassTable('9a')">9А</button>
+<button class="class-btn" onclick="showClassTable('9b')">9Б</button>
+<button class="class-btn" onclick="showClassTable('9v')">9В</button>
+<button class="class-btn" onclick="showClassTable('10')">10</button>
+<button class="class-btn" onclick="showClassTable('11')">11</button>
+</div>
+
+<div class="class-info">
+
+<div class="class-teacher" id="classTeacher">
+Выберите класс
+</div>
+
+<div class="students-table">
+
+<table id="studentsTable">
+
+<thead>
+<tr>
+<th>#</th>
+<th>ФИО</th>
+</tr>
+</thead>
+
+<tbody id="studentsBody">
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
         <!-- Расписание -->
         <div id="schedule" class="page">
             <div class="class-selector">
@@ -2257,6 +2342,50 @@ tabItems.forEach(tab => {
 });
 
 updateSearchButtonVisibility();
+// таблицы 
+const classData = {
+
+"7a":{
+teacher:"Классный руководитель: ...",
+students:[
+"Иванов Иван",
+"Петров Пётр"
+]
+},
+
+"7b":{
+teacher:"Классный руководитель: ...",
+students:[]
+}
+
+};
+
+function showClassTable(classId){
+
+const data = classData[classId];
+
+if(!data) return;
+
+document.getElementById("classTeacher").textContent = data.teacher;
+
+const body = document.getElementById("studentsBody");
+
+body.innerHTML = "";
+
+data.students.forEach((name,index)=>{
+
+const row = document.createElement("tr");
+
+row.innerHTML = `
+<td>${index+1}</td>
+<td>${name}</td>
+`;
+
+body.appendChild(row);
+
+});
+
+}
 
 // ========== НОВОЕ РАСПИСАНИЕ ==========
 // Список всех классов
