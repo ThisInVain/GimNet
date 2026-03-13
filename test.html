@@ -21,6 +21,7 @@
     -ms-user-select: none;
     user-select: none;
 }
+
 /* ========== СТИЛИ ДЛЯ НОВОСТЕЙ ========== */
 .glass-text {
     text-align: left;
@@ -187,41 +188,6 @@ img.emoji {
     letter-spacing: -0.02em;
 }
 
-.glass-card,
-.tab-item,
-.header-icon,
-.lesson-item{
-transform:translateZ(0);
-}
-
-.glass{
-backdrop-filter: blur(25px);
-background: rgba(255,255,255,0.08);
-border:1px solid rgba(255,255,255,0.15);
-border-radius:20px;
-}
-
-.topbar{
-position:fixed;
-top:10px;
-left:10px;
-right:10px;
-height:50px;
-
-display:flex;
-align-items:center;
-justify-content:space-between;
-
-padding:0 15px;
-
-border-radius:25px;
-
-backdrop-filter: blur(25px);
-background: rgba(255,255,255,0.1);
-
-z-index:1000;
-}
-
 h1, h2, h3, .bold {
     font-weight: 600;
     letter-spacing: -0.03em;
@@ -273,7 +239,7 @@ body {
     line-height: 1.6;
     transition: all 0.3s ease;
     min-height: 100vh;
-    padding-top: 70px !important;
+    padding-top: 64px;
     overflow: hidden !important;
     height: 100% !important;
     width: 100% !important;
@@ -299,63 +265,81 @@ body.dark-theme {
     color: #e0e0e0;
 }
 
-/* ========== НОВОЕ ВЕРХНЕЕ МЕНЮ ========== */
+/* ========== ВЕРХНЕЕ МЕНЮ ========== */
 .app-header {
+    background: var(--header-gradient);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 58px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
     z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 64px;
 }
 
 .header-container {
-    width: 100%;
-    max-width: 900px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.app-brand {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-}
-
-.logo-btn {
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    z-index: 1001;
-}
-
-.page-title {
-    font-size: 20px;
-    font-weight: 700;
-    z-index: 1001;
-}
-
-.header-actions {
-    display: flex;
     gap: 12px;
-    z-index: 1001;
+    position: relative;
 }
 
-.header-icon {
+.app-logo {
     width: 36px;
     height: 36px;
+    background: var(--logo-gradient);
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.35);
-    backdrop-filter: blur(10px);
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-size: 8px;
     cursor: pointer;
-    z-index: 1001;
-    position: relative;
+    transition: all 0.3s ease;
+    user-select: none;
+    z-index: 1002;
+}
+
+.app-logo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.app-logo:active {
+    transform: scale(0.95);
+}
+
+#pageTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: opacity 0.4s ease;
+    opacity: 1;
+}
+
+#pageTitle.search-hidden {
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* ========== НОВЫЙ ПОИСК ========== */
@@ -498,6 +482,13 @@ body.dark-theme .search-results {
 }
 
 /* ========== ОСТАЛЬНЫЕ СТИЛИ БЕЗ ИЗМЕНЕНИЙ ========== */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto;
+}
+
 .notification-btn {
     background: rgba(255, 255, 255, 0.1);
     border: none;
@@ -565,7 +556,7 @@ body.dark-theme .search-results {
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
-    transition: background 0.25s ease, color 0.25s ease;
+    transition: all 0.3s ease;
     z-index: 1001;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
@@ -611,7 +602,7 @@ body.dark-theme .dropdown-header h3 {
     justify-content: space-between;
     color: #1a1a1a !important;
     text-decoration: none !important;
-    transition: background 0.25s ease, color 0.25s ease;
+    transition: all 0.2s ease;
     cursor: pointer;
     font-weight: 500;
     border-left: 3px solid transparent;
@@ -701,7 +692,7 @@ body.dark-theme .theme-submenu {
     justify-content: space-between;
     color: #333;
     cursor: pointer;
-    transition: background 0.25s ease, color 0.25s ease;
+    transition: all 0.2s ease;
     border-radius: 12px;
 }
 
@@ -790,12 +781,12 @@ body.dark-theme .links-submenu .dropdown-item:hover {
 
 /* Светлая тема */
 body.light-theme .class-selector h3 {
-    color: #4a4a4a;
+    color: #4a4a4a; /* Темно-серый для светлой темы */
 }
 
 /* Темная тема */
 body.dark-theme .class-selector h3 {
-    color: var(--active-color);
+    color: var(--active-color); /* Белый для темной темы */
 }
 
 .class-section {
@@ -811,12 +802,12 @@ body.dark-theme .class-selector h3 {
 
 /* Светлая тема */
 body.light-theme .class-section h4 {
-    color: #6b6b6b;
+    color: #6b6b6b; /* Серый для светлой темы */
 }
 
 /* Темная тема */
 body.dark-theme .class-section h4 {
-    color: var(--text-secondary);
+    color: var(--text-secondary); /* Светло-серый для темной темы */
 }
 
 .class-buttons {
@@ -840,8 +831,6 @@ body.dark-theme .class-section h4 {
     transition: background-color 0.2s ease;
     min-width: 60px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    z-index: 10;
-    position: relative;
 }
 
 .class-btn:hover {
@@ -874,7 +863,7 @@ body.dark-theme .class-btn.active {
     margin-top: 20px;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Этот transition должен быть */
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -883,8 +872,6 @@ body.dark-theme .class-btn.active {
     padding: 0;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     overflow: hidden;
-    z-index: 10;
-    position: relative;
 }
 
 #scheduleDisplay.visible {
@@ -922,8 +909,6 @@ body.dark-theme .schedule-day {
     background: rgba(255, 255, 255, 0.3);
     cursor: pointer;
     transition: background-color 0.2s ease;
-    z-index: 11;
-    position: relative;
 }
 
 .day-header:hover {
@@ -967,8 +952,6 @@ body.dark-theme .day-lessons {
 .lesson-item {
     padding: 12px 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    z-index: 12;
-    position: relative;
 }
 
 .lesson-item:last-child {
@@ -1042,15 +1025,6 @@ body {
     transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.lesson-item {
-    transform: translateZ(0);
-    will-change: transform;
-}
-
-.day-lessons {
-    contain: content;
-}
-
 /* Адаптация для мобильных */
 @media (max-width: 768px) {
     .lesson-number {
@@ -1080,17 +1054,19 @@ body {
 @media (max-width: 768px) {
     .header-container {
         padding: 0 15px;
+        height: 56px;
     }
     .app-header { height: 56px; }
-    .logo-btn {
-        font-size: 16px;
+    .app-logo {
+        width: 32px;
+        height: 32px;
     }
-    .page-title { font-size: 18px; }
+    #pageTitle { font-size: 16px; }
     .settings-dropdown {
         width: 260px;
         right: -10px;
     }
-    body { padding-top: 70px; }
+    body { padding-top: 56px; }
 }
 
 /* ========== ОСНОВНОЙ КОНТЕНТ ========== */
@@ -1138,19 +1114,18 @@ body {
     height: 100%;
     color: #666;
     text-decoration: none;
-    transition: background 0.25s ease, color 0.25s ease;
+    transition: all 0.2s ease;
     cursor: pointer;
     padding: 0;
     -webkit-tap-highlight-color: transparent;
     position: relative;
     top: 8px;
-    z-index: 1000;
 }
 
 .tab-icon {
     font-size: 22px;
     margin-bottom: 2px;
-    transition: background 0.25s ease, color 0.25s ease;
+    transition: transform 0.2s ease;
     color: #a9a9a9;
 }
 
@@ -1204,7 +1179,7 @@ body.dark-theme .tab-item.active .tab-label {
     padding: 20px;
     padding-bottom: 0 !important;
     overflow-y: scroll !important;
-    height: calc(100vh - 58px - 60px) !important;
+    height: calc(100vh - 64px - 60px) !important;
     -webkit-overflow-scrolling: touch !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
@@ -1212,8 +1187,6 @@ body.dark-theme .tab-item.active .tab-label {
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
-    z-index: 1;
 }
 
 .content::-webkit-scrollbar {
@@ -1235,8 +1208,6 @@ h1 {
     margin-bottom: 15px;
     box-shadow: var(--card-shadow);
     color: var(--text-color);
-    position: relative;
-    z-index: 5;
 }
 
 .card:last-child {
@@ -1263,7 +1234,7 @@ h1 {
     border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
-    transition: background 0.25s ease, color 0.25s ease;
+    transition: all 0.2s ease;
 }
 
 .action-btn:hover {
@@ -1308,7 +1279,7 @@ h1 {
     background: var(--card-bg);
     border-radius: 8px;
     box-shadow: var(--card-shadow);
-    transition: background 0.25s ease, color 0.25s ease;
+    transition: all 0.2s ease;
 }
 
 .archive-item:hover {
@@ -1389,7 +1360,7 @@ body.dark-theme .tab-bar {
     right: 0;
     height: 4px;
     background: var(--card-bg);
-    z-index: 999;
+    z-index: 1000;
     pointer-events: none;
 }
 
@@ -1427,12 +1398,12 @@ html, body {
 }
 
 body {
-    padding-top: 70px !important;
+    padding-top: 64px !important;
     padding-bottom: 0 !important;
 }
 
 .content {
-    height: calc(100vh - 70px - 60px) !important;
+    height: calc(100vh - 64px - 60px) !important;
     padding-bottom: 0 !important;
     margin-bottom: 0 !important;
 }
@@ -1452,7 +1423,7 @@ body {
     }
     
     .content {
-        height: calc(100vh - 70px - 60px - env(safe-area-inset-bottom)) !important;
+        height: calc(100vh - 64px - 60px - env(safe-area-inset-bottom)) !important;
     }
 }
 
@@ -1484,7 +1455,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: calc(100vh - 70px - 60px - 40px);
+    min-height: calc(100vh - 64px - 60px - 40px);
 }
 
 .glass-card {
@@ -1499,8 +1470,6 @@ body {
     width: 100%;
     text-align: center;
     margin: 0 auto;
-    z-index: 5;
-    position: relative;
 }
 
 body.dark-theme .glass-card {
@@ -1622,148 +1591,16 @@ html, body {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
-
-/* ===============================
-   GIMNET ULTRA UI OPTIMIZATION
-   =============================== */
-
-/* GPU ускорение элементов */
-
-.app-header,
-.settings-dropdown,
-.glass-card,
-.class-btn,
-.lesson-item,
-.day-lessons,
-.tab-bar,
-.tab-item,
-.content,
-.page {
-    transform: translateZ(0);
-    will-change: transform, opacity;
+.page{
+opacity:0;
+transform:translateY(20px);
+transition:transform .35s ease, opacity .35s ease;
+will-change:transform, opacity;
 }
 
-/* ===============================
-   FAST BUTTON RESPONSE
-   =============================== */
-
-button,
-.class-btn,
-.tab-item {
-
-    transition:
-    transform .12s ease,
-    background .15s ease,
-    box-shadow .15s ease;
-
-}
-
-button:active,
-.class-btn:active,
-.tab-item:active {
-
-    transform: scale(0.96);
-
-}
-
-/* ===============================
-   FAST TAB SWITCH
-   =============================== */
-
-.page {
-
-    opacity: 0;
-
-    transition: opacity .18s ease;
-
-}
-
-.page.active {
-
-    opacity: 1;
-
-}
-
-/* ===============================
-   SCHEDULE OPTIMIZATION
-   =============================== */
-
-.day-lessons {
-
-    will-change: max-height, opacity;
-
-}
-
-.lesson-item {
-
-    transform: translateZ(0);
-
-    transition: transform .15s ease;
-
-}
-
-/* ===============================
-   THEME SWITCH PERFORMANCE
-   =============================== */
-
-body {
-
-    transition:
-    background .25s ease,
-    color .25s ease;
-
-}
-
-/* ===============================
-   SMOOTH SCROLL
-   =============================== */
-
-html {
-
-    scroll-behavior: smooth;
-
-}
-
-/* ===============================
-   SCROLL PERFORMANCE
-   =============================== */
-
-.content {
-
-    transform: translateZ(0);
-
-}
-
-/* ===============================
-   REDUCE HEAVY SHADOW LAG
-   =============================== */
-
-.glass-card,
-.lesson-item,
-.settings-dropdown {
-
-    box-shadow:
-    0 4px 12px rgba(0,0,0,0.12);
-
-}
-
-/* ===============================
-   MOBILE PERFORMANCE
-   =============================== */
-
-* {
-
-    -webkit-tap-highlight-color: transparent;
-
-}
-
-body {
-transition: background 0.25s ease, color 0.25s ease;
-}
-
-* {
-transition-property: background, color, border-color;
-transition-duration: 0.25s;
+.page.active{
+opacity:1;
+transform:translateY(0);
 }
     </style>
 </head>
@@ -1781,18 +1618,84 @@ transition-duration: 0.25s;
     <!-- Верхнее меню -->
     <header class="app-header">
         <div class="header-container">
-            <div class="logo-btn" onclick="scrollToTop()">
-                GimNet
+            <div class="app-brand">
+                <div class="app-logo" id="logoBtn">GimNet</div>
+                <!-- Кнопка поиска -->
+                <button class="search-button" id="searchButton">
+                    <i class="fas fa-search"></i>
+                    <span class="search-placeholder"></span>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Поиск в архиве...">
+                </button>
             </div>
-            <div class="page-title" id="pageTitle">
-                Главная
-            </div>
-            <div class="header-actions">
-                <div class="header-icon" onclick="switchToNews()">
+            <div id="pageTitle">Главная</div>
+            <div class="header-actions" id="headerActions">
+                <!-- Колокольчик переключает на новости -->
+                <div class="notification-btn" onclick="switchToNews()">
                     <i class="far fa-bell"></i>
                 </div>
-                <div class="header-icon" id="settingsBtn">
-                    <i class="fas fa-cog"></i>
+                <div class="settings-container">
+                    <button class="settings-btn" id="settingsBtn">
+                        <i class="fas fa-cog settings-icon"></i>
+                    </button>
+                    <div class="settings-dropdown" id="settingsDropdown">
+                        <div class="dropdown-header">
+                            <h3>Настройки</h3>
+                        </div>
+                        <div class="dropdown-item" id="themeToggleBtn">
+                            <div class="dropdown-item-content">
+                                <i class="fas fa-palette"></i>
+                                <span>Тема оформления</span>
+                            </div>
+                            <i class="fas fa-chevron-right" style="font-size: 14px;"></i>
+                        </div>
+                        <div class="theme-submenu" id="themeSubmenu">
+                            <div class="theme-option" data-theme="light">
+                                <div class="dropdown-item-content">
+                                    <i class="fas fa-sun"></i>
+                                    <span>Светлая</span>
+                                </div>
+                                <i class="fas fa-check theme-check"></i>
+                            </div>
+                            <div class="theme-option" data-theme="dark">
+                                <div class="dropdown-item-content">
+                                    <i class="fas fa-moon"></i>
+                                    <span>Темная</span>
+                                </div>
+                                <i class="fas fa-check theme-check"></i>
+                            </div>
+                        </div>
+                        <div class="dropdown-item" onclick="switchToNews()">
+                            <div class="dropdown-item-content">
+                                <i class="fas fa-bell"></i>
+                                <span>Новости</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Ссылки с подменю (только Гимназия) -->
+                        <div class="dropdown-item" id="linksBtn">
+                            <div class="dropdown-item-content">
+                                <i class="fas fa-link"></i>
+                                <span>Ссылки</span>
+                            </div>
+                            <i class="fas fa-chevron-right" style="font-size: 14px;"></i>
+                        </div>
+                        <div class="links-submenu" id="linksSubmenu">
+                            <a href="https://vk.ru/gimnaziapushkin" target="_blank" class="dropdown-item" style="padding-left: 44px;">
+                                <div class="dropdown-item-content">
+                                    <i class="fas fa-school"></i>
+                                    <span>VK Гимназия</span>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <div class="dropdown-divider"></div>
+                        <a href="https://t.me/+ObOQyRCXbWwwMWIy" target="_blank" class="dropdown-item" id="telegramBtn">
+                            <div class="dropdown-item-content">
+                                <i class="fab fa-telegram"></i>
+                                <span>Telegram</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1987,17 +1890,6 @@ transition-duration: 0.25s;
     </nav>
     
     <script>
-// Функция скролла наверх
-function scrollToTop() {
-    const content = document.querySelector('.content');
-    if (content) {
-        content.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    }
-}
-
 // ========== ТВОЙ ВЕСЬ ОРИГИНАЛЬНЫЙ КОД ==========
 const firebaseConfig = {
     apiKey: "AIzaSyDVHgEuMdlx7op-cAwwYmt6TO8iW-rXb7o",
@@ -2079,7 +1971,19 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 setTimeout(function() {
-    // Убираем старый код для logoBtn, так как теперь используем logo-btn
+    const logo = document.getElementById('logoBtn');
+    if (logo) {
+        logo.onclick = function(e) {
+            e.preventDefault();
+            const content = document.querySelector('.content');
+            if (content) {
+                content.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => { this.style.transform = ''; }, 150);
+            return false;
+        };
+    }
 }, 500);
 
 const settingsBtn = document.getElementById('settingsBtn');
@@ -2131,6 +2035,7 @@ themeOptions.forEach(option => {
         e.preventDefault();
         const theme = this.getAttribute('data-theme');
         
+        // Запоминаем состояние перед сменой темы
         const hadSelectedClass = currentClass !== null;
         const selectedClass = currentClass;
         
@@ -2142,10 +2047,12 @@ themeOptions.forEach(option => {
             database.ref('users/' + userIP.replace(/\./g, '_') + '/theme').set(theme);
         }
         
+        // Восстанавливаем состояние после смены темы
         if (hadSelectedClass && selectedClass) {
             setTimeout(() => {
                 document.body.classList.add('class-selected');
                 if (document.getElementById('scheduleDisplay').classList.contains('visible')) {
+                    // Не обновляем расписание, просто показываем
                     document.getElementById('scheduleDisplay').classList.add('visible');
                 }
             }, 50);
@@ -2186,6 +2093,13 @@ titleTabItems.forEach(tab => {
 });
 
 updatePageTitle();
+
+pageTitle.addEventListener('click', function() {
+    const content = document.querySelector('.content');
+    if (content) {
+        content.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+});
 
 tabItems.forEach(tab => {
     tab.addEventListener('click', function() {
@@ -2405,6 +2319,7 @@ function createEmptySchedule(className) {
     scheduleData[className] = {};
     days.forEach(day => {
         scheduleData[className][day] = [];
+        // Создаем 8 пустых уроков
         for (let i = 1; i <= 8; i++) {
             scheduleData[className][day].push({
                 number: i,
@@ -2449,20 +2364,25 @@ function toggleClass(className) {
     const body = document.body;
     
     if (currentClass === className) {
+        // Если кликнули на тот же класс - плавно скрываем
         document.querySelectorAll('.class-btn').forEach(btn => {
             btn.classList.remove('active');
         });
         
+        // Плавно скрываем расписание (transition сработает автоматически)
         scheduleDisplay.classList.remove('visible');
         
+        // Убираем класс-selected после завершения анимации
         setTimeout(() => {
+            // Проверяем, что расписание действительно скрыто
             if (!scheduleDisplay.classList.contains('visible')) {
                 body.classList.remove('class-selected');
             }
-        }, 300);
+        }, 300); // 300мс - длительность анимации из CSS
         
         currentClass = null;
     } else {
+        // Если кликнули на другой класс - показываем новое расписание
         document.querySelectorAll('.class-btn').forEach(btn => {
             btn.classList.remove('active');
         });
@@ -2470,8 +2390,10 @@ function toggleClass(className) {
             btn.classList.add('active');
         });
         
+        // Отображаем расписание для выбранного класса
         displaySchedule(className);
         
+        // Плавно показываем расписание
         scheduleDisplay.classList.add('visible');
         body.classList.add('class-selected');
         
@@ -2494,17 +2416,21 @@ function displaySchedule(className) {
     if (!classData) return;
     
     days.forEach(day => {
+        // Создаем день
         const dayDiv = document.createElement('div');
         dayDiv.className = 'schedule-day';
         
+        // Заголовок дня
         const dayHeader = document.createElement('div');
         dayHeader.className = 'day-header';
         dayHeader.innerHTML = `<h3>${daysRussian[day]}</h3>`;
         dayHeader.addEventListener('click', () => toggleDay(dayHeader));
         
+        // Контейнер для уроков дня
         const dayLessons = document.createElement('div');
         dayLessons.className = 'day-lessons';
         
+        // Добавляем уроки
         const lessons = classData[day];
         if (lessons && lessons.length > 0) {
             lessons.forEach(lesson => {
@@ -2533,6 +2459,7 @@ function displaySchedule(className) {
 
 // ========== ЗАПОЛНЕНИЕ РАСПИСАНИЯ ==========
 function fillAllSchedule() {
+    // Создаем шаблон с твоими данными
     const scheduleTemplate = {
         '7А': {
             monday: [
@@ -2579,7 +2506,8 @@ function fillAllSchedule() {
                 { number: 6, name: 'История', teacher: ' ', room: '' }
             ]
         },
-        '7Б': {
+
+'7Б': {
             monday: [
                 { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
                 { number: 2, name: 'Алгебра', teacher: ' ', room: '' },
@@ -2624,7 +2552,8 @@ function fillAllSchedule() {
                 { number: 6, name: 'Вероятность и Статистика', teacher: ' ', room: '' }
             ]
         },
-        '7В': {
+
+'7В': {
             monday: [
                 { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
                 { number: 2, name: 'История', teacher: ' ', room: '' },
@@ -2670,7 +2599,8 @@ function fillAllSchedule() {
                 { number: 7, name: 'Физкультура', teacher: 'Жарков Александр Леонидович', room: '' } 
             ]
         },
-        '8А': {
+
+'8А': {
             monday: [
                 { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
                 { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
@@ -2714,10 +2644,11 @@ function fillAllSchedule() {
                 { number: 4, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
                 { number: 5, name: 'Алгебра', teacher: ' ', room: '' },
                 { number: 6, name: 'Русский язык', teacher: ' ', room: '' },
-                { number: 7, name: 'Вероятность и Статистика', teacher: ' ', room: '' }
+                { number: 7, name: 'Вероятность и Ститистика', teacher: ' ', room: '' }
             ]
         },
-        '8Б': {
+
+'8Б': {
             monday: [
                 { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
                 { number: 2, name: 'Русский язык', teacher: ' ', room: '' },
@@ -2763,10 +2694,13 @@ function fillAllSchedule() {
                 { number: 7, name: 'Русская словесность', teacher: ' ', room: '' }
             ]
         }
+
     };
 
+    // Загружаем шаблон
     for (let className in scheduleTemplate) {
         if (scheduleTemplate.hasOwnProperty(className)) {
+            // Для каждого дня проверяем наличие массива уроков
             days.forEach(day => {
                 if (!scheduleTemplate[className][day]) {
                     scheduleTemplate[className][day] = [];
@@ -2785,6 +2719,5 @@ loadScheduleData();
 createClassButtons();
 fillAllSchedule();
 </script>
-<script src="gimnet-optimizer.js"></script>
 </body>
 </html>
