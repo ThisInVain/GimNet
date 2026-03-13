@@ -1591,7 +1591,17 @@ html, body {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
+.page{
+opacity:0;
+transform:translateY(20px);
+transition:transform .35s ease, opacity .35s ease;
+will-change:transform, opacity;
+}
 
+.page.active{
+opacity:1;
+transform:translateY(0);
+}
     </style>
 </head>
 <body class="light-theme">
