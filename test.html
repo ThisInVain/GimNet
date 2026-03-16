@@ -3001,11 +3001,29 @@ return;
 
 currentTableClass = className;
 
+const classInfo = classData[className];
+
+if(!classInfo){
+display.innerHTML = "<p>Список пока не добавлен</p>";
+return;
+}
+
+let rows = "";
+
+classInfo.students.forEach((name,index)=>{
+rows += `
+<tr>
+<td>${index+1}</td>
+<td>${name}</td>
+</tr>
+`;
+});
+
 display.innerHTML = `
 <div class="table-card">
 
 <div class="class-teacher">
-Классный руководитель: ...
+Классный руководитель: ${classInfo.teacher}
 </div>
 
 <div class="students-table">
@@ -3019,15 +3037,8 @@ display.innerHTML = `
 </thead>
 
 <tbody>
-<tr>
-<td>1</td>
-<td>Фамилия Имя Отчество</td>
-</tr>
 
-<tr>
-<td>2</td>
-<td>Фамилия Имя Отчество</td>
-</tr>
+${rows}
 
 </tbody>
 </table>
@@ -3040,6 +3051,14 @@ display.innerHTML = `
 }
 
 createTableClassButtons();
+
+let classData = {};
+
+fetch("students.json")
+.then(res => res.json())
+.then(data => {
+classData = data;
+});
 
 </script>
 </body>
