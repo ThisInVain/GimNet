@@ -1832,6 +1832,98 @@ will-change:transform, opacity;
 opacity:1;
 transform:translateY(0);
 }
+
+/* ===== АНИМАЦИИ GIMNET TABLES ===== */
+
+/* плавное появление блока */
+.fade-in {
+opacity: 0;
+transform: translateY(10px) scale(0.98);
+animation: fadeInSmooth 0.35s ease forwards;
+}
+
+@keyframes fadeInSmooth {
+to {
+opacity: 1;
+transform: translateY(0) scale(1);
+}
+}
+
+/* закрытие */
+.fade-out {
+animation: fadeOutSmooth 0.25s ease forwards;
+}
+
+@keyframes fadeOutSmooth {
+to {
+opacity: 0;
+transform: translateY(-6px) scale(0.97);
+}
+}
+
+/* строки таблицы */
+.table-row {
+opacity: 0;
+transform: translateY(8px);
+animation: rowAppear 0.35s ease forwards;
+}
+
+@keyframes rowAppear {
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* кнопки классов */
+.class-btn {
+transition: 
+transform 0.18s ease,
+background 0.25s ease,
+box-shadow 0.25s ease;
+}
+
+.class-btn:active {
+transform: scale(0.93);
+}
+
+.class-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+/* glass таблица */
+.students-table {
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+border-radius: 18px;
+overflow: hidden;
+animation: fadeInSmooth 0.35s ease;
+}
+
+/* строки таблицы задержка */
+.students-table tbody tr {
+opacity: 0;
+transform: translateY(10px);
+animation: rowAppear 0.35s ease forwards;
+}
+
+/* красивый hover */
+.students-table tbody tr:hover {
+background: rgba(255,255,255,0.08);
+transition: background 0.2s ease;
+}
+
+/* плавное появление кнопок */
+.class-selector button {
+animation: fadeInSmooth 0.4s ease;
+}
+
+/* glass карточки */
+.glass-card {
+animation: fadeInSmooth 0.35s ease;
+}
+
     </style>
 </head>
 <body class="light-theme">
@@ -3019,11 +3111,10 @@ return;
 let rows = "";
 
 classInfo.students.forEach((name,index)=>{
-rows += `
-<tr>
-<td>${index+1}</td>
-<td>${name}</td>
-</tr>
+rows += `<tr class="table-row" style="animation-delay:${i*0.04}s">
+<td>${i+1}</td>
+<td>${student}</td>
+</tr>`;
 `;
 });
 
