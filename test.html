@@ -3003,6 +3003,8 @@ currentTableClass = className;
 
 const classInfo = studentsData[className];
 
+if(!classInfo){
+display.innerHTML = `
 <div class="center-wrapper" style="min-height: auto; margin-top: 20px;">
     <div class="glass-card">
         <div class="glass-text" style="text-align:center;">
@@ -3010,7 +3012,10 @@ const classInfo = studentsData[className];
         </div>
     </div>
 </div>
-            
+`;
+return;
+}
+
 let rows = "";
 
 classInfo.students.forEach((name,index)=>{
