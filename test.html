@@ -1999,64 +1999,29 @@ transform:translateY(0);
         </div>
         
         <!-- Таблицы -->
-        <div id="tables" class="page">
+<div id="tables" class="page">
 
-<div class="tables-container">
+<div class="class-selector">
+    <h3>Выбор класса</h3>
 
-<div class="tables-title">Выбор класса</div>
+    <div class="class-section">
+        <h4>7-9 классы</h4>
+        <div class="class-buttons" id="tableClassButtonsMiddle"></div>
+    </div>
 
-<div class="tables-group">7–9 классы</div>
-
-<div class="class-selector" id="classSelectorTables">
-<button class="class-btn" onclick="showClassTable('7a')">7А</button>
-<button class="class-btn" onclick="showClassTable('7b')">7Б</button>
-<button class="class-btn" onclick="showClassTable('7v')">7В</button>
-<button class="class-btn" onclick="showClassTable('8a')">8А</button>
-<button class="class-btn" onclick="showClassTable('8b')">8Б</button>
-<button class="class-btn" onclick="showClassTable('8v')">8В</button>
-<button class="class-btn" onclick="showClassTable('9a')">9А</button>
-<button class="class-btn" onclick="showClassTable('9b')">9Б</button>
-<button class="class-btn" onclick="showClassTable('9v')">9В</button>
-
-<div class="tables-group">10–11 классы</div>
-
-<button class="class-btn" onclick="showClassTable('10')">10</button>
-<button class="class-btn" onclick="showClassTable('11')">11</button>
+    <div class="class-section">
+        <h4>10-11 классы</h4>
+        <div class="class-buttons" id="tableClassButtonsHigh"></div>
+    </div>
 </div>
 
-<div class="class-info">
-
-<div class="class-teacher" id="classTeacher">
-Выберите класс
-</div>
-
-<div class="students-table">
-
-<table id="studentsTable">
-
-<thead>
-<tr>
-<th>#</th>
-<th>ФИО</th>
-</tr>
-</thead>
-
-<tbody id="studentsBody">
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
+<div id="tableDisplay"></div>
 
 </div>
         <!-- Расписание -->
         <div id="schedule" class="page">
             <div class="class-selector">
-                <h3>Выберите класс</h3>
+                <h3>Выбор класса</h3>
                 
                 <!-- 7-9 классы -->
                 <div class="class-section">
@@ -2993,6 +2958,72 @@ function fillAllSchedule() {
 loadScheduleData();
 createClassButtons();
 fillAllSchedule();
+
+function createTableClassButtons(){
+
+const middle = ['7А','7Б','7В','8А','8Б','8В','9А','9Б','9В'];
+const high = ['10','11'];
+
+const middleContainer = document.getElementById('tableClassButtonsMiddle');
+const highContainer = document.getElementById('tableClassButtonsHigh');
+
+middle.forEach(c=>{
+const btn=document.createElement("button");
+btn.className="class-btn";
+btn.textContent=c;
+btn.onclick=()=>toggleTable(c);
+middleContainer.appendChild(btn);
+});
+
+high.forEach(c=>{
+const btn=document.createElement("button");
+btn.className="class-btn";
+btn.textContent=c;
+btn.onclick=()=>toggleTable(c);
+highContainer.appendChild(btn);
+});
+
+}
+
+let currentTableClass=null;
+
+function toggleTable(className){
+
+const display=document.getElementById("tableDisplay");
+
+if(currentTableClass===className){
+display.innerHTML="";
+currentTableClass=null;
+return;
+}
+
+currentTableClass=className;
+
+display.innerHTML=`
+<div class="glass-card" style="margin-top:20px;">
+<h3>Класс ${className}</h3>
+
+<table class="data-table">
+<thead>
+<tr>
+<th>#</th>
+<th>ФИО</th>
+</tr>
+</thead>
+
+<tbody>
+<tr><td>1</td><td>Иванов Иван</td></tr>
+<tr><td>2</td><td>Петров Пётр</td></tr>
+</tbody>
+
+</table>
+</div>
+`;
+
+}
+
+createTableClassButtons();
+
 </script>
 </body>
 </html>
