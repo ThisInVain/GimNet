@@ -3001,7 +3001,7 @@ return;
 
 currentTableClass = className;
 
-const classInfo = classData[className];
+const classInfo = studentsData[className];
 
 if(!classInfo){
 display.innerHTML = "<p>Список пока не добавлен</p>";
@@ -3052,12 +3052,12 @@ ${rows}
 
 createTableClassButtons();
 
-let classData = {};
+let studentsData = {};
 
 fetch("students.json")
 .then(res => res.json())
 .then(data => {
-classData = data;
+studentsData = data;
 });
 
 </script>
