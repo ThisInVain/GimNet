@@ -3003,11 +3003,14 @@ currentTableClass = className;
 
 const classInfo = studentsData[className];
 
-if(!classInfo){
-display.innerHTML = "<p>Список пока не добавлен</p>";
-return;
-}
-
+<div class="center-wrapper" style="min-height: auto; margin-top: 20px;">
+                <div class="glass-card">
+                    <div class="glass-text" style="text-align: center; font-size: 14px; opacity: 0.8;">
+                        Список пока не добавлен.
+                    </div>
+                </div>
+            </div>
+        </div>
 let rows = "";
 
 classInfo.students.forEach((name,index)=>{
