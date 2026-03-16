@@ -3095,9 +3095,9 @@ currentTableClass = className;
 
 const classInfo = studentsData[className];
 
-if(!classInfo){
+if(!classInfo || !classInfo.students || classInfo.students.length === 0){
 display.innerHTML = `
-<div class="center-wrapper" style="min-height: auto; margin-top: 20px;">
+<div class="center-wrapper" style="min-height:auto;margin-top:20px;">
     <div class="glass-card">
         <div class="glass-text" style="text-align:center;">
             Список учащихся пока не добавлен.
@@ -3111,10 +3111,11 @@ return;
 let rows = "";
 
 classInfo.students.forEach((name,index)=>{
-rows += `<tr class="table-row" style="animation-delay:${i*0.04}s">
-<td>${i+1}</td>
-<td>${student}</td>
-</tr>`;
+rows += `
+<tr class="table-row" style="animation-delay:${index*0.04}s">
+<td>${index+1}</td>
+<td>${name}</td>
+</tr>
 `;
 });
 
