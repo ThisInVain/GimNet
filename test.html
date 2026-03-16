@@ -2989,34 +2989,49 @@ let currentTableClass=null;
 
 function toggleTable(className){
 
-const display=document.getElementById("tableDisplay");
+const display = document.getElementById("tableDisplay");
 
-if(currentTableClass===className){
-display.innerHTML="";
-currentTableClass=null;
+if(currentTableClass === className){
+display.innerHTML = "";
+currentTableClass = null;
 return;
 }
 
-currentTableClass=className;
+currentTableClass = className;
 
-display.innerHTML=`
-<div class="glass-card" style="margin-top:20px;">
-<h3>Класс ${className}</h3>
+display.innerHTML = `
+<div class="table-card">
 
-<table class="data-table">
+<div class="class-teacher">
+Классный руководитель: ...
+</div>
+
+<div class="students-table">
+
+<table>
 <thead>
 <tr>
-<th>#</th>
+<th>№</th>
 <th>ФИО</th>
 </tr>
 </thead>
 
 <tbody>
-<tr><td>1</td><td>Иванов Иван</td></tr>
-<tr><td>2</td><td>Петров Пётр</td></tr>
-</tbody>
+<tr>
+<td>1</td>
+<td>Фамилия Имя Отчество</td>
+</tr>
 
+<tr>
+<td>2</td>
+<td>Фамилия Имя Отчество</td>
+</tr>
+
+</tbody>
 </table>
+
+</div>
+
 </div>
 `;
 
