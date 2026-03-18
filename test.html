@@ -540,6 +540,7 @@ body.dark-theme .search-results {
     font-size: 20px;
 }
 /* ===== ТАБЛИЦЫ ===== */
+
 .tables-container{
 padding:20px;
 display:flex;
@@ -547,190 +548,58 @@ flex-direction:column;
 gap:20px;
 }
 
-.class-selector{
+/* Заголовок */
+.tables-title{
+font-size:18px;
+font-weight:700;
+margin-bottom:6px;
+}
+
+/* Группы классов (7-9 / 10-11) */
+.tables-group{
+width:100%;
+font-size:13px;
+opacity:.6;
+margin-top:10px;
+margin-bottom:6px;
+}
+
+/* Кнопки классов */
+.class-buttons{
 display:flex;
 flex-wrap:wrap;
 gap:10px;
-}
-
-.tables-title{
-
-font-size:18px;
-font-weight:700;
-
-margin-bottom:6px;
-
-}
-
-.class-info{
-
-opacity:0;
-
-transform:translateY(15px) scale(.97);
-
-transition:transform .35s ease, opacity .35s ease;
-
-pointer-events:none;
-
-}
-
-.class-info.visible{
-
-opacity:1;
-
-transform:translateY(0) scale(1);
-
-pointer-events:auto;
-
-}
-
-.tables-group{
-
-width:100%;
-
-font-size:13px;
-
-opacity:.6;
-
-margin-top:10px;
-margin-bottom:6px;
-
+margin-bottom:14px;
 }
 
 .class-btn{
-
 padding:8px 16px;
-
 border-radius:20px;
-
 border:none;
-
 font-weight:600;
-
 cursor:pointer;
 
 background:rgba(255,255,255,0.14);
-
 backdrop-filter:blur(10px);
 
-transition:transform .2s ease, background .25s ease;
-
+transition:transform .15s ease, box-shadow .2s ease, background .25s ease;
 }
 
 .class-btn:active{
-
-transform:scale(.9);
-
+transform:scale(.88);
 background:rgba(255,255,255,0.25);
-
 }
 
+/* Карточка класса */
 .class-info{
-
 background:rgba(255,255,255,0.08);
-
 backdrop-filter:blur(20px);
 -webkit-backdrop-filter:blur(20px);
 
 border-radius:18px;
-
 padding:16px;
 
-}
-
-.class-teacher{
-
-font-size:14px;
-font-weight:600;
-
-opacity:.8;
-
-}
-
-.students-table{
-
-max-height:260px;
-overflow:auto;
-
-border-radius:12px;
-}
-
-.students-table table{
-
-width:100%;
-border-collapse:collapse;
-
-font-size:14px;
-
-}
-
-.students-table th{
-
-text-align:left;
-
-font-weight:700;
-
-padding:8px;
-
-opacity:.7;
-
-}
-
-body.light .students-table td{
-border-top:1px solid rgba(0,0,0,0.08);
-}
-
-.students-table tr:hover{
-
-background:rgba(255,255,255,0.06);
-
-}
-.students-table{
-
-background:rgba(255,255,255,0.55);
-
-backdrop-filter:blur(20px);
--webkit-backdrop-filter:blur(20px);
-
-border-radius:18px;
-
-padding:6px;
-
-max-height:260px;
-overflow:auto;
-
-transition:all .35s ease;
-
-}
-
-body.light .class-info{
-
-background:rgba(255,255,255,0.6);
-
-border:1px solid rgba(0,0,0,0.05);
-
-}
-
-body.light .students-table{
-background:rgba(255,255,255,0.95);
-border:1px solid rgba(0,0,0,0.08);
-}
-.class-buttons{
-
-display:flex;
-
-flex-wrap:wrap;
-
-gap:10px;
-
-margin-bottom:14px;
-
-}
-
-.class-info{
-
 opacity:0;
-
 transform:translateY(30px) scale(.95);
 
 transition:
@@ -738,36 +607,94 @@ transform .45s cubic-bezier(.2,.8,.2,1),
 opacity .35s ease;
 
 pointer-events:none;
-
 }
 
 .class-info.show{
-
 opacity:1;
-
 transform:translateY(0) scale(1);
-
 pointer-events:auto;
-
-}
-.class-btn{
-
-transition:
-transform .15s ease,
-box-shadow .2s ease;
-
 }
 
-.class-btn:active{
+/* Классный руководитель */
+.class-teacher{
+font-size:14px;
+font-weight:600;
+opacity:.8;
+margin-bottom:10px;
+}
 
-transform:scale(.88);
+/* Карточка таблицы */
+.table-card{
+margin-top:15px;
+border-radius:16px;
+overflow:hidden;
+}
 
+/* САМА ТАБЛИЦА (ГЛАВНОЕ) */
+.students-table{
+background:rgba(255,255,255,0.55);
+backdrop-filter:blur(20px);
+-webkit-backdrop-filter:blur(20px);
+
+border-radius:18px;
+padding:6px;
+
+max-height:65vh;
+overflow-y:auto;
+-webkit-overflow-scrolling:touch;
+
+transition:all .35s ease;
+}
+
+/* Таблица */
+.students-table table{
+width:100%;
+border-collapse:collapse;
+font-size:14px;
+}
+
+/* Заголовки */
+.students-table th{
+text-align:left;
+font-weight:700;
+padding:8px;
+opacity:.7;
+position:sticky;
+top:0;
+backdrop-filter:blur(10px);
+}
+
+/* Строки */
+.students-table td{
+padding:8px;
+border-top:1px solid rgba(255,255,255,0.08);
+}
+
+/* Hover */
+.students-table tr:hover{
+background:rgba(255,255,255,0.06);
+}
+
+/* ===== СВЕТЛАЯ ТЕМА ===== */
+
+body.light .class-info{
+background:rgba(255,255,255,0.6);
+border:1px solid rgba(0,0,0,0.05);
 }
 
 body.light .table-card{
 background:rgba(255,255,255,0.85);
 backdrop-filter:blur(10px);
 border:1px solid rgba(0,0,0,0.08);
+}
+
+body.light .students-table{
+background:rgba(255,255,255,0.95);
+border:1px solid rgba(0,0,0,0.08);
+}
+
+body.light .students-table td{
+border-top:1px solid rgba(0,0,0,0.08);
 }
 
 /* ========== НОВЫЕ СТИЛИ ДЛЯ LIQUID GLASS МЕНЮ ========== */
