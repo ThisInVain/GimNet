@@ -5,21 +5,607 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GimNet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-  
+
     <!-- Twemoji для красивых эмодзи (один раз) -->
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
 
     <style>
-/* ========== ТВОИ СТИЛИ БЕЗ ИЗМЕНЕНИЙ ========== */
+/* ========== БАЗОВЫЕ СТИЛИ ========== */
 * {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Twemoji Mozilla", "Noto Color Emoji", "EmojiOne Color", "Android Emoji", sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+}
+
+h1, h2, h3, .bold {
+    font-weight: 600;
+    letter-spacing: -0.03em;
+}
+
+:root {
+    --bg-color: #f5f7fa;
+    --text-color: #333;
+    --text-secondary: #666;
+    --card-bg: white;
+    --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    --header-gradient: linear-gradient(135deg, #bbbbbb 0%, #0f0f0f 100%);
+    --logo-gradient: linear-gradient(135deg, #0f0f0f 0%, #333333 100%);
+    --active-color: #696969;
+    --glass-text: #1a1a1a;
+    --table-bg-light: rgba(255, 255, 255, 0.95);
+    --table-bg-dark: rgba(30, 30, 40, 0.95);
+    --table-text-light: #333;
+    --table-text-dark: #e0e0e0;
+    --table-border-light: rgba(0, 0, 0, 0.08);
+    --table-border-dark: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --text-secondary: #aaa;
+    --card-bg: #1e1e1e;
+    --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    --header-gradient: linear-gradient(135deg, #222222 0%, #000000 100%);
+    --logo-gradient: linear-gradient(135deg, #333333 0%, #666666 100%);
+    --active-color: white;
+    --glass-text: #ffffff;
+}
+
+/* ========== ТЕЛЕГРАМ-ФОН ========== */
+body {
+    background: 
+        radial-gradient(circle at 5% 15%, rgba(0,0,0,0.18) 0%, transparent 30%),
+        radial-gradient(circle at 95% 25%, rgba(0,0,0,0.14) 0%, transparent 35%),
+        radial-gradient(circle at 20% 70%, rgba(0,0,0,0.16) 0%, transparent 30%),
+        radial-gradient(circle at 80% 85%, rgba(0,0,0,0.12) 0%, transparent 35%),
+        radial-gradient(circle at 40% 40%, rgba(40,40,40,0.1) 0%, transparent 25%),
+        radial-gradient(circle at 60% 60%, rgba(30,30,30,0.1) 0%, transparent 25%),
+        radial-gradient(circle at 10% 90%, rgba(0,0,0,0.09) 0%, transparent 30%),
+        radial-gradient(circle at 90% 10%, rgba(0,0,0,0.09) 0%, transparent 30%),
+        repeating-radial-gradient(circle at 20% 20%, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 12px),
+        repeating-radial-gradient(circle at 80% 80%, rgba(0,0,0,0.06) 1px, transparent 1px, transparent 16px),
+        repeating-linear-gradient(45deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 2px, transparent 2px, transparent 18px),
+        repeating-linear-gradient(-45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 2px, transparent 2px, transparent 18px),
+        repeating-linear-gradient(90deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 25px),
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 25px),
+        #ecf2f8;
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    min-height: 100vh;
+    padding-top: 64px;
+    overflow-y: auto !important;
+    height: auto !important;
+    width: 100% !important;
+}
+
+body.dark-theme {
+    background: 
+        radial-gradient(circle at 5% 15%, rgba(255,255,255,0.1) 0%, transparent 30%),
+        radial-gradient(circle at 95% 25%, rgba(255,255,255,0.08) 0%, transparent 35%),
+        radial-gradient(circle at 20% 70%, rgba(255,255,255,0.09) 0%, transparent 30%),
+        radial-gradient(circle at 80% 85%, rgba(255,255,255,0.07) 0%, transparent 35%),
+        radial-gradient(circle at 40% 40%, rgba(220,220,220,0.06) 0%, transparent 25%),
+        radial-gradient(circle at 60% 60%, rgba(230,230,230,0.06) 0%, transparent 25%),
+        radial-gradient(circle at 10% 90%, rgba(255,255,255,0.05) 0%, transparent 30%),
+        radial-gradient(circle at 90% 10%, rgba(255,255,255,0.05) 0%, transparent 30%),
+        repeating-radial-gradient(circle at 20% 20%, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 12px),
+        repeating-radial-gradient(circle at 80% 80%, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 16px),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 20px),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 20px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 30px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 30px),
+        #1a1f2c;
+    color: #e0e0e0;
+}
+
+/* ========== ВЕРХНЕЕ МЕНЮ ========== */
+.app-header {
+    background: var(--header-gradient);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 64px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.app-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+.app-logo {
+    width: 36px;
+    height: 36px;
+    background: var(--logo-gradient);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-size: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    user-select: none;
+    z-index: 1002;
+}
+
+.app-logo:hover {
+    transform: scale(1.05);
+}
+
+.app-logo:active {
+    transform: scale(0.95);
+}
+
+#pageTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: opacity 0.4s ease;
+    opacity: 1;
+}
+
+#pageTitle.search-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ========== НОВЫЙ ПОИСК ========== */
+.search-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: 8px;
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    z-index: 1001;
+    position: relative;
+    overflow: visible;
+    white-space: nowrap;
+    padding: 0;
+}
+
+.search-button.visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.search-button.expanded {
+    width: 200px;
+    justify-content: flex-start;
+    padding: 0 12px;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.25);
+    cursor: text;
+}
+
+.search-button.expanded i {
+    font-size: 14px;
+    opacity: 0.8;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.search-button .search-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    padding: 0 12px 0 36px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
+.search-button.expanded .search-input {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+    padding: 0;
+    background: transparent;
+}
+
+.search-button .search-placeholder {
+    display: none;
+}
+
+.header-actions {
+    transition: opacity 0.4s ease;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto;
+}
+
+.header-actions.search-active {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Результаты поиска */
+.search-results {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 16px;
+    margin-top: 16px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.search-results.active {
+    max-height: 400px;
+    opacity: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.search-results .result-item {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.search-results .result-item:last-child {
+    border-bottom: none;
+}
+
+.search-results .result-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+}
+
+.search-results .result-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--glass-text);
+}
+
+.search-results .result-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+body.dark-theme .search-results {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* ========== КНОПКИ УВЕДОМЛЕНИЙ И НАСТРОЕК ========== */
+.notification-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.notification-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.settings-container {
+    position: relative;
+}
+
+.settings-btn {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.settings-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: rotate(30deg);
+}
+
+.settings-btn:active {
+    transform: scale(0.95) rotate(30deg);
+}
+
+.settings-icon {
+    font-size: 20px;
+}
+
+/* ========== ВЫПАДАЮЩЕЕ МЕНЮ НАСТРОЕК ========== */
+.settings-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    width: 280px;
+    padding: 12px 0;
+    margin-top: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.95);
+    transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.1), visibility 0.25s ease;
+    z-index: 1001;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    transform-origin: top right;
+}
+
+body.dark-theme .settings-dropdown {
+    background: rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.settings-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.dropdown-header {
+    padding: 0 16px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px;
+}
+
+body.dark-theme .dropdown-header {
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+.dropdown-header h3 {
+    color: #1a1a1a;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+body.dark-theme .dropdown-header h3 {
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.settings-dropdown .dropdown-item {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #1a1a1a !important;
+    text-decoration: none !important;
+    transition: background 0.2s ease, padding-left 0.2s ease;
+    cursor: pointer;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 15px;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.3);
+}
+
+body.dark-theme .settings-dropdown .dropdown-item {
+    color: white !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.settings-dropdown .dropdown-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-left: 3px solid rgba(0, 0, 0, 0.3);
+    padding-left: 19px;
+}
+
+body.dark-theme .settings-dropdown .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 3px solid rgba(255, 255, 255, 0.5);
+}
+
+.dropdown-item-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.settings-dropdown .dropdown-item i {
+    width: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #4a4a4a;
+    transition: transform 0.2s ease;
+}
+
+body.dark-theme .settings-dropdown .dropdown-item i {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.settings-dropdown .dropdown-item:hover i {
+    color: #000;
+    transform: scale(1.1);
+}
+
+body.dark-theme .settings-dropdown .dropdown-item:hover i {
+    color: white;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    margin: 10px 16px;
+}
+
+body.dark-theme .dropdown-divider {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Подменю темы */
+.theme-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 0 0 12px 12px;
+    margin: 0 8px;
+}
+
+body.dark-theme .theme-submenu {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.theme-submenu.active {
+    max-height: 120px;
+}
+
+.theme-option {
+    padding: 10px 16px 10px 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 12px;
+}
+
+body.dark-theme .theme-option {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.theme-option:hover {
+    background: rgba(0, 0, 0, 0.03);
+    color: #000;
+}
+
+body.dark-theme .theme-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.theme-option.active {
+    color: #000;
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+body.dark-theme .theme-option.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.theme-check {
+    color: #4CAF50;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.theme-option.active .theme-check {
+    opacity: 1;
+}
+
+/* Подменю ссылок (только одна ссылка) */
+.links-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 0 0 12px 12px;
+    margin: 0 8px;
+}
+
+body.dark-theme .links-submenu {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.links-submenu.active {
+    max-height: 70px;
+}
+
+.links-submenu .dropdown-item {
+    padding: 10px 16px 10px 44px !important;
+    font-size: 14px;
+}
+
+.links-submenu .dropdown-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+    border-left: 3px solid rgba(0, 0, 0, 0.2);
+    padding-left: 41px !important;
+}
+
+body.dark-theme .links-submenu .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
 }
 
 /* ========== СТИЛИ ДЛЯ НОВОСТЕЙ ========== */
@@ -174,830 +760,72 @@ img.emoji {
     .splash-dot { width: 4px; height: 4px; }
 }
 
-/* ========== ОСНОВНЫЕ СТИЛИ ========== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 
-                 "Segoe UI", Roboto, Helvetica, Arial, 
-                 "Apple Color Emoji", "Twemoji Mozilla", 
-                 "Noto Color Emoji", "EmojiOne Color", 
-                 "Android Emoji", sans-serif;
-    font-weight: 400;
-    letter-spacing: -0.02em;
-}
-
-h1, h2, h3, .bold {
-    font-weight: 600;
-    letter-spacing: -0.03em;
-}
-
-:root {
-    --bg-color: #f5f7fa;
-    --text-color: #333;
-    --text-secondary: #666;
-    --card-bg: white;
-    --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    --header-gradient: linear-gradient(135deg, #bbbbbb 0%, #0f0f0f 100%);
-    --logo-gradient: linear-gradient(135deg, #0f0f0f 0%, #333333 100%);
-    --active-color: #696969;
-    --glass-text: #1a1a1a;
-}
-
-body.dark-theme {
-    --bg-color: #121212;
-    --text-color: #e0e0e0;
-    --text-secondary: #aaa;
-    --card-bg: #1e1e1e;
-    --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    --header-gradient: linear-gradient(135deg, #222222 0%, #000000 100%);
-    --logo-gradient: linear-gradient(135deg, #333333 0%, #666666 100%);
-    --active-color: white;
-    --glass-text: #ffffff;
-}
-
-/* ========== ТЕЛЕГРАМ-ФОН ========== */
-body {
-    background: 
-        radial-gradient(circle at 5% 15%, rgba(0,0,0,0.18) 0%, transparent 30%),
-        radial-gradient(circle at 95% 25%, rgba(0,0,0,0.14) 0%, transparent 35%),
-        radial-gradient(circle at 20% 70%, rgba(0,0,0,0.16) 0%, transparent 30%),
-        radial-gradient(circle at 80% 85%, rgba(0,0,0,0.12) 0%, transparent 35%),
-        radial-gradient(circle at 40% 40%, rgba(40,40,40,0.1) 0%, transparent 25%),
-        radial-gradient(circle at 60% 60%, rgba(30,30,30,0.1) 0%, transparent 25%),
-        radial-gradient(circle at 10% 90%, rgba(0,0,0,0.09) 0%, transparent 30%),
-        radial-gradient(circle at 90% 10%, rgba(0,0,0,0.09) 0%, transparent 30%),
-        repeating-radial-gradient(circle at 20% 20%, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 12px),
-        repeating-radial-gradient(circle at 80% 80%, rgba(0,0,0,0.06) 1px, transparent 1px, transparent 16px),
-        repeating-linear-gradient(45deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 2px, transparent 2px, transparent 18px),
-        repeating-linear-gradient(-45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 2px, transparent 2px, transparent 18px),
-        repeating-linear-gradient(90deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 25px),
-        repeating-linear-gradient(0deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 25px),
-        #ecf2f8;
-    color: var(--text-color);
-    line-height: 1.6;
-    transition: all 0.3s ease;
-    min-height: 100vh;
-    padding-top: 64px;
-    overflow: hidden !important;
-    height: 100% !important;
-    width: 100% !important;
-}
-
-body.dark-theme {
-    background: 
-        radial-gradient(circle at 5% 15%, rgba(255,255,255,0.1) 0%, transparent 30%),
-        radial-gradient(circle at 95% 25%, rgba(255,255,255,0.08) 0%, transparent 35%),
-        radial-gradient(circle at 20% 70%, rgba(255,255,255,0.09) 0%, transparent 30%),
-        radial-gradient(circle at 80% 85%, rgba(255,255,255,0.07) 0%, transparent 35%),
-        radial-gradient(circle at 40% 40%, rgba(220,220,220,0.06) 0%, transparent 25%),
-        radial-gradient(circle at 60% 60%, rgba(230,230,230,0.06) 0%, transparent 25%),
-        radial-gradient(circle at 10% 90%, rgba(255,255,255,0.05) 0%, transparent 30%),
-        radial-gradient(circle at 90% 10%, rgba(255,255,255,0.05) 0%, transparent 30%),
-        repeating-radial-gradient(circle at 20% 20%, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 12px),
-        repeating-radial-gradient(circle at 80% 80%, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 16px),
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 20px),
-        repeating-linear-gradient(-45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 20px),
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 30px),
-        repeating-linear-gradient(0deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 30px),
-        #1a1f2c;
-    color: #e0e0e0;
-}
-
-/* ========== ВЕРХНЕЕ МЕНЮ ========== */
-.app-header {
-    background: var(--header-gradient);
-    color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    height: 64px;
-}
-
-.header-container {
+/* ========== ТАБЛИЦЫ (УЧЕНИКИ) ========== */
+.tables-container {
+    padding: 20px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    height: 64px;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.app-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: relative;
-}
-
-.app-logo {
-    width: 36px;
-    height: 36px;
-    background: var(--logo-gradient);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    font-size: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    user-select: none;
-    z-index: 1002;
-}
-
-.app-logo:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.app-logo:active {
-    transform: scale(0.95);
-}
-
-#pageTitle {
+.tables-title {
     font-size: 18px;
     font-weight: 700;
-    color: white;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    cursor: pointer;
-    padding: 10px 15px;
-    transition: opacity 0.4s ease;
-    opacity: 1;
+    margin-bottom: 6px;
 }
 
-#pageTitle.search-hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* ========== НОВЫЙ ПОИСК ========== */
-.search-button {
-    width: 36px;
-    height: 36px;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.15);
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-left: 8px;
-    opacity: 0;
-    transform: scale(0.8);
-    pointer-events: none;
-    z-index: 1001;
-    position: relative;
-    overflow: visible;
-    white-space: nowrap;
-    padding: 0;
-}
-
-.search-button.visible {
-    opacity: 1;
-    transform: scale(1);
-    pointer-events: auto;
-}
-
-.search-button.expanded {
-    width: 200px;
-    justify-content: flex-start;
-    padding: 0 12px;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.25);
-    cursor: text;
-}
-
-.search-button.expanded i {
-    font-size: 14px;
-    opacity: 0.8;
-    flex-shrink: 0;
-    margin: 0;
-}
-
-.search-button .search-input {
-    position: absolute;
-    left: 0;
-    top: 0;
+.tables-group {
     width: 100%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    padding: 0 12px 0 36px;
-    color: white;
-    font-size: 14px;
-    outline: none;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    pointer-events: none;
-}
-
-.search-button.expanded .search-input {
-    opacity: 1;
-    pointer-events: auto;
-    position: relative;
-    padding: 0;
-    background: transparent;
-}
-
-.search-button .search-placeholder {
-    display: none;
-}
-
-/* Анимация для кнопок действий */
-.header-actions {
-    transition: opacity 0.4s ease;
-}
-
-.header-actions.search-active {
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* Результаты поиска */
-.search-results {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 16px;
-    margin-top: 16px;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.search-results.active {
-    max-height: 400px;
-    opacity: 1;
-    padding: 16px;
-    overflow-y: auto;
-}
-
-.search-results .result-item {
-    padding: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.search-results .result-item:last-child {
-    border-bottom: none;
-}
-
-.search-results .result-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-}
-
-.search-results .result-title {
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: var(--glass-text);
-}
-
-.search-results .result-meta {
-    font-size: 12px;
-    color: var(--text-secondary);
-}
-
-body.dark-theme .search-results {
-    background: rgba(0, 0, 0, 0.3);
-}
-
-/* ========== ОСТАЛЬНЫЕ СТИЛИ БЕЗ ИЗМЕНЕНИЙ ========== */
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-left: auto;
-}
-
-.notification-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.notification-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.settings-container {
-    position: relative;
-}
-
-.settings-btn {
-    background-color: rgba(255, 255, 255, 0.15);
-    border: none;
-    border-radius: 50%;
-    width: 42px;
-    height: 42px;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.settings-btn:hover {
-    background-color: rgba(255, 255, 255, 0.25);
-    transform: rotate(30deg);
-}
-
-.settings-btn:active {
-    transform: scale(0.95) rotate(30deg);
-}
-
-.settings-icon {
-    font-size: 20px;
-}
-/* ===== ТАБЛИЦЫ ===== */
-
-.tables-container{
-padding:20px;
-display:flex;
-flex-direction:column;
-gap:20px;
-}
-
-/* Заголовок */
-.tables-title{
-font-size:18px;
-font-weight:700;
-margin-bottom:6px;
-}
-
-/* Группы классов (7-9 / 10-11) */
-.tables-group{
-width:100%;
-font-size:13px;
-opacity:.6;
-margin-top:10px;
-margin-bottom:6px;
-}
-
-/* Кнопки классов */
-.class-buttons{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-margin-bottom:14px;
-}
-
-.class-btn{
-padding:8px 16px;
-border-radius:20px;
-border:none;
-font-weight:600;
-cursor:pointer;
-
-background:rgba(255,255,255,0.14);
-backdrop-filter:blur(10px);
-
-transition:transform .15s ease, box-shadow .2s ease, background .25s ease;
-}
-
-.class-btn:active{
-transform:scale(.88);
-background:rgba(255,255,255,0.25);
-}
-
-/* Карточка класса */
-.class-info{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(20px);
--webkit-backdrop-filter:blur(20px);
-
-border-radius:18px;
-padding:16px;
-
-opacity:0;
-transform:translateY(30px) scale(.95);
-
-transition:
-transform .45s cubic-bezier(.2,.8,.2,1),
-opacity .35s ease;
-
-pointer-events:none;
-}
-
-.class-info.show{
-opacity:1;
-transform:translateY(0) scale(1);
-pointer-events:auto;
-}
-
-/* Классный руководитель */
-.class-teacher{
-font-size:14px;
-font-weight:600;
-opacity:.8;
-margin-bottom:10px;
-}
-
-/* Карточка таблицы */
-.table-card{
-margin-top:15px;
-border-radius:16px;
-overflow:hidden;
-}
-
-/* САМА ТАБЛИЦА (ГЛАВНОЕ) */
-.students-table{
-background:rgba(255,255,255,0.55);
-backdrop-filter:blur(20px);
--webkit-backdrop-filter:blur(20px);
-
-border-radius:18px;
-padding:6px;
-
-max-height:65vh;
-overflow-y:auto;
--webkit-overflow-scrolling:touch;
-
-transition:all .35s ease;
-}
-
-/* Таблица */
-.students-table table{
-width:100%;
-border-collapse:collapse;
-font-size:14px;
-}
-
-/* Заголовки */
-.students-table th{
-text-align:left;
-font-weight:700;
-padding:8px;
-opacity:.7;
-position:sticky;
-top:0;
-backdrop-filter:blur(10px);
-}
-
-/* Строки */
-.students-table td{
-padding:8px;
-border-top:1px solid rgba(255,255,255,0.08);
-}
-
-/* Hover */
-.students-table tr:hover{
-background:rgba(255,255,255,0.06);
-}
-
-/* ===== СВЕТЛАЯ ТЕМА ===== */
-
-body.light .class-info{
-background:rgba(255,255,255,0.6);
-border:1px solid rgba(0,0,0,0.05);
-}
-
-body.light .table-card{
-background:rgba(255,255,255,0.85);
-backdrop-filter:blur(10px);
-border:1px solid rgba(0,0,0,0.08);
-}
-
-body.light .students-table{
-background:rgba(255,255,255,0.95);
-border:1px solid rgba(0,0,0,0.08);
-}
-
-body.light .students-table td{
-border-top:1px solid rgba(0,0,0,0.08);
-}
-
-/* ========== НОВЫЕ СТИЛИ ДЛЯ LIQUID GLASS МЕНЮ ========== */
-.settings-dropdown {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 20px;
-    width: 280px;
-    padding: 12px 0;
+    font-size: 13px;
+    opacity: .6;
     margin-top: 10px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-    z-index: 1001;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    margin-bottom: 6px;
 }
 
-body.dark-theme .settings-dropdown {
-    background: rgba(0, 0, 0, 0.6);
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
-.settings-dropdown.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.dropdown-header {
-    padding: 0 16px 12px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    margin-bottom: 8px;
-}
-
-body.dark-theme .dropdown-header {
-    border-bottom-color: rgba(255, 255, 255, 0.15);
-}
-
-.dropdown-header h3 {
-    color: #1a1a1a;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-}
-
-body.dark-theme .dropdown-header h3 {
-    color: white;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-}
-
-.settings-dropdown .dropdown-item {
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: #1a1a1a !important;
-    text-decoration: none !important;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    font-weight: 500;
-    border-left: 3px solid transparent;
-    background: transparent;
-    border: none;
-    width: 100%;
-    text-align: left;
-    font-size: 15px;
-    text-shadow: 0 1px 2px rgba(255,255,255,0.3);
-}
-
-body.dark-theme .settings-dropdown .dropdown-item {
-    color: white !important;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-}
-
-.settings-dropdown .dropdown-item:hover {
-    background: rgba(0, 0, 0, 0.05);
-    border-left: 3px solid rgba(0, 0, 0, 0.3);
-    padding-left: 13px;
-}
-
-body.dark-theme .settings-dropdown .dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-left: 3px solid rgba(255, 255, 255, 0.5);
-}
-
-.dropdown-item-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.settings-dropdown .dropdown-item i {
-    width: 20px;
-    text-align: center;
-    font-size: 18px;
-    color: #4a4a4a;
-}
-
-body.dark-theme .settings-dropdown .dropdown-item i {
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.settings-dropdown .dropdown-item:hover i {
-    color: #000;
-    transform: scale(1.1);
-    transition: transform 0.2s ease;
-}
-
-body.dark-theme .settings-dropdown .dropdown-item:hover i {
-    color: white;
-}
-
-.dropdown-divider {
-    height: 1px;
-    background: rgba(0, 0, 0, 0.1);
-    margin: 10px 16px;
-}
-
-body.dark-theme .dropdown-divider {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* Подменю темы */
-.theme-submenu {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    background: rgba(0, 0, 0, 0.03);
-    border-radius: 0 0 12px 12px;
-    margin: 0 8px;
-}
-
-body.dark-theme .theme-submenu {
-    background: rgba(255, 255, 255, 0.04);
-}
-
-.theme-submenu.active {
-    max-height: 120px;
-}
-
-.theme-option {
-    padding: 10px 16px 10px 44px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border-radius: 12px;
-}
-
-body.dark-theme .theme-option {
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.theme-option:hover {
-    background: rgba(0, 0, 0, 0.03);
-    color: #000;
-}
-
-body.dark-theme .theme-option:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
-}
-
-.theme-option.active {
-    color: #000;
-    font-weight: 600;
-    background: rgba(0, 0, 0, 0.02);
-}
-
-body.dark-theme .theme-option.active {
-    color: white;
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.theme-check {
-    color: #4CAF50;
-    font-size: 14px;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-.theme-option.active .theme-check {
-    opacity: 1;
-}
-
-/* Подменю ссылок (только одна ссылка) */
-.links-submenu {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    background: rgba(0, 0, 0, 0.03);
-    border-radius: 0 0 12px 12px;
-    margin: 0 8px;
-}
-
-body.dark-theme .links-submenu {
-    background: rgba(255, 255, 255, 0.04);
-}
-
-.links-submenu.active {
-    max-height: 70px;
-}
-
-.links-submenu .dropdown-item {
-    padding: 10px 16px 10px 44px !important;
-    font-size: 14px;
-}
-
-.links-submenu .dropdown-item:hover {
-    background: rgba(0, 0, 0, 0.03);
-    border-left: 3px solid rgba(0, 0, 0, 0.2);
-    padding-left: 41px !important;
-}
-
-body.dark-theme .links-submenu .dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-left: 3px solid rgba(255, 255, 255, 0.3);
-}
-
-/* ========== НОВЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ ========== */
-.class-selector {
-    margin-bottom: 20px;
-    width: 100%;
-}
-
-.class-selector h3 {
-    text-align: left;
-    margin-bottom: 15px;
-    font-size: 18px;
-    font-weight: 600;
-}
-
-/* Светлая тема */
-body.light-theme .class-selector h3 {
-    color: #4a4a4a; /* Темно-серый для светлой темы */
-}
-
-/* Темная тема */
-body.dark-theme .class-selector h3 {
-    color: var(--active-color); /* Белый для темной темы */
-}
-
-.class-section {
-    margin-bottom: 25px;
-}
-
-.class-section h4 {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 12px;
-    padding-left: 5px;
-}
-
-/* Светлая тема */
-body.light-theme .class-section h4 {
-    color: #6b6b6b; /* Серый для светлой темы */
-}
-
-/* Темная тема */
-body.dark-theme .class-section h4 {
-    color: var(--text-secondary); /* Светло-серый для темной темы */
-}
-
+/* КНОПКИ КЛАССОВ (общие для таблиц и расписания) */
 .class-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: flex-start;
+    margin-bottom: 14px;
 }
 
 .class-btn {
     padding: 8px 16px;
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 20px;
-    color: var(--glass-text);
-    font-size: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--glass-text);
+    font-size: 14px;
     min-width: 60px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.1), 
+                background-color 0.2s ease, 
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
+    transform: scale(1);
 }
 
 .class-btn:hover {
-    background: rgba(255, 255, 255, 0.7);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.class-btn:active {
+    transform: scale(0.92);
+    transition: transform 0.1s ease;
 }
 
 .class-btn.active {
     background: var(--active-color);
     color: #ffffff !important;
     border-color: var(--active-color);
+    transform: scale(1);
 }
 
 body.dark-theme .class-btn {
@@ -1014,13 +842,146 @@ body.dark-theme .class-btn.active {
     color: #000000 !important;
 }
 
+/* Карточка таблицы */
+.table-card {
+    margin-top: 15px;
+    border-radius: 16px;
+    overflow: hidden;
+    animation: cardAppear 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+@keyframes cardAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* САМА ТАБЛИЦА */
+.students-table {
+    background: var(--table-bg-light);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 18px;
+    padding: 8px;
+    max-height: 350px;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    transition: all 0.3s ease;
+    border: 1px solid var(--table-border-light);
+}
+
+body.dark-theme .students-table {
+    background: var(--table-bg-dark);
+    border: 1px solid var(--table-border-dark);
+}
+
+.students-table::-webkit-scrollbar {
+    width: 4px;
+    background: transparent;
+}
+
+.students-table::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.3);
+    border-radius: 4px;
+}
+
+.students-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.students-table th {
+    text-align: left;
+    font-weight: 700;
+    padding: 12px 8px;
+    opacity: 0.8;
+    position: sticky;
+    top: 0;
+    background: inherit;
+    backdrop-filter: blur(10px);
+    z-index: 5;
+    color: var(--text-color);
+}
+
+.students-table td {
+    padding: 10px 8px;
+    border-top: 1px solid var(--table-border-light);
+    color: var(--text-color);
+}
+
+body.dark-theme .students-table td {
+    border-top: 1px solid var(--table-border-dark);
+    color: var(--table-text-dark);
+}
+
+.students-table tr {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: rowAppear 0.3s ease forwards;
+}
+
+.students-table tr:hover {
+    background: rgba(128, 128, 128, 0.1);
+    transition: background 0.2s ease;
+}
+
+@keyframes rowAppear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Классный руководитель */
+.class-teacher {
+    font-size: 15px;
+    font-weight: 600;
+    opacity: 0.9;
+    margin-bottom: 12px;
+    padding-left: 4px;
+    color: var(--text-color);
+}
+
+/* ========== НОВЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ ========== */
+.class-selector {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.class-selector h3 {
+    text-align: left;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.class-section {
+    margin-bottom: 25px;
+}
+
+.class-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding-left: 5px;
+    color: var(--text-secondary);
+}
+
 /* Контейнер для расписания */
 #scheduleDisplay {
     width: 100%;
     margin-top: 20px;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease; /* Этот transition должен быть */
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -1029,11 +990,13 @@ body.dark-theme .class-btn.active {
     padding: 0;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     overflow: hidden;
+    transform-origin: top center;
 }
 
 #scheduleDisplay.visible {
     opacity: 1;
     visibility: visible;
+    transform: translateY(0) scale(1);
 }
 
 body.dark-theme #scheduleDisplay {
@@ -1066,6 +1029,9 @@ body.dark-theme .schedule-day {
     background: rgba(255, 255, 255, 0.3);
     cursor: pointer;
     transition: background-color 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .day-header:hover {
@@ -1077,6 +1043,15 @@ body.dark-theme .schedule-day {
     font-size: 16px;
     font-weight: 600;
     margin: 0;
+}
+
+.day-header i {
+    transition: transform 0.3s ease;
+    color: var(--active-color);
+}
+
+.day-header.active i {
+    transform: rotate(180deg);
 }
 
 body.dark-theme .day-header {
@@ -1092,7 +1067,7 @@ body.dark-theme .day-header:hover {
     max-height: 0;
     opacity: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease, opacity 0.3s ease;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, padding 0.4s ease;
     background: rgba(255, 255, 255, 0.2);
 }
 
@@ -1109,6 +1084,12 @@ body.dark-theme .day-lessons {
 .lesson-item {
     padding: 12px 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.lesson-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
 }
 
 .lesson-item:last-child {
@@ -1164,81 +1145,40 @@ body.dark-theme .lesson-item {
     color: var(--text-secondary);
 }
 
-/* Запрещаем скролл когда класс не выбран */
-body:not(.class-selected) .content {
-    overflow-y: hidden !important;
-}
-
-body.class-selected .content {
-    overflow-y: scroll !important;
-}
-
-/* Плавная смена темы */
-body {
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.glass-card, .class-btn, #scheduleDisplay, .day-header, .lesson-item, .schedule-day {
-    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Адаптация для мобильных */
-@media (max-width: 768px) {
-    .lesson-number {
-        font-size: 14px;
-    }
-    .lesson-name {
-        font-size: 16px;
-    }
-    .lesson-teacher {
-        font-size: 13px;
-    }
-    .lesson-details {
-        font-size: 12px;
-    }
-    .day-header {
-        padding: 12px 16px;
-    }
-    .day-header h3 {
-        font-size: 15px;
-    }
-    .lesson-item {
-        padding: 10px 16px;
-    }
-}
-
-/* ========== ОСТАЛЬНЫЕ СТИЛИ БЕЗ ИЗМЕНЕНИЙ ========== */
-@media (max-width: 768px) {
-    .header-container {
-        padding: 0 15px;
-        height: 56px;
-    }
-    .app-header { height: 56px; }
-    .app-logo {
-        width: 32px;
-        height: 32px;
-    }
-    #pageTitle { font-size: 16px; }
-    .settings-dropdown {
-        width: 260px;
-        right: -10px;
-    }
-    body { padding-top: 56px; }
-}
-
 /* ========== ОСНОВНОЙ КОНТЕНТ ========== */
 .page {
     display: none;
-    animation: fadeIn 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.4s ease;
+    will-change: transform, opacity;
 }
 
 .page.active {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+/* ========== КОНТЕНТ ========== */
+.content {
+    padding: 20px;
+    padding-bottom: 0 !important;
+    overflow-y: auto !important;
+    height: calc(100vh - 64px - 60px) !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    overflow-x: hidden !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }
 
 /* ========== НИЖНЕЕ МЕНЮ ========== */
@@ -1282,13 +1222,13 @@ body {
 .tab-icon {
     font-size: 22px;
     margin-bottom: 2px;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, color 0.2s ease;
     color: #a9a9a9;
 }
 
 .tab-item.active .tab-icon {
     color: var(--active-color);
-    transform: translateY(-1px);
+    transform: translateY(-1px) scale(1.1);
 }
 
 .tab-label {
@@ -1329,27 +1269,6 @@ body.dark-theme .tab-item.active .tab-label {
     .tab-item { top: 5px; }
     .tab-icon { font-size: 19px; }
     .tab-label { font-size: 10px; }
-}
-
-/* ========== КОНТЕНТ ========== */
-.content {
-    padding: 20px;
-    padding-bottom: 0 !important;
-    overflow-y: scroll !important;
-    height: calc(100vh - 64px - 60px) !important;
-    -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-    overflow-x: hidden !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.content::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
 }
 
 /* ========== СТИЛИ КОМПОНЕНТОВ ========== */
@@ -1455,76 +1374,6 @@ h1 {
     font-size: 20px;
 }
 
-/* ========== СКРОЛЛБАРЫ ========== */
-*::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-}
-
-html, body {
-    overflow: hidden !important;
-    overscroll-behavior: none !important;
-}
-
-* {
-    -webkit-tap-highlight-color: transparent;
-}
-
-/* ========== ДОПОЛНИТЕЛЬНО ========== */
-@supports (padding: max(0px)) {
-    .tab-bar {
-        padding-bottom: max(20px, env(safe-area-inset-bottom));
-    }
-}
-
-/* ========== ФИНАЛЬНЫЙ РАССТРЕЛ ЧЕРТЫ ========== */
-.content {
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-    clip-path: inset(-20px -20px 0 -20px) !important;
-}
-
-.card, .archive-item, .schedule-item {
-    box-shadow: var(--card-shadow);
-}
-
-.card:last-child,
-.archive-item:last-child,
-.schedule-day:last-child .schedule-item:last-child {
-    box-shadow: none !important;
-    margin-bottom: 0 !important;
-}
-
-.content > *:last-child {
-    box-shadow: none !important;
-}
-
-.tab-bar {
-    position: relative;
-    box-shadow: 0 -2px 0 var(--card-bg), 0 -4px 0 var(--card-bg) !important;
-}
-
-body.dark-theme .tab-bar {
-    box-shadow: 0 -2px 0 #1e1e1e, 0 -4px 0 #1e1e1e !important;
-}
-
-.tab-bar::before {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--card-bg);
-    z-index: 1000;
-    pointer-events: none;
-}
-
-body.dark-theme .tab-bar::before {
-    background: #1e1e1e;
-}
-
 /* ========== ВЫРАВНИВАНИЕ ПО ЦЕНТРУ ========== */
 .header-container,
 .content,
@@ -1552,6 +1401,9 @@ body.dark-theme .tab-bar::before {
 html, body {
     margin: 0 !important;
     padding: 0 !important;
+    position: relative;
+    overflow-y: auto !important;
+    height: auto !important;
 }
 
 body {
@@ -1578,7 +1430,7 @@ body {
         height: calc(60px + env(safe-area-inset-bottom)) !important;
         padding-bottom: env(safe-area-inset-bottom) !important;
     }
-    
+
     .content {
         height: calc(100vh - 64px - 60px - env(safe-area-inset-bottom)) !important;
     }
@@ -1587,7 +1439,7 @@ body {
 .content {
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
-    overflow-y: scroll !important;
+    overflow-y: auto !important;
 }
 
 .content::-webkit-scrollbar {
@@ -1627,6 +1479,7 @@ body {
     width: 100%;
     text-align: center;
     margin: 0 auto;
+    animation: cardAppear 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
 }
 
 body.dark-theme .glass-card {
@@ -1734,123 +1587,51 @@ input, textarea {
     border-radius: 0;
 }
 
-/* Убираем лишние позиционирования, которые мешают клавиатуре */
-html, body {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: hidden;
+/* Фикс для поиска в светлой теме */
+.search-input::placeholder {
+    color: white !important;
+    opacity: 0.8;
 }
 
-.content {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .lesson-number {
+        font-size: 14px;
+    }
+    .lesson-name {
+        font-size: 16px;
+    }
+    .lesson-teacher {
+        font-size: 13px;
+    }
+    .lesson-details {
+        font-size: 12px;
+    }
+    .day-header {
+        padding: 12px 16px;
+    }
+    .day-header h3 {
+        font-size: 15px;
+    }
+    .lesson-item {
+        padding: 10px 16px;
+    }
+    .header-container {
+        padding: 0 15px;
+        height: 56px;
+    }
+    .app-header { height: 56px; }
+    .app-logo {
+        width: 32px;
+        height: 32px;
+    }
+    #pageTitle { font-size: 16px; }
+    .settings-dropdown {
+        width: 260px;
+        right: -10px;
+    }
+    body { padding-top: 56px; }
 }
-.page{
-opacity:0;
-transform:translateY(20px);
-transition:transform .35s ease, opacity .35s ease;
-will-change:transform, opacity;
-}
-
-.page.active{
-opacity:1;
-transform:translateY(0);
-}
-
-/* ===== АНИМАЦИИ GIMNET TABLES ===== */
-
-/* плавное появление блока */
-.fade-in {
-opacity: 0;
-transform: translateY(10px) scale(0.98);
-animation: fadeInSmooth 0.35s ease forwards;
-}
-
-@keyframes fadeInSmooth {
-to {
-opacity: 1;
-transform: translateY(0) scale(1);
-}
-}
-
-/* закрытие */
-.fade-out {
-animation: fadeOutSmooth 0.25s ease forwards;
-}
-
-@keyframes fadeOutSmooth {
-to {
-opacity: 0;
-transform: translateY(-6px) scale(0.97);
-}
-}
-
-/* строки таблицы */
-.table-row {
-opacity: 0;
-transform: translateY(8px);
-animation: rowAppear 0.35s ease forwards;
-}
-
-@keyframes rowAppear {
-to {
-opacity: 1;
-transform: translateY(0);
-}
-}
-
-/* кнопки классов */
-.class-btn {
-transition: 
-transform 0.18s ease,
-background 0.25s ease,
-box-shadow 0.25s ease;
-}
-
-.class-btn:active {
-transform: scale(0.93);
-}
-
-.class-btn:hover {
-transform: translateY(-2px);
-box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-}
-
-/* glass таблица */
-.students-table {
-backdrop-filter: blur(20px);
--webkit-backdrop-filter: blur(20px);
-border-radius: 18px;
-overflow: hidden;
-animation: fadeInSmooth 0.35s ease;
-}
-
-/* строки таблицы задержка */
-.students-table tbody tr {
-opacity: 0;
-transform: translateY(10px);
-animation: rowAppear 0.35s ease forwards;
-}
-
-/* красивый hover */
-.students-table tbody tr:hover {
-background: rgba(255,255,255,0.08);
-transition: background 0.2s ease;
-}
-
-/* плавное появление кнопок */
-.class-selector button {
-animation: fadeInSmooth 0.4s ease;
-}
-
-/* glass карточки */
-.glass-card {
-animation: fadeInSmooth 0.35s ease;
-}
-
     </style>
 </head>
 <body class="light-theme">
@@ -1919,7 +1700,7 @@ animation: fadeInSmooth 0.35s ease;
                                 <span>Новости</span>
                             </div>
                         </div>
-                        
+
                         <!-- Ссылки с подменю (только Гимназия) -->
                         <div class="dropdown-item" id="linksBtn">
                             <div class="dropdown-item-content">
@@ -1936,7 +1717,7 @@ animation: fadeInSmooth 0.35s ease;
                                 </div>
                             </a>
                         </div>
-                        
+
                         <div class="dropdown-divider"></div>
                         <a href="https://t.me/+ObOQyRCXbWwwMWIy" target="_blank" class="dropdown-item" id="telegramBtn">
                             <div class="dropdown-item-content">
@@ -2018,32 +1799,31 @@ animation: fadeInSmooth 0.35s ease;
                 </div>
             </div>
         </div>
-        
+
         <!-- Таблицы -->
-<div id="tables" class="page">
+        <div id="tables" class="page">
+            <div class="class-selector">
+                <h3>Выбор класса</h3>
 
-<div class="class-selector">
-    <h3>Выбор класса</h3>
+                <div class="class-section">
+                    <h4>7-9 классы</h4>
+                    <div class="class-buttons" id="tableClassButtonsMiddle"></div>
+                </div>
 
-    <div class="class-section">
-        <h4>7-9 классы</h4>
-        <div class="class-buttons" id="tableClassButtonsMiddle"></div>
-    </div>
+                <div class="class-section">
+                    <h4>10-11 классы</h4>
+                    <div class="class-buttons" id="tableClassButtonsHigh"></div>
+                </div>
+            </div>
 
-    <div class="class-section">
-        <h4>10-11 классы</h4>
-        <div class="class-buttons" id="tableClassButtonsHigh"></div>
-    </div>
-</div>
+            <div id="tableDisplay"></div>
+        </div>
 
-<div id="tableDisplay"></div>
-
-</div>
         <!-- Расписание -->
         <div id="schedule" class="page">
             <div class="class-selector">
                 <h3>Выбор класса</h3>
-                
+
                 <!-- 7-9 классы -->
                 <div class="class-section">
                     <h4>7-9 классы</h4>
@@ -2051,7 +1831,7 @@ animation: fadeInSmooth 0.35s ease;
                         <!-- Кнопки создаются через JS -->
                     </div>
                 </div>
-                
+
                 <!-- 10-11 классы -->
                 <div class="class-section">
                     <h4>10-11 классы</h4>
@@ -2069,7 +1849,7 @@ animation: fadeInSmooth 0.35s ease;
             </div>
         </div>
     </div>
-    
+
     <!-- Нижнее меню -->
     <nav class="tab-bar">
         <div class="tab-item active" data-tab="home">
@@ -2089,7 +1869,7 @@ animation: fadeInSmooth 0.35s ease;
             <div class="tab-label">Расписание</div>
         </div>
     </nav>
-    
+
     <script>
 // ========== ТВОЙ ВЕСЬ ОРИГИНАЛЬНЫЙ КОД ==========
 const firebaseConfig = {
@@ -2136,32 +1916,32 @@ window.addEventListener('DOMContentLoaded', function() {
     const splashText = document.querySelector('.splash-text');
     const splashDots = document.querySelector('.splash-dots');
     const dots = document.querySelectorAll('.splash-dot');
-    
+
     const DURATION = {
         textAppear: 900,
         textVisible: 4500,
         textDisappear: 700,
         fadeOut: 1000
     };
-    
+
     splashScreen.style.background = '#000';
-    
+
     setTimeout(() => {
         splashText.classList.add('show');
     }, 20);
-    
+
     setTimeout(() => {
         splashDots.classList.add('show');
         dots.forEach(dot => dot.classList.add('active'));
     }, DURATION.textAppear + 50);
-    
+
     setTimeout(() => {
         splashText.classList.add('hide');
-        
+
         setTimeout(() => {
             splashScreen.style.opacity = '0';
             splashScreen.style.visibility = 'hidden';
-            
+
             setTimeout(() => {
                 if (splashScreen && splashScreen.parentNode) {
                     splashScreen.remove();
@@ -2235,28 +2015,27 @@ themeOptions.forEach(option => {
         e.stopPropagation();
         e.preventDefault();
         const theme = this.getAttribute('data-theme');
-        
+
         // Запоминаем состояние перед сменой темы
         const hadSelectedClass = currentClass !== null;
         const selectedClass = currentClass;
-        
+
         document.body.className = theme + '-theme';
         updateActiveTheme(theme);
         localStorage.setItem('theme', theme);
-        
+
         if (userIP) {
             database.ref('users/' + userIP.replace(/\./g, '_') + '/theme').set(theme);
         }
-        
-        // Восстанавливаем состояние после смены темы
+
+        // Восстанавливаем состояние после смены темы (с задержкой для плавности)
         if (hadSelectedClass && selectedClass) {
             setTimeout(() => {
                 document.body.classList.add('class-selected');
                 if (document.getElementById('scheduleDisplay').classList.contains('visible')) {
-                    // Не обновляем расписание, просто показываем
                     document.getElementById('scheduleDisplay').classList.add('visible');
                 }
-            }, 50);
+            }, 100);
         }
     });
 });
@@ -2272,7 +2051,7 @@ document.addEventListener('click', function(e) {
 function updatePageTitle() {
     const activeTab = document.querySelector('.tab-item.active');
     if (!activeTab) return;
-    
+
     const tabId = activeTab.getAttribute('data-tab');
     const titles = {
         home: 'Главная',
@@ -2280,7 +2059,7 @@ function updatePageTitle() {
         tables: 'Таблицы',
         schedule: 'Расписание'
     };
-    
+
     if (pageTitle) {
         pageTitle.textContent = titles[tabId] || 'Главная';
     }
@@ -2305,22 +2084,22 @@ pageTitle.addEventListener('click', function() {
 tabItems.forEach(tab => {
     tab.addEventListener('click', function() {
         const tabId = this.getAttribute('data-tab');
-        
+
         tabItems.forEach(item => { item.classList.remove('active'); });
         this.classList.add('active');
-        
+
         pages.forEach(page => { page.classList.remove('active'); });
         document.getElementById(tabId).classList.add('active');
-        
+
         if (userIP) {
             database.ref('users/' + userIP.replace(/\./g, '_') + '/page').set(tabId);
         }
-        
+
         const content = document.querySelector('.content');
         if (content) { content.scrollTo({ top: 0, behavior: 'smooth' }); }
-        
+
         if (navigator.vibrate) { navigator.vibrate(10); }
-        
+
         updateSearchButtonVisibility();
     });
 });
@@ -2374,7 +2153,7 @@ let isSearchActive = false;
 function updateSearchButtonVisibility() {
     const activePage = document.querySelector('.page.active');
     const isArchive = activePage && activePage.id === 'archive';
-    
+
     if (isArchive) {
         searchButton.classList.add('visible');
     } else {
@@ -2419,12 +2198,12 @@ searchButton.addEventListener('click', function(e) {
 searchInput.addEventListener('input', function(e) {
     e.stopPropagation();
     const query = this.value.trim();
-    
+
     if (query.length === 0) {
         searchResults.classList.remove('active');
         return;
     }
-    
+
     searchResults.classList.add('active');
     searchResults.innerHTML = `
         <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
@@ -2458,66 +2237,165 @@ tabItems.forEach(tab => {
 });
 
 updateSearchButtonVisibility();
-// таблицы 
-const classData = {
 
-"7a":{
-teacher:"Классный руководитель: ...",
-students:[
-"Иванов Иван",
-"Петров Пётр"
-]
-},
+// ========== ТАБЛИЦЫ (УЧЕНИКИ) ==========
+let studentsData = {};
+let currentTableClass = null;
 
-"7b":{
-teacher:"Классный руководитель: ...",
-students:[]
-}
-
+// Тестовые данные (замени на свои или подключи students.json)
+const testStudentsData = {
+    "7А": {
+        teacher: "Иванова Мария Ивановна",
+        students: Array(30).fill(0).map((_, i) => `Ученик ${i+1}`)
+    },
+    "7Б": {
+        teacher: "Петрова Анна Сергеевна",
+        students: Array(28).fill(0).map((_, i) => `Ученик ${i+1}`)
+    },
+    "7В": {
+        teacher: "Сидорова Елена Петровна",
+        students: Array(27).fill(0).map((_, i) => `Ученик ${i+1}`)
+    },
+    "8А": {
+        teacher: "Козлов Дмитрий Александрович",
+        students: Array(29).fill(0).map((_, i) => `Ученик ${i+1}`)
+    },
+    "8Б": {
+        teacher: "Морозова Наталья Викторовна",
+        students: Array(26).fill(0).map((_, i) => `Ученик ${i+1}`)
+    },
+    "9А": {
+        teacher: "Волкова Татьяна Игоревна",
+        students: Array(25).fill(0).map((_, i) => `Ученик ${i+1}`)
+    }
 };
 
-let openedClass = null;
+// Загружаем данные (сначала тестовые, потом можно заменить на fetch)
+studentsData = testStudentsData;
+console.log('✅ Данные учеников загружены');
 
-function showClassTable(classId){
+// Создание кнопок классов для таблиц
+function createTableClassButtons() {
+    const middleContainer = document.getElementById('tableClassButtonsMiddle');
+    const highContainer = document.getElementById('tableClassButtonsHigh');
 
-const table = document.querySelector(".class-info");
+    if (!middleContainer || !highContainer) return;
 
-if(openedClass === classId){
+    const middle = ['7А', '7Б', '7В', '8А', '8Б', '8В', '9А', '9Б', '9В'];
+    const high = ['10', '11'];
 
-table.classList.remove("show");
+    middle.forEach(c => {
+        const btn = document.createElement("button");
+        btn.className = "class-btn";
+        btn.textContent = c;
+        btn.onclick = () => toggleTable(c);
+        middleContainer.appendChild(btn);
+    });
 
-openedClass = null;
-
-return;
-
+    high.forEach(c => {
+        const btn = document.createElement("button");
+        btn.className = "class-btn";
+        btn.textContent = c;
+        btn.onclick = () => toggleTable(c);
+        highContainer.appendChild(btn);
+    });
 }
 
-openedClass = classId;
-
-const data = classData[classId];
-
-document.getElementById("classTeacher").textContent = data.teacher;
-
-const body = document.getElementById("studentsBody");
-
-body.innerHTML = "";
-
-data.students.forEach((name,index)=>{
-
-const row = document.createElement("tr");
-
-row.innerHTML = `
-<td>${index+1}</td>
-<td>${name}</td>
-`;
-
-body.appendChild(row);
-
-});
-
-table.classList.add("show");
-
+// Анимация закрытия таблицы
+function animateTableClose(displayElement) {
+    return new Promise(resolve => {
+        displayElement.style.animation = 'fadeOutSmooth 0.25s ease forwards';
+        setTimeout(() => {
+            displayElement.innerHTML = '';
+            displayElement.style.animation = '';
+            resolve();
+        }, 250);
+    });
 }
+
+// Переключение отображения таблицы
+async function toggleTable(className) {
+    const display = document.getElementById("tableDisplay");
+    const allButtons = document.querySelectorAll('#tables .class-btn');
+
+    // Снимаем активный класс со всех кнопок в таблицах
+    allButtons.forEach(btn => btn.classList.remove('active'));
+
+    if (currentTableClass === className) {
+        // Закрываем с анимацией
+        await animateTableClose(display);
+        currentTableClass = null;
+        return;
+    }
+
+    // Добавляем активный класс нажатой кнопке
+    event.target.classList.add('active');
+
+    currentTableClass = className;
+
+    // Проверяем, есть ли данные
+    if (Object.keys(studentsData).length === 0) {
+        display.innerHTML = `
+        <div class="center-wrapper" style="min-height:auto;margin-top:20px;">
+            <div class="glass-card">
+                <div class="glass-text" style="text-align:center;">
+                    Загрузка данных...
+                </div>
+            </div>
+        </div>
+        `;
+        return;
+    }
+
+    const classInfo = studentsData[className];
+
+    if (!classInfo || !classInfo.students || classInfo.students.length === 0) {
+        display.innerHTML = `
+        <div class="center-wrapper" style="min-height:auto;margin-top:20px;">
+            <div class="glass-card">
+                <div class="glass-text" style="text-align:center;">
+                    Список учащихся пока не добавлен для ${className} класса.
+                </div>
+            </div>
+        </div>
+        `;
+        return;
+    }
+
+    let rows = "";
+    classInfo.students.forEach((name, index) => {
+        rows += `
+        <tr style="animation-delay:${index * 0.02}s">
+            <td>${index + 1}</td>
+            <td>${name}</td>
+        </tr>
+        `;
+    });
+
+    display.innerHTML = `
+    <div class="table-card">
+        <div class="class-teacher">
+            Классный руководитель: ${classInfo.teacher || 'не указан'}
+        </div>
+        <div class="students-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>ФИО</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rows}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    `;
+}
+
+// Инициализация кнопок таблиц
+createTableClassButtons();
 
 // ========== НОВОЕ РАСПИСАНИЕ ==========
 // Список всех классов
@@ -2592,14 +2470,14 @@ function createEmptySchedule(className) {
     });
 }
 
-// Создаем кнопки классов
+// Создаем кнопки классов для расписания
 function createClassButtons() {
     const middleContainer = document.getElementById('classButtonsMiddle');
     const highContainer = document.getElementById('classButtonsHigh');
-    
+
     middleContainer.innerHTML = '';
     highContainer.innerHTML = '';
-    
+
     classes.middle.forEach(className => {
         const btn = document.createElement('button');
         btn.className = 'class-btn';
@@ -2608,7 +2486,7 @@ function createClassButtons() {
         btn.addEventListener('click', () => toggleClass(className));
         middleContainer.appendChild(btn);
     });
-    
+
     classes.high.forEach(className => {
         const btn = document.createElement('button');
         btn.className = 'class-btn';
@@ -2619,45 +2497,37 @@ function createClassButtons() {
     });
 }
 
-// Переключение класса
+// Переключение класса в расписании
 function toggleClass(className) {
     const scheduleDisplay = document.getElementById('scheduleDisplay');
     const body = document.body;
-    
+    const allButtons = document.querySelectorAll('#schedule .class-btn');
+
     if (currentClass === className) {
         // Если кликнули на тот же класс - плавно скрываем
-        document.querySelectorAll('.class-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        
-        // Плавно скрываем расписание (transition сработает автоматически)
+        allButtons.forEach(btn => btn.classList.remove('active'));
+
         scheduleDisplay.classList.remove('visible');
-        
-        // Убираем класс-selected после завершения анимации
+
         setTimeout(() => {
-            // Проверяем, что расписание действительно скрыто
             if (!scheduleDisplay.classList.contains('visible')) {
-                body.classList.remove('class-selected');
+                // Ничего не делаем, просто очищаем
             }
-        }, 300); // 300мс - длительность анимации из CSS
-        
+        }, 300);
+
         currentClass = null;
     } else {
         // Если кликнули на другой класс - показываем новое расписание
-        document.querySelectorAll('.class-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.querySelectorAll(`.class-btn[data-class="${className}"]`).forEach(btn => {
-            btn.classList.add('active');
-        });
-        
+        allButtons.forEach(btn => btn.classList.remove('active'));
+
+        const activeButtons = document.querySelectorAll(`#schedule .class-btn[data-class="${className}"]`);
+        activeButtons.forEach(btn => btn.classList.add('active'));
+
         // Отображаем расписание для выбранного класса
         displaySchedule(className);
-        
-        // Плавно показываем расписание
+
         scheduleDisplay.classList.add('visible');
-        body.classList.add('class-selected');
-        
+
         currentClass = className;
     }
 }
@@ -2666,31 +2536,32 @@ function toggleClass(className) {
 function toggleDay(dayHeader) {
     const dayLessons = dayHeader.nextElementSibling;
     dayLessons.classList.toggle('visible');
+    dayHeader.classList.toggle('active');
 }
 
 // Отображаем расписание
 function displaySchedule(className) {
     const container = document.getElementById('scheduleContainer');
     container.innerHTML = '';
-    
+
     const classData = scheduleData[className];
     if (!classData) return;
-    
+
     days.forEach(day => {
         // Создаем день
         const dayDiv = document.createElement('div');
         dayDiv.className = 'schedule-day';
-        
+
         // Заголовок дня
         const dayHeader = document.createElement('div');
         dayHeader.className = 'day-header';
-        dayHeader.innerHTML = `<h3>${daysRussian[day]}</h3>`;
+        dayHeader.innerHTML = `<h3>${daysRussian[day]}</h3><i class="fas fa-chevron-down"></i>`;
         dayHeader.addEventListener('click', () => toggleDay(dayHeader));
-        
+
         // Контейнер для уроков дня
         const dayLessons = document.createElement('div');
         dayLessons.className = 'day-lessons';
-        
+
         // Добавляем уроки
         const lessons = classData[day];
         if (lessons && lessons.length > 0) {
@@ -2711,7 +2582,7 @@ function displaySchedule(className) {
                 }
             });
         }
-        
+
         dayDiv.appendChild(dayHeader);
         dayDiv.appendChild(dayLessons);
         container.appendChild(dayDiv);
@@ -2767,8 +2638,7 @@ function fillAllSchedule() {
                 { number: 6, name: 'История', teacher: ' ', room: '' }
             ]
         },
-
-'7Б': {
+        '7Б': {
             monday: [
                 { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
                 { number: 2, name: 'Алгебра', teacher: ' ', room: '' },
@@ -2813,8 +2683,7 @@ function fillAllSchedule() {
                 { number: 6, name: 'Вероятность и Статистика', teacher: ' ', room: '' }
             ]
         },
-
-'7В': {
+        '7В': {
             monday: [
                 { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
                 { number: 2, name: 'История', teacher: ' ', room: '' },
@@ -2860,8 +2729,7 @@ function fillAllSchedule() {
                 { number: 7, name: 'Физкультура', teacher: 'Жарков Александр Леонидович', room: '' } 
             ]
         },
-
-'8А': {
+        '8А': {
             monday: [
                 { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
                 { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
@@ -2905,11 +2773,10 @@ function fillAllSchedule() {
                 { number: 4, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
                 { number: 5, name: 'Алгебра', teacher: ' ', room: '' },
                 { number: 6, name: 'Русский язык', teacher: ' ', room: '' },
-                { number: 7, name: 'Вероятность и Ститистика', teacher: ' ', room: '' }
+                { number: 7, name: 'Вероятность и Статистика', teacher: ' ', room: '' }
             ]
         },
-
-'8Б': {
+        '8Б': {
             monday: [
                 { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
                 { number: 2, name: 'Русский язык', teacher: ' ', room: '' },
@@ -2955,7 +2822,6 @@ function fillAllSchedule() {
                 { number: 7, name: 'Русская словесность', teacher: ' ', room: '' }
             ]
         }
-
     };
 
     // Загружаем шаблон
@@ -2971,122 +2837,14 @@ function fillAllSchedule() {
             localStorage.setItem(`schedule_${className}`, JSON.stringify(scheduleTemplate[className]));
         }
     }
-    
+
     console.log('✅ Расписание загружено.');
 }
 
-// Инициализация
+// Инициализация расписания
 loadScheduleData();
 createClassButtons();
 fillAllSchedule();
-
-function createTableClassButtons(){
-
-const middle = ['7А','7Б','7В','8А','8Б','8В','9А','9Б','9В'];
-const high = ['10','11'];
-
-const middleContainer = document.getElementById('tableClassButtonsMiddle');
-const highContainer = document.getElementById('tableClassButtonsHigh');
-
-middle.forEach(c=>{
-const btn=document.createElement("button");
-btn.className="class-btn";
-btn.textContent=c;
-btn.onclick=()=>toggleTable(c);
-middleContainer.appendChild(btn);
-});
-
-high.forEach(c=>{
-const btn=document.createElement("button");
-btn.className="class-btn";
-btn.textContent=c;
-btn.onclick=()=>toggleTable(c);
-highContainer.appendChild(btn);
-});
-
-}
-
-let currentTableClass=null;
-
-function toggleTable(className){
-
-const display = document.getElementById("tableDisplay");
-
-if(currentTableClass === className){
-display.innerHTML = "";
-currentTableClass = null;
-return;
-}
-
-currentTableClass = className;
-
-const classInfo = studentsData[className];
-
-if(!classInfo || !classInfo.students || classInfo.students.length === 0){
-display.innerHTML = `
-<div class="center-wrapper" style="min-height:auto;margin-top:20px;">
-    <div class="glass-card">
-        <div class="glass-text" style="text-align:center;">
-            Список учащихся пока не добавлен.
-        </div>
-    </div>
-</div>
-`;
-return;
-}
-
-let rows = "";
-
-classInfo.students.forEach((name,index)=>{
-rows += `
-<tr class="table-row" style="animation-delay:${index*0.04}s">
-<td>${index+1}</td>
-<td>${name}</td>
-</tr>
-`;
-});
-
-display.innerHTML = `
-<div class="table-card">
-
-<div class="class-teacher">
-Классный руководитель: ${classInfo.teacher}
-</div>
-
-<div class="students-table">
-
-<table>
-<thead>
-<tr>
-<th>№</th>
-<th>ФИО</th>
-</tr>
-</thead>
-
-<tbody>
-
-${rows}
-
-</tbody>
-</table>
-
-</div>
-
-</div>
-`;
-
-}
-
-createTableClassButtons();
-
-let studentsData = {};
-
-fetch("students.json")
-.then(res => res.json())
-.then(data => {
-studentsData = data;
-});
-
 </script>
 </body>
 </html>
