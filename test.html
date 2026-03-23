@@ -874,7 +874,7 @@ body.dark-theme .class-btn.active {
 /* САМА ТАБЛИЦА */
 .students-table {
     background: var(--table-bg-light);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 18px;
     padding: 8px;
@@ -930,22 +930,9 @@ body.dark-theme .students-table td {
     color: var(--table-text-dark);
 }
 
-.students-table tr {
-    opacity: 0;
-    transform: translateY(8px);
-    animation: rowAppear 0.3s ease forwards;
-}
-
 .students-table tr:hover {
     background: rgba(128, 128, 128, 0.1);
     transition: background 0.2s ease;
-}
-
-@keyframes rowAppear {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 /* Классный руководитель */
@@ -956,6 +943,17 @@ body.dark-theme .students-table td {
     margin-bottom: 12px;
     padding-left: 4px;
     color: var(--text-color);
+}
+
+.table-card {
+    margin-top: 15px;
+    border-radius: 16px;
+    overflow: hidden;
+    animation: cardAppear 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+.students-table thead {
+    transition: opacity 0.2s ease;
 }
 
 /* ========== НОВЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ ========== */
@@ -2253,6 +2251,20 @@ tabItems.forEach(tab => {
 });
 
 updateSearchButtonVisibility();
+
+
+const table = document.querySelector('.students-table');
+const thead = document.querySelector('.students-table thead');
+
+if(table && thead){
+    table.addEventListener('scroll', () => {
+        if (table.scrollTop > 10) {
+            thead.style.opacity = "0";
+        } else {
+            thead.style.opacity = "1";
+        }
+    });
+}
 
 // ========== ТАБЛИЦЫ (УЧЕНИКИ) ==========
 let studentsData = {};
