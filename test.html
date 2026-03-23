@@ -874,7 +874,7 @@ body.dark-theme .class-btn.active {
 /* САМА ТАБЛИЦА */
 .students-table {
     background: var(--table-bg-light);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 18px;
     padding: 8px;
@@ -906,17 +906,33 @@ body.dark-theme .students-table {
     font-size: 14px;
 }
 
+.students-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.students-table thead tr {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+body.dark-theme .students-table thead tr {
+    background: rgba(20, 20, 20, 0.85);
+}
+
 .students-table th {
     text-align: left;
     font-weight: 700;
-    padding: 12px 8px;
-    opacity: 0.8;
-    position: sticky;
-    top: 0;
-    background: inherit;
-    backdrop-filter: blur(10px);
-    z-index: 5;
+    padding: 14px 10px;
     color: var(--text-color);
+}
+
+.students-table thead th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.students-table thead th:last-child {
+    border-top-right-radius: 12px;
 }
 
 .students-table td {
