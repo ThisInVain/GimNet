@@ -771,6 +771,40 @@ img.emoji {
 }
 
 /* ========== ТАБЛИЦЫ (УЧЕНИКИ) ========== */
+/* Появление страницы */
+.page {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.35s ease, transform 0.4s cubic-bezier(.2,.8,.2,1);
+}
+
+.table-card {
+    margin-top: 15px;
+    border-radius: 16px;
+    overflow: hidden;
+
+    opacity: 0;
+    transform: translateY(25px) scale(0.96);
+    transition: 
+        opacity 0.35s ease,
+        transform 0.4s cubic-bezier(.2,.8,.2,1);
+}
+
+.table-card.hide {
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
+}
+
+.table-card.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.page.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .tables-container {
     padding: 20px;
     display: flex;
@@ -2606,13 +2640,17 @@ function createTableClassButtons() {
     });
 }
 
-// Анимация закрытия таблицы
 function animateTableClose(displayElement) {
     return new Promise(resolve => {
-        displayElement.style.animation = 'fadeOutSmooth 0.25s ease forwards';
+        displayElement.style.transition = "all .25s ease";
+        displayElement.style.opacity = "0";
+        displayElement.style.transform = "translateY(10px) scale(0.96)";
+
         setTimeout(() => {
             displayElement.innerHTML = '';
-            displayElement.style.animation = '';
+            displayElement.style.transition = '';
+            displayElement.style.opacity = '';
+            displayElement.style.transform = '';
             resolve();
         }, 250);
     });
@@ -2670,33 +2708,57 @@ async function toggleTable(className) {
     let rows = "";
     classInfo.students.forEach((name, index) => {
         rows += `
-        <tr style="animation-delay:${index * 0.02}s">
-            <td>${index + 1}</td>
-            <td>${name}</td>
-        </tr>
-        `;
+<tr>
+    <td>${index + 1}</td>
+    <td>${name}</td>
+</tr>
+`;
     });
 
-    display.innerHTML = `
-    <div class="table-card">
-        <div class="class-teacher">
-            Классный руководитель: ${classInfo.teacher || 'не указан'}
-        </div>
-        <div class="students-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>№</th>
-                        <th>ФИО</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${rows}
-                </tbody>
-            </table>
-        </div>
+    await animateTableClose(display);
+
+display.innerHTML = `
+<div class="table-card">
+    <div class="class-teacher">
+        Классный руководитель: ${classInfo.teacher || 'не указан'}
     </div>
-    `;
+    <div class="students-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>ФИО</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${rows}
+            </tbody>
+        </table>
+    </div>
+</div>
+`;
+
+const card = display.querySelector(".table-card");
+
+requestAnimationFrame(() => {
+    card.style.opacity = "0";
+    card.style.transform = "translateY(20px) scale(0.96)";
+
+    requestAnimationFrame(() => {
+        card.style.transition = "all .35s cubic-bezier(.2,.8,.2,1)";
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0) scale(1)";
+    });
+});
+}
+
+const tableEl = display.querySelector('.students-table');
+const thead = display.querySelector('thead');
+
+if (tableEl && thead) {
+    tableEl.addEventListener('scroll', () => {
+        thead.style.opacity = tableEl.scrollTop > 10 ? "0" : "1";
+    });
 }
 
 // Инициализация кнопок таблиц
