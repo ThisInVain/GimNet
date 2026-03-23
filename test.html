@@ -593,7 +593,7 @@ body.dark-theme .links-submenu {
 }
 
 .links-submenu.active {
-    max-height: 70px;
+    max-height: 1000px;
 }
 
 .links-submenu .dropdown-item {
@@ -610,6 +610,12 @@ body.dark-theme .links-submenu {
 body.dark-theme .links-submenu .dropdown-item:hover {
     background: rgba(255, 255, 255, 0.05);
     border-left: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.links-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 /* ========== СТИЛИ ДЛЯ НОВОСТЕЙ ========== */
