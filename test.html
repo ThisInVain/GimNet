@@ -1935,6 +1935,9 @@ input, textarea {
     </nav>
 
     <script>
+window.onerror = function(msg, url, line) {
+    alert("Ошибка: " + msg + " строка: " + line);
+};
 // ========== ТВОЙ ВЕСЬ ОРИГИНАЛЬНЫЙ КОД ==========
 const firebaseConfig = {
     apiKey: "AIzaSyDVHgEuMdlx7op-cAwwYmt6TO8iW-rXb7o",
