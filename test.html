@@ -2638,7 +2638,7 @@ function createTableClassButtons() {
         const btn = document.createElement("button");
         btn.className = "class-btn";
         btn.textContent = c;
-        btn.onclick = () => toggleTable(c);
+        btn.onclick = (e) => toggleTable(c, e); // Добавил 'e' для единообразия
         highContainer.appendChild(btn);
     });
 }
@@ -2675,7 +2675,9 @@ async function toggleTable(className, event) {
     }
 
     // Добавляем активный класс нажатой кнопке
-    event.target.classList.add('active');
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
 
     currentTableClass = className;
 
@@ -2710,61 +2712,53 @@ async function toggleTable(className, event) {
 
     let rows = "";
     classInfo.students.forEach((name, index) => {
-        rows += `
-<tr>
-    <td>${index + 1}</td>
-    <td>${name}</td>
-</tr>
-`;
+        rows += `<tr><td>${index + 1}</td><td>${name}</td></tr>`;
     });
 
     await animateTableClose(display);
 
-display.innerHTML = `
-<div class="table-card">
-    <div class="class-teacher">
-        Классный руководитель: ${classInfo.teacher || 'не указан'}
+    display.innerHTML = `
+    <div class="table-card">
+        <div class="class-teacher">
+            Классный руководитель: ${classInfo.teacher || 'не указан'}
+        </div>
+        <div class="students-table">
+            <table>
+                <thead>
+                    <tr><th>№</th><th>ФИО</th></tr>
+                </thead>
+                <tbody>
+                    ${rows}
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="students-table">
-        <table>
-            <thead>
-                <tr>
-                    <th>№</th>
-                    <th>ФИО</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${rows}
-            </tbody>
-        </table>
-    </div>
-</div>
-`;
+    `;
 
-const card = display.querySelector(".table-card");
+    const card = display.querySelector(".table-card");
+    if (card) {
+        requestAnimationFrame(() => {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(20px) scale(0.96)";
+            requestAnimationFrame(() => {
+                card.style.transition = "all .35s cubic-bezier(.2,.8,.2,1)";
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0) scale(1)";
+            });
+        });
+    }
 
-requestAnimationFrame(() => {
-    card.style.opacity = "0";
-    card.style.transform = "translateY(20px) scale(0.96)";
-
-    requestAnimationFrame(() => {
-        card.style.transition = "all .35s cubic-bezier(.2,.8,.2,1)";
-        card.style.opacity = "1";
-        card.style.transform = "translateY(0) scale(1)";
-    });
-});
+    // Установка обработчика скролла для новой таблицы
+    const tableEl = display.querySelector('.students-table');
+    const thead = display.querySelector('thead');
+    if (tableEl && thead) {
+        tableEl.addEventListener('scroll', () => {
+            thead.style.opacity = tableEl.scrollTop > 10 ? "0" : "1";
+        });
+    }
 }
 
-const tableEl = display.querySelector('.students-table');
-const thead = display.querySelector('thead');
-
-if (tableEl && thead) {
-    tableEl.addEventListener('scroll', () => {
-        thead.style.opacity = tableEl.scrollTop > 10 ? "0" : "1";
-    });
-}
-
-// Инициализация кнопок таблиц
+// Инициализация кнопок таблиц (вызывается ПОСЛЕ определения функций)
 createTableClassButtons();
 
 // ========== НОВОЕ РАСПИСАНИЕ ==========
