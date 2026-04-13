@@ -2657,7 +2657,7 @@ function animateTableClose(displayElement) {
 }
 
 // Переключение отображения таблицы
-async function toggleTable(className, event) {
+async function toggleTable(className) {
     const display = document.getElementById("tableDisplay");
     const allButtons = document.querySelectorAll('#tables .class-btn');
 
@@ -2672,8 +2672,7 @@ async function toggleTable(className, event) {
     }
 
     // Добавляем активный класс нажатой кнопке
-    const btn = document.querySelector(`#tables .class-btn[data-class="${className}"]`);
-if(btn) btn.classList.add('active');
+    event.target.classList.add('active');
 
     currentTableClass = className;
 
