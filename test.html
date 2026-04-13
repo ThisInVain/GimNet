@@ -2627,7 +2627,7 @@ function createTableClassButtons() {
         const btn = document.createElement("button");
         btn.className = "class-btn";
         btn.textContent = c;
-        btn.onclick = () => toggleTable(c);
+        btn.onclick = (e) => toggleTable(c, e);
         middleContainer.appendChild(btn);
     });
 
@@ -2657,7 +2657,7 @@ function animateTableClose(displayElement) {
 }
 
 // Переключение отображения таблицы
-async function toggleTable(className) {
+async function toggleTable(className, event) {
     const display = document.getElementById("tableDisplay");
     const allButtons = document.querySelectorAll('#tables .class-btn');
 
