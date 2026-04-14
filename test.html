@@ -116,79 +116,31 @@ body.dark-theme {
 }
 
 /* ========== ВЕРХНЕЕ МЕНЮ ========== */
+/* Замените существующий блок .app-header на этот */
 .app-header {
-    background: var(--header-gradient);
+    /* Убираем старый градиент и делаем фон прозрачным */
+    background: rgba(255, 255, 255, 0.72); /* Светлая тема */
+    /* Добавляем сильное размытие — ключевой эффект */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    /* Убираем нижнюю тень, оставляем только легкую границу */
+    box-shadow: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    
+    /* Остальные стили остаются без изменений */
     color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     height: 64px;
 }
 
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    height: 64px;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-}
-
-.app-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: relative;
-}
-
-.app-logo {
-    width: 36px;
-    height: 36px;
-    background: var(--logo-gradient);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    font-size: 8px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    user-select: none;
-    z-index: 1002;
-}
-
-.app-logo:hover {
-    transform: scale(1.05);
-}
-
-.app-logo:active {
-    transform: scale(0.95);
-}
-
-#pageTitle {
-    font-size: 18px;
-    font-weight: 700;
-    color: white;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    cursor: pointer;
-    padding: 10px 15px;
-    transition: opacity 0.4s ease;
-    opacity: 1;
-}
-
-#pageTitle.search-hidden {
-    opacity: 0;
-    pointer-events: none;
+/* Добавляем стили для темной темы */
+body.dark-theme .app-header {
+    background: rgba(0, 0, 0, 0.55);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 /* ========== НОВЫЙ ПОИСК ========== */
@@ -1240,93 +1192,35 @@ body.dark-theme .lesson-item {
 }
 
 /* ========== НИЖНЕЕ МЕНЮ ========== */
+/* Замените существующий блок .tab-bar на этот */
 .tab-bar {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     height: 60px;
-    background: var(--card-bg);
+    
+    /* Стеклянный эффект */
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    
+    /* Убираем старые тени и обводки */
+    box-shadow: none;
+    border: none;
+    
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border: none !important;
-    border-top: none !important;
-    border-bottom: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    -webkit-box-shadow: none !important;
     padding-bottom: env(safe-area-inset-bottom);
     z-index: 999;
 }
 
-.tab-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: #666;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-    position: relative;
-    top: 8px;
-}
-
-.tab-icon {
-    font-size: 22px;
-    margin-bottom: 2px;
-    transition: transform 0.2s ease, color 0.2s ease;
-    color: #a9a9a9;
-}
-
-.tab-item.active .tab-icon {
-    color: var(--active-color);
-    transform: translateY(-1px) scale(1.1);
-}
-
-.tab-label {
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 0.3px;
-    color: #a9a9a9;
-}
-
-.tab-item.active .tab-label {
-    font-weight: 800;
-    color: var(--active-color);
-}
-
+/* Стили для темной темы */
 body.dark-theme .tab-bar {
-    background: #1e1e1e;
-}
-
-body.dark-theme .tab-item,
-body.dark-theme .tab-icon,
-body.dark-theme .tab-label {
-    color: #a9a9a9;
-}
-
-body.dark-theme .tab-item.active .tab-icon,
-body.dark-theme .tab-item.active .tab-label {
-    color: var(--active-color);
-}
-
-@media (max-width: 768px) {
-    .tab-bar { height: 56px; }
-    .tab-item { top: 6px; }
-    .tab-icon { font-size: 20px; margin-bottom: 1px; }
-    .tab-label { font-size: 11px; }
-}
-
-@media (max-width: 480px) {
-    .tab-item { top: 5px; }
-    .tab-icon { font-size: 19px; }
-    .tab-label { font-size: 10px; }
+    background: rgba(0, 0, 0, 0.55);
+    border-top-color: rgba(255, 255, 255, 0.1);
 }
 
 /* ========== СТИЛИ КОМПОНЕНТОВ ========== */
