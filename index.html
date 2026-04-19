@@ -2622,17 +2622,26 @@ function createTableClassButtons() {
 
     if (!middleContainer || !highContainer) return;
 
-    const middleContainer = document.getElementById('tableClassButtonsMiddle');
+    const middle = ['7А', '7Б', '7В', '8А', '8Б', '8В', '9А', '9Б', '9В'];
+    const high = ['10', '11'];
 
-const middle = ['7А', '7Б', '7В', '8А', '8Б', '8В', '9А', '9Б', '9В'];
+    middle.forEach(c => {
+        const btn = document.createElement("button");
+        btn.className = "class-btn";
+        btn.textContent = c;
+        btn.onclick = (e) => toggleTable(c, e);
+        middleContainer.appendChild(btn);
+    });
 
-middle.forEach(c => {
-    const btn = document.createElement("button");
-    btn.className = "class-btn";
-    btn.textContent = c;
-    btn.onclick = (e) => toggleTable(c, e);
-    middleContainer.appendChild(btn);
-});
+    high.forEach(c => {
+        const btn = document.createElement("button");
+        btn.className = "class-btn";
+        btn.textContent = c;
+        btn.onclick = (e) => toggleTable(c, e); // Добавил 'e' для единообразия
+        highContainer.appendChild(btn);
+    });
+}
+
 function animateTableClose(displayElement) {
     return new Promise(resolve => {
         displayElement.style.transition = "all .25s ease";
