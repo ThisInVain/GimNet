@@ -1006,6 +1006,11 @@ body.dark-theme .students-table td {
     transition: opacity 0.2s ease;
 }
 
+.class-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+}
 /* ========== НОВЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ ========== */
 .class-selector {
     margin-bottom: 20px;
@@ -1870,9 +1875,17 @@ input, textarea {
                 <h3>Выбор класса</h3>
 
                 <div class="class-section">
-                    <h4>7-9 классы</h4>
-                    <div class="class-buttons" id="tableClassButtonsMiddle"></div>
-                </div>
+    <h4>7-9 классы</h4>
+
+    <div id="tableClassButtonsMiddle">
+
+        <div class="class-row" id="row7"></div>
+        <div class="class-row" id="row8"></div>
+        <div class="class-row" id="row9"></div>
+
+    </div>
+
+</div>
 
                 <div class="class-section">
                     <h4>10-11 классы</h4>
@@ -2623,25 +2636,28 @@ function createTableClassButtons() {
 
     if (!middleContainer || !highContainer) return;
 
-    const middle = ['7А', '7Б', '7В', '8А', '8Б', '8В', '9А', '9Б', '9В'];
-    const high = ['10', '11'];
+    const row7 = document.getElementById('row7');
+const row8 = document.getElementById('row8');
+const row9 = document.getElementById('row9');
 
-    middle.forEach(c => {
+const classes = {
+    7: ['7А','7Б','7В'],
+    8: ['8А','8Б','8В'],
+    9: ['9А','9Б','9В']
+};
+
+Object.keys(classes).forEach(grade => {
+    const row = document.getElementById(`row${grade}`);
+
+    classes[grade].forEach(c => {
         const btn = document.createElement("button");
         btn.className = "class-btn";
         btn.textContent = c;
         btn.onclick = (e) => toggleTable(c, e);
-        middleContainer.appendChild(btn);
-    });
 
-    high.forEach(c => {
-        const btn = document.createElement("button");
-        btn.className = "class-btn";
-        btn.textContent = c;
-        btn.onclick = (e) => toggleTable(c, e); // Добавил 'e' для единообразия
-        highContainer.appendChild(btn);
+        row.appendChild(btn);
     });
-}
+});
 
 function animateTableClose(displayElement) {
     return new Promise(resolve => {
