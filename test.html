@@ -1877,37 +1877,24 @@ fetch('https://api.ipify.org?format=json')
         });
     });
 
-// Простой темный экран
+// Простой темный экран с плавным исчезновением
 document.addEventListener('DOMContentLoaded', function() {
     const splashScreen = document.getElementById('splashScreen');
+    
     if (splashScreen) {
+        // Ждем 1 секунду, затем начинаем исчезновение
         setTimeout(() => {
             splashScreen.classList.add('hide');
-            setTimeout(() => {
-                if (splashScreen.parentNode) {
-                    splashScreen.remove();
-                }
-            }, 500);
-        }, 500);
+        }, 1000);
+        
+        // Удаляем элемент ПОСЛЕ того как анимация завершится
+        setTimeout(() => {
+            if (splashScreen && splashScreen.parentNode) {
+                splashScreen.remove();
+            }
+        }, 1800); // 1000ms (ожидание) + 800ms (анимация)
     }
 });
-
-// Код для логотипа (можно оставить)
-setTimeout(function() {
-    const logo = document.getElementById('logoBtn');
-    if (logo) {
-        logo.onclick = function(e) {
-            e.preventDefault();
-            const content = document.querySelector('.content');
-            if (content) {
-                content.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-            this.style.transform = 'scale(0.9)';
-            setTimeout(() => { this.style.transform = ''; }, 150);
-            return false;
-        };
-    }
-}, 500);
 
 const settingsBtn = document.getElementById('settingsBtn');
 const settingsDropdown = document.getElementById('settingsDropdown');
