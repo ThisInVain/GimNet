@@ -1690,6 +1690,100 @@ input, textarea {
     }
     body { padding-top: 56px; }
 }
+
+/* ========== АНИМАЦИИ ДЛЯ ВКЛАДОК ========== */
+
+/* Анимация для карточек и таблиц */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Анимация для кнопок классов */
+.class-buttons .class-btn {
+    animation: fadeInUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+/* Задержки для кнопок, чтобы они появлялись по очереди */
+.class-buttons .class-btn:nth-child(1) { animation-delay: 0.05s; }
+.class-buttons .class-btn:nth-child(2) { animation-delay: 0.10s; }
+.class-buttons .class-btn:nth-child(3) { animation-delay: 0.15s; }
+.class-buttons .class-btn:nth-child(4) { animation-delay: 0.20s; }
+.class-buttons .class-btn:nth-child(5) { animation-delay: 0.25s; }
+.class-buttons .class-btn:nth-child(6) { animation-delay: 0.30s; }
+.class-buttons .class-btn:nth-child(7) { animation-delay: 0.35s; }
+.class-buttons .class-btn:nth-child(8) { animation-delay: 0.40s; }
+.class-buttons .class-btn:nth-child(9) { animation-delay: 0.45s; }
+.class-buttons .class-btn:nth-child(10) { animation-delay: 0.50s; }
+
+/* Анимация для заголовков вкладок */
+.class-selector h3 {
+    animation: fadeInUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+    animation-delay: 0s;
+}
+
+.class-section h4 {
+    animation: fadeInUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+    animation-delay: 0.05s;
+}
+
+/* Анимация для таблицы со списками */
+#tableDisplay .table-card {
+    animation: fadeInScale 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+    animation-delay: 0.1s;
+}
+
+/* Анимация для расписания */
+#scheduleDisplay {
+    animation: fadeInScale 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+#scheduleDisplay.visible {
+    animation: fadeInScale 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+/* Анимация для дней расписания */
+.schedule-day {
+    animation: fadeInUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+.schedule-day:nth-child(1) { animation-delay: 0.05s; }
+.schedule-day:nth-child(2) { animation-delay: 0.10s; }
+.schedule-day:nth-child(3) { animation-delay: 0.15s; }
+.schedule-day:nth-child(4) { animation-delay: 0.20s; }
+.schedule-day:nth-child(5) { animation-delay: 0.25s; }
+
+/* Анимация для уроков внутри дня */
+.lesson-item {
+    animation: fadeInUp 0.3s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+.lesson-item:nth-child(1) { animation-delay: 0.02s; }
+.lesson-item:nth-child(2) { animation-delay: 0.04s; }
+.lesson-item:nth-child(3) { animation-delay: 0.06s; }
+.lesson-item:nth-child(4) { animation-delay: 0.08s; }
+.lesson-item:nth-child(5) { animation-delay: 0.10s; }
+.lesson-item:nth-child(6) { animation-delay: 0.12s; }
+.lesson-item:nth-child(7) { animation-delay: 0.14s; }
+.lesson-item:nth-child(8) { animation-delay: 0.16s; }
+
     </style>
 </head>
 <body class="light-theme">
@@ -1933,6 +2027,50 @@ input, textarea {
             <div class="tab-label">Расписание</div>
         </div>
     </nav>
+
+tabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+        const tabId = this.getAttribute('data-tab');
+
+        tabItems.forEach(item => { item.classList.remove('active'); });
+        this.classList.add('active');
+
+        pages.forEach(page => { page.classList.remove('active'); });
+        document.getElementById(tabId).classList.add('active');
+
+        if (userIP) {
+            database.ref('users/' + userIP.replace(/\./g, '_') + '/page').set(tabId);
+        }
+
+        const content = document.querySelector('.content');
+        if (content) { content.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        if (navigator.vibrate) { navigator.vibrate(10); }
+
+        updateSearchButtonVisibility();
+        
+        // ========== НОВЫЙ КОД: ПЕРЕЗАПУСК АНИМАЦИЙ ==========
+        if (tabId === 'tables' || tabId === 'schedule') {
+            const activePage = document.getElementById(tabId);
+            
+            // Временно убираем анимацию
+            const animatedElements = activePage.querySelectorAll('.class-btn, .table-card, #scheduleDisplay, .schedule-day');
+            animatedElements.forEach(el => {
+                el.style.animation = 'none';
+                el.offsetHeight; // принудительный пересчет стилей
+                el.style.animation = '';
+            });
+            
+            // Для расписания - перезапуск анимации контейнера
+            if (tabId === 'schedule' && currentScheduleClass) {
+                const scheduleDisplay = document.getElementById('scheduleDisplay');
+                scheduleDisplay.style.animation = 'none';
+                scheduleDisplay.offsetHeight;
+                scheduleDisplay.style.animation = '';
+            }
+        }
+    });
+});
 
     <script>
 window.onerror = function(msg, url, line) {
