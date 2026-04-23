@@ -2028,50 +2028,6 @@ input, textarea {
         </div>
     </nav>
 
-tabItems.forEach(tab => {
-    tab.addEventListener('click', function() {
-        const tabId = this.getAttribute('data-tab');
-
-        tabItems.forEach(item => { item.classList.remove('active'); });
-        this.classList.add('active');
-
-        pages.forEach(page => { page.classList.remove('active'); });
-        document.getElementById(tabId).classList.add('active');
-
-        if (userIP) {
-            database.ref('users/' + userIP.replace(/\./g, '_') + '/page').set(tabId);
-        }
-
-        const content = document.querySelector('.content');
-        if (content) { content.scrollTo({ top: 0, behavior: 'smooth' }); }
-
-        if (navigator.vibrate) { navigator.vibrate(10); }
-
-        updateSearchButtonVisibility();
-        
-        // ========== НОВЫЙ КОД: ПЕРЕЗАПУСК АНИМАЦИЙ ==========
-        if (tabId === 'tables' || tabId === 'schedule') {
-            const activePage = document.getElementById(tabId);
-            
-            // Временно убираем анимацию
-            const animatedElements = activePage.querySelectorAll('.class-btn, .table-card, #scheduleDisplay, .schedule-day');
-            animatedElements.forEach(el => {
-                el.style.animation = 'none';
-                el.offsetHeight; // принудительный пересчет стилей
-                el.style.animation = '';
-            });
-            
-            // Для расписания - перезапуск анимации контейнера
-            if (tabId === 'schedule' && currentScheduleClass) {
-                const scheduleDisplay = document.getElementById('scheduleDisplay');
-                scheduleDisplay.style.animation = 'none';
-                scheduleDisplay.offsetHeight;
-                scheduleDisplay.style.animation = '';
-            }
-        }
-    });
-});
-
     <script>
 window.onerror = function(msg, url, line) {
     alert("Ошибка: " + msg + " строка: " + line);
@@ -3527,6 +3483,50 @@ function fillAllSchedule() {
 
     console.log('✅ Расписание загружено.');
 }
+
+tabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+        const tabId = this.getAttribute('data-tab');
+
+        tabItems.forEach(item => { item.classList.remove('active'); });
+        this.classList.add('active');
+
+        pages.forEach(page => { page.classList.remove('active'); });
+        document.getElementById(tabId).classList.add('active');
+
+        if (userIP) {
+            database.ref('users/' + userIP.replace(/\./g, '_') + '/page').set(tabId);
+        }
+
+        const content = document.querySelector('.content');
+        if (content) { content.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        if (navigator.vibrate) { navigator.vibrate(10); }
+
+        updateSearchButtonVisibility();
+        
+        // ========== НОВЫЙ КОД: ПЕРЕЗАПУСК АНИМАЦИЙ ==========
+        if (tabId === 'tables' || tabId === 'schedule') {
+            const activePage = document.getElementById(tabId);
+            
+            // Временно убираем анимацию
+            const animatedElements = activePage.querySelectorAll('.class-btn, .table-card, #scheduleDisplay, .schedule-day');
+            animatedElements.forEach(el => {
+                el.style.animation = 'none';
+                el.offsetHeight; // принудительный пересчет стилей
+                el.style.animation = '';
+            });
+            
+            // Для расписания - перезапуск анимации контейнера
+            if (tabId === 'schedule' && currentScheduleClass) {
+                const scheduleDisplay = document.getElementById('scheduleDisplay');
+                scheduleDisplay.style.animation = 'none';
+                scheduleDisplay.offsetHeight;
+                scheduleDisplay.style.animation = '';
+            }
+        }
+    });
+});
 
 // Инициализация расписания
 loadScheduleData();
