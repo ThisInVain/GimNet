@@ -828,8 +828,8 @@ img.emoji {
 
 /* КНОПКИ КЛАССОВ (общие для таблиц и расписания) */
 .class-buttons {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 кнопки в ряд */
     gap: 10px;
     margin-bottom: 14px;
 }
@@ -2769,7 +2769,11 @@ function createTableClassButtons() {
 
     if (!middleContainer || !highContainer) return;
 
-    const middle = ['7А', '7Б', '7В', '8А', '8Б', '8В', '9А', '9Б', '9В'];
+    const middle = [
+    '7А','7Б','7В',
+    '8А','8Б','8В',
+    '9А','9Б','9В'
+];
     const high = ['10', '11'];
 
     middle.forEach(c => {
@@ -2910,13 +2914,15 @@ createTableClassButtons();
 // ========== НОВОЕ РАСПИСАНИЕ ==========
 // Список всех классов
 const classes = {
-    middle: 
-['5А', '5Б', '5В',
-'6А', '6Б', '6В', 
-'7А', '7Б', '7В', 
-'8А', '8Б', '8В', 
-'9А', '9Б', '9В'],
-    high: ['10', '11']
+    middle: [
+'5А','5Б','5В',
+'6А','6Б','6В', 
+'7А','7Б','7В', 
+'8А','8Б','8В', 
+'9А','9Б','9В'
+            ],
+   
+ high: ['10','11']
 };
 
 // Дни недели
