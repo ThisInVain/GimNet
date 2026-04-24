@@ -2294,7 +2294,7 @@ tabItems.forEach(tab => {
             const activePage = document.getElementById(tabId);
             
             // Временно убираем анимацию
-            const animatedElements = activePage.querySelectorAll('.class-btn, .table-card, #scheduleDisplay');
+            const animatedElements = activePage.querySelectorAll('.class-btn, .table-card');
             animatedElements.forEach(el => {
                 el.style.animation = 'none';
                 el.offsetHeight; // принудительный пересчет стилей
