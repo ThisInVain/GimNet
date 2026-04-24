@@ -829,9 +829,12 @@ img.emoji {
 /* КНОПКИ КЛАССОВ (общие для таблиц и расписания) */
 .class-buttons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 кнопки в ряд */
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    margin-bottom: 14px;
+
+    width: 100%;
+    max-width: 320px; /* чтобы не растягивалось */
+    margin: 0; /* убираем центрирование */
 }
 
 .class-btn {
