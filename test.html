@@ -1789,6 +1789,29 @@ input, textarea {
 .lesson-item:nth-child(7) { animation-delay: 0.14s; }
 .lesson-item:nth-child(8) { animation-delay: 0.16s; }
 
+/* Синяя точка как в Instagram */
+.news-dot-blue {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #0095f6;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(0, 149, 246, 0.5);
+    animation: pulse-blue 2s infinite;
+}
+
+@keyframes pulse-blue {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 149, 246, 0.5);
+    }
+    70% {
+        box-shadow: 0 0 0 6px rgba(0, 149, 246, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 149, 246, 0);
+    }
+}
+
     </style>
 </head>
 <body class="light-theme">
@@ -1915,21 +1938,27 @@ input, textarea {
 
 <!-- Новости -->
 <div id="news" class="page">
-    <!-- Пост 1: Обновление -->
-    <div class="glass-card" style="max-width: 350px; margin: 0 auto 20px auto;">
-        <span class="version-badge">Версия 1.0.1</span>
-        <div class="glass-title" style="font-size: 20px; text-align: left;">Обновление</div>
-        <div class="glass-text">
-            <p><strong>Полный список изменений</strong></p>
-            <div class="quote" style="margin: 16px 0;">
-                <p>- «Таблицы» переименованы в «Списки»</p>
-                <p>- Были обновлены анимации</p>
-                <p>- Изменена скорость открытия подменю Ссылок</p>
-                <p>- В раздел «Расписание» были добавлены новые классы и их расписания (5А, 5Б, 5В, 6А, 6Б, 6В)</p>
-            </div>
+    <!-- Новый пост с пометкой NEW -->
+<div class="glass-card" style="max-width: 350px; margin: 0 auto 20px auto;">
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+        <span class="version-badge">Версия 1.1.0</span>
+        <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="news-dot-blue"></span>
+            <span style="font-size: 10px; color: #0095f6; font-weight: 600;">NEW</span>
         </div>
-        <div class="news-date">дд.мм.гггг, ХХ:ХХ</div>
     </div>
+    <div class="glass-title" style="font-size: 20px; text-align: left; margin-top: 8px;">Обновление</div>
+    <div class="glass-text">
+        <p><strong>Полный список изменений</strong></p>
+        <div class="quote" style="margin: 16px 0;">
+            <p>- Таблицы переименованы в Списки</p>
+            <p>- Были обновлены анимации</p>
+            <p>- Изменена скорость открытия подменю Ссылок</p>
+            <p>- В раздел «Расписание» были добавлены новые классы (5А, 5Б, 5В, 6А, 6Б, 6В)</p>
+        </div>
+    </div>
+    <div class="news-date">дд.мм.гггг, ХХ:ХХ</div>
+</div>
 
     <!-- Пост 2: Глобальное обновление -->
     <div class="glass-card" style="max-width: 350px; margin: 0 auto;">
