@@ -1789,6 +1789,18 @@ input, textarea {
 .lesson-item:nth-child(7) { animation-delay: 0.14s; }
 .lesson-item:nth-child(8) { animation-delay: 0.16s; }
 
+.class-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#tableClassButtonsMiddle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* ВАЖНО — убирает центр */
+}
+
     </style>
 </head>
 <body class="light-theme">
@@ -1970,8 +1982,28 @@ input, textarea {
 
             <div class="class-section">  
                 <h4>7-9 классы</h4>  
-                <div class="class-buttons" id="tableClassButtonsMiddle"></div>  
-            </div>  
+                
+        <div id="tableClassButtonsMiddle">
+
+    <div class="class-row">
+        <button class="class-btn">7А</button>
+        <button class="class-btn">7Б</button>
+        <button class="class-btn">7В</button>
+    </div>
+
+    <div class="class-row">
+        <button class="class-btn">8А</button>
+        <button class="class-btn">8Б</button>
+        <button class="class-btn">8В</button>
+    </div>
+
+    <div class="class-row">
+        <button class="class-btn">9А</button>
+        <button class="class-btn">9Б</button>
+        <button class="class-btn">9В</button>
+    </div>
+
+</div>
 
             <div class="class-section">  
                 <h4>10-11 классы</h4>  
@@ -2762,6 +2794,7 @@ studentsData = realStudentsData;
 console.log('✅ Данные учеников загружены');
 
 // Создание кнопок классов для таблиц
+
 function createTableClassButtons() {
     const middleContainer = document.getElementById('tableClassButtonsMiddle');
     const highContainer = document.getElementById('tableClassButtonsHigh');
@@ -2906,9 +2939,6 @@ async function toggleTable(className, event) {
         });
     }
 }
-
-// Инициализация кнопок таблиц (вызывается ПОСЛЕ определения функций)
-createTableClassButtons();
 
 // ========== НОВОЕ РАСПИСАНИЕ ==========
 // Список всех классов
@@ -3812,6 +3842,12 @@ function fillAllSchedule() {
             localStorage.setItem(`schedule_${className}`, JSON.stringify(scheduleTemplate[className]));
         }
     }
+
+document.querySelectorAll('#tableClassButtonsMiddle .class-btn').forEach(btn => {
+    btn.onclick = (e) => {
+        toggleTable(btn.textContent, e);
+    };
+});
 
     console.log('✅ Расписание загружено.');
 }
