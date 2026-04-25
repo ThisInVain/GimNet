@@ -832,21 +832,6 @@ img.emoji {
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
 
-    width: 100%;
-    max-width: 320px; /* чтобы не растягивалось */
-    margin: 0; /* убираем центрирование */
-}
-
-.class-section {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* ВАЖНО — убирает центр */
-}
-
-.class-selector {
-    align-items: flex-start;
-}
-
 .class-btn {
     padding: 8px 16px;
     border-radius: 20px;
@@ -1802,26 +1787,6 @@ input, textarea {
 .lesson-item:nth-child(7) { animation-delay: 0.14s; }
 .lesson-item:nth-child(8) { animation-delay: 0.16s; }
 
-.class-selector {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start !important;
-}
-
-.class-section {
-    width: 100%;
-    align-items: flex-start !important;
-}
-
-.class-buttons {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 10px;
-    width: 100%;
-    max-width: 100%;
-    margin: 0 !important;
-    justify-content: start !important;
-}
     </style>
 </head>
 <body class="light-theme">
