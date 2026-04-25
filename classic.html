@@ -1,0 +1,3825 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GimNet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <!-- Twemoji для красивых эмодзи (один раз) -->
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
+
+    <style>
+/* ========== БАЗОВЫЕ СТИЛИ ========== */
+*
+*
+ {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Twemoji Mozilla", "Noto Color Emoji", "EmojiOne Color", "Android Emoji", sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+}
+
+h1, h2, h3, .bold {
+    font-weight: 600;
+    letter-spacing: -0.03em;
+}
+
+:root {
+    --bg-color: #f5f7fa;
+    --text-color: #333;
+    --text-secondary: #666;
+    --card-bg: white;
+    --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    --header-gradient: linear-gradient(135deg, #bbbbbb 0%, #0f0f0f 100%);
+    --logo-gradient: linear-gradient(135deg, #0f0f0f 0%, #333333 100%);
+    --active-color: #696969;
+    --glass-text: #1a1a1a;
+    --table-bg-light: rgba(255, 255, 255, 0.95);
+    --table-bg-dark: rgba(30, 30, 40, 0.95);
+    --table-text-light: #333;
+    --table-text-dark: #e0e0e0;
+    --table-border-light: rgba(0, 0, 0, 0.08);
+    --table-border-dark: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --text-secondary: #aaa;
+    --card-bg: #1e1e1e;
+    --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    --header-gradient: linear-gradient(135deg, #222222 0%, #000000 100%);
+    --logo-gradient: linear-gradient(135deg, #333333 0%, #666666 100%);
+    --active-color: white;
+    --glass-text: #ffffff;
+}
+
+/* ========== ТЕЛЕГРАМ-ФОН ========== */
+body {
+    background: 
+        radial-gradient(circle at 5% 15%, rgba(0,0,0,0.18) 0%, transparent 30%),
+        radial-gradient(circle at 95% 25%, rgba(0,0,0,0.14) 0%, transparent 35%),
+        radial-gradient(circle at 20% 70%, rgba(0,0,0,0.16) 0%, transparent 30%),
+        radial-gradient(circle at 80% 85%, rgba(0,0,0,0.12) 0%, transparent 35%),
+        radial-gradient(circle at 40% 40%, rgba(40,40,40,0.1) 0%, transparent 25%),
+        radial-gradient(circle at 60% 60%, rgba(30,30,30,0.1) 0%, transparent 25%),
+        radial-gradient(circle at 10% 90%, rgba(0,0,0,0.09) 0%, transparent 30%),
+        radial-gradient(circle at 90% 10%, rgba(0,0,0,0.09) 0%, transparent 30%),
+        repeating-radial-gradient(circle at 20% 20%, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 12px),
+        repeating-radial-gradient(circle at 80% 80%, rgba(0,0,0,0.06) 1px, transparent 1px, transparent 16px),
+        repeating-linear-gradient(45deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 2px, transparent 2px, transparent 18px),
+        repeating-linear-gradient(-45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 2px, transparent 2px, transparent 18px),
+        repeating-linear-gradient(90deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 25px),
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 25px),
+        #ecf2f8;
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    min-height: 100vh;
+    padding-top: 64px;
+    overflow-y: auto !important;
+    height: auto !important;
+    width: 100% !important;
+}
+
+body.dark-theme {
+    background: 
+        radial-gradient(circle at 5% 15%, rgba(255,255,255,0.1) 0%, transparent 30%),
+        radial-gradient(circle at 95% 25%, rgba(255,255,255,0.08) 0%, transparent 35%),
+        radial-gradient(circle at 20% 70%, rgba(255,255,255,0.09) 0%, transparent 30%),
+        radial-gradient(circle at 80% 85%, rgba(255,255,255,0.07) 0%, transparent 35%),
+        radial-gradient(circle at 40% 40%, rgba(220,220,220,0.06) 0%, transparent 25%),
+        radial-gradient(circle at 60% 60%, rgba(230,230,230,0.06) 0%, transparent 25%),
+        radial-gradient(circle at 10% 90%, rgba(255,255,255,0.05) 0%, transparent 30%),
+        radial-gradient(circle at 90% 10%, rgba(255,255,255,0.05) 0%, transparent 30%),
+        repeating-radial-gradient(circle at 20% 20%, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 12px),
+        repeating-radial-gradient(circle at 80% 80%, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 16px),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 20px),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 20px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 30px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 30px),
+        #1a1f2c;
+    color: #e0e0e0;
+}
+
+/* ========== ВЕРХНЕЕ МЕНЮ ========== */
+.app-header {
+    background: var(--header-gradient);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 64px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.app-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+.app-logo {
+    width: 36px;
+    height: 36px;
+    background: var(--logo-gradient);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-size: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    user-select: none;
+    z-index: 1002;
+}
+
+.app-logo:hover {
+    transform: scale(1.05);
+}
+
+.app-logo:active {
+    transform: scale(0.95);
+}
+
+#pageTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: opacity 0.4s ease;
+    opacity: 1;
+}
+
+#pageTitle.search-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ========== НОВЫЙ ПОИСК ========== */
+.search-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: 8px;
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    z-index: 1001;
+    position: relative;
+    overflow: visible;
+    white-space: nowrap;
+    padding: 0;
+}
+
+.search-button.visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.search-button.expanded {
+    width: 200px;
+    justify-content: flex-start;
+    padding: 0 12px;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.25);
+    cursor: text;
+}
+
+.search-button.expanded i {
+    font-size: 14px;
+    opacity: 0.8;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.search-button .search-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    padding: 0 12px 0 36px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
+.search-button.expanded .search-input {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+    padding: 0;
+    background: transparent;
+}
+
+.search-button .search-placeholder {
+    display: none;
+}
+
+.header-actions {
+    transition: opacity 0.4s ease;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto;
+}
+
+.header-actions.search-active {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Результаты поиска */
+.search-results {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 16px;
+    margin-top: 16px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.search-results.active {
+    max-height: 400px;
+    opacity: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.search-results .result-item {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.search-results .result-item:last-child {
+    border-bottom: none;
+}
+
+.search-results .result-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+}
+
+.search-results .result-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--glass-text);
+}
+
+.search-results .result-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+body.dark-theme .search-results {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* ========== КНОПКИ УВЕДОМЛЕНИЙ И НАСТРОЕК ========== */
+.notification-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.notification-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.settings-container {
+    position: relative;
+}
+
+.settings-btn {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.settings-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: rotate(30deg);
+}
+
+.settings-btn:active {
+    transform: scale(0.95) rotate(30deg);
+}
+
+.settings-icon {
+    font-size: 20px;
+}
+
+/* ========== ВЫПАДАЮЩЕЕ МЕНЮ НАСТРОЕК ========== */
+.settings-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    width: 280px;
+    padding: 12px 0;
+    margin-top: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.95);
+    transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.1), visibility 0.25s ease;
+    z-index: 1001;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    transform-origin: top right;
+}
+
+body.dark-theme .settings-dropdown {
+    background: rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.settings-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.dropdown-header {
+    padding: 0 16px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px;
+}
+
+body.dark-theme .dropdown-header {
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+.dropdown-header h3 {
+    color: #1a1a1a;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+body.dark-theme .dropdown-header h3 {
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.settings-dropdown .dropdown-item {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #1a1a1a !important;
+    text-decoration: none !important;
+    transition: background 0.2s ease, padding-left 0.2s ease;
+    cursor: pointer;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 15px;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.3);
+}
+
+body.dark-theme .settings-dropdown .dropdown-item {
+    color: white !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.settings-dropdown .dropdown-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-left: 3px solid rgba(0, 0, 0, 0.3);
+    padding-left: 19px;
+}
+
+body.dark-theme .settings-dropdown .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 3px solid rgba(255, 255, 255, 0.5);
+}
+
+.dropdown-item-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.settings-dropdown .dropdown-item i {
+    width: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #4a4a4a;
+    transition: transform 0.2s ease;
+}
+
+body.dark-theme .settings-dropdown .dropdown-item i {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.settings-dropdown .dropdown-item:hover i {
+    color: #000;
+    transform: scale(1.1);
+}
+
+body.dark-theme .settings-dropdown .dropdown-item:hover i {
+    color: white;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    margin: 10px 16px;
+}
+
+body.dark-theme .dropdown-divider {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Подменю темы */
+.theme-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 0 0 12px 12px;
+    margin: 0 8px;
+}
+
+body.dark-theme .theme-submenu {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.theme-submenu.active {
+    max-height: 120px;
+}
+
+.theme-option {
+    padding: 10px 16px 10px 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 12px;
+}
+
+body.dark-theme .theme-option {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.theme-option:hover {
+    background: rgba(0, 0, 0, 0.03);
+    color: #000;
+}
+
+body.dark-theme .theme-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.theme-option.active {
+    color: #000;
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+body.dark-theme .theme-option.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.theme-check {
+    color: #4CAF50;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.theme-option.active .theme-check {
+    opacity: 1;
+}
+
+/* Подменю ссылок (только одна ссылка) */
+.links-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 0 0 12px 12px;
+    margin: 0 8px;
+}
+
+body.dark-theme .links-submenu {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.links-submenu.active {
+    max-height: 1000px;
+}
+
+.links-submenu .dropdown-item {
+    padding: 10px 16px 10px 44px !important;
+    font-size: 14px;
+}
+
+.links-submenu .dropdown-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+    border-left: 3px solid rgba(0, 0, 0, 0.2);
+    padding-left: 41px !important;
+}
+
+body.dark-theme .links-submenu .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.links-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* ========== СТИЛИ ДЛЯ НОВОСТЕЙ ========== */
+.glass-text {
+    text-align: left;
+}
+
+.quote {
+    padding-left: 16px;
+    border-left: 4px solid #c0c0c0;
+    margin: 12px 0;
+}
+
+.version-badge {
+    display: inline-block;
+    background: #696969;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.news-content {
+    text-align: left;
+}
+
+.news-content p {
+    margin: 8px 0;
+}
+
+/* ========== НОРМАЛЬНЫЙ РАЗМЕР ЭМОДЗИ ========== */
+img.emoji {
+    display: inline !important;
+    height: 1.2em !important;
+    width: 1.2em !important;
+    margin: 0 0.05em 0 0.1em !important;
+    vertical-align: -0.2em !important;
+    max-width: none !important;
+}
+
+/* ========== АНИМАЦИЯ ЗАГРУЗКИ ========== */
+#splashScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.splash-text {
+    color: white;
+    font-size: 80px;
+    font-weight: 900;
+    font-family: 'Segoe UI', sans-serif;
+    opacity: 0;
+    transform: scale(0.1);
+    filter: blur(20px);
+    transition: opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                filter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.splash-text.show {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+}
+
+.splash-text.hide {
+    opacity: 0;
+    transform: scale(1.3);
+    filter: blur(20px);
+    transition: opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                filter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.splash-dots {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    z-index: 10001;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.splash-dots.show {
+    opacity: 1;
+}
+
+.splash-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.splash-dot.active {
+    animation: dotPulse 1s ease-in-out infinite;
+}
+
+.splash-dot:nth-child(1).active {
+    animation-delay: 0s;
+}
+
+.splash-dot:nth-child(2).active {
+    animation-delay: 0.25s;
+}
+
+.splash-dot:nth-child(3).active {
+    animation-delay: 0.5s;
+}
+
+@keyframes dotPulse {
+    0%, 100% {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    }
+    50% {
+        background-color: white;
+        transform: scale(1.2);
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    }
+}
+
+@media (max-width: 768px) {
+    .splash-text { font-size: 50px; }
+    .splash-dots { bottom: 40px; gap: 7px; }
+    .splash-dot { width: 5px; height: 5px; }
+}
+@media (max-width: 480px) {
+    .splash-text { font-size: 36px; }
+    .splash-dots { bottom: 35px; gap: 6px; }
+    .splash-dot { width: 4px; height: 4px; }
+}
+
+/* ========== ТАБЛИЦЫ (УЧЕНИКИ) ========== */
+/* Появление страницы */
+.page {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.35s ease, transform 0.4s cubic-bezier(.2,.8,.2,1);
+}
+
+.table-card {
+    margin-top: 15px;
+    border-radius: 16px;
+    overflow: hidden;
+
+    opacity: 0;
+    transform: translateY(25px) scale(0.96);
+    transition: 
+        opacity 0.35s ease,
+        transform 0.4s cubic-bezier(.2,.8,.2,1);
+}
+
+.table-card.hide {
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
+}
+
+.table-card.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.page.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tables-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tables-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.tables-group {
+    width: 100%;
+    font-size: 13px;
+    opacity: .6;
+    margin-top: 10px;
+    margin-bottom: 6px;
+}
+
+/* КНОПКИ КЛАССОВ (общие для таблиц и расписания) */
+.class-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.class-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--glass-text);
+    font-size: 14px;
+    min-width: 60px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.1), 
+                background-color 0.2s ease, 
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
+    transform: scale(1);
+}
+
+.class-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.class-btn:active {
+    transform: scale(0.92);
+    transition: transform 0.1s ease;
+}
+
+.class-btn.active {
+    background: var(--active-color);
+    color: #ffffff !important;
+    border-color: var(--active-color);
+    transform: scale(1);
+}
+
+body.dark-theme .class-btn {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .class-btn:hover {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+body.dark-theme .class-btn.active {
+    background: var(--active-color);
+    color: #000000 !important;
+}
+
+/* Карточка таблицы */
+.table-card {
+    margin-top: 15px;
+    border-radius: 16px;
+    overflow: hidden;
+    animation: cardAppear 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+@keyframes cardAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* САМА ТАБЛИЦА */
+.students-table {
+    background: var(--table-bg-light);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 18px;
+    padding: 8px;
+    max-height: 350px;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    transition: all 0.3s ease;
+    border: 1px solid var(--table-border-light);
+}
+
+body.dark-theme .students-table {
+    background: var(--table-bg-dark);
+    border: 1px solid var(--table-border-dark);
+}
+
+.students-table::-webkit-scrollbar {
+    width: 4px;
+    background: transparent;
+}
+
+.students-table::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.3);
+    border-radius: 4px;
+}
+
+.students-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.students-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.students-table thead tr {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+body.dark-theme .students-table thead tr {
+    background: rgba(20, 20, 20, 0.85);
+}
+
+.students-table th {
+    text-align: left;
+    font-weight: 700;
+    padding: 14px 10px;
+    color: var(--text-color);
+}
+
+.students-table thead th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.students-table thead th:last-child {
+    border-top-right-radius: 12px;
+}
+
+.students-table td {
+    padding: 10px 8px;
+    border-top: 1px solid var(--table-border-light);
+    color: var(--text-color);
+}
+
+body.dark-theme .students-table td {
+    border-top: 1px solid var(--table-border-dark);
+    color: var(--table-text-dark);
+}
+
+.students-table tr:hover {
+    background: rgba(128, 128, 128, 0.1);
+    transition: background 0.2s ease;
+}
+
+/* Классный руководитель */
+.class-teacher {
+    font-size: 15px;
+    font-weight: 600;
+    opacity: 0.9;
+    margin-bottom: 12px;
+    padding-left: 4px;
+    color: var(--text-color);
+}
+
+.table-card {
+    margin-top: 15px;
+    border-radius: 16px;
+    overflow: hidden;
+    animation: cardAppear 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+.students-table thead {
+    transition: opacity 0.2s ease;
+}
+
+/* ========== НОВЫЕ СТИЛИ ДЛЯ РАСПИСАНИЯ ========== */
+.class-selector {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.class-selector h3 {
+    text-align: left;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.class-section {
+    margin-bottom: 25px;
+}
+
+.class-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding-left: 5px;
+    color: var(--text-secondary);
+}
+
+/* Контейнер для расписания */
+#scheduleDisplay {
+    width: 100%;
+    margin-top: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 24px;
+    padding: 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transform-origin: top center;
+}
+
+#scheduleDisplay.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+body.dark-theme #scheduleDisplay {
+    background: rgba(0, 0, 0, 0.35);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.schedule-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Стили для дня */
+.schedule-day {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.schedule-day:last-child {
+    border-bottom: none;
+}
+
+body.dark-theme .schedule-day {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.day-header {
+    padding: 14px 20px;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.day-header:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.day-header h3 {
+    color: var(--active-color);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.day-header i {
+    transition: transform 0.3s ease;
+    color: var(--active-color);
+}
+
+.day-header.active i {
+    transform: rotate(180deg);
+}
+
+body.dark-theme .day-header {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+body.dark-theme .day-header:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Контейнер для уроков дня */
+.day-lessons {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, padding 0.4s ease;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.day-lessons.visible {
+    max-height: 2000px;
+    opacity: 1;
+}
+
+body.dark-theme .day-lessons {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для урока */
+.lesson-item {
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.lesson-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.lesson-item:last-child {
+    border-bottom: none;
+}
+
+body.dark-theme .lesson-item {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.lesson-number {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--active-color);
+    margin-bottom: 4px;
+}
+
+.lesson-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--glass-text);
+    margin-bottom: 6px;
+}
+
+.lesson-teacher {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.lesson-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.lesson-time {
+    opacity: 0.9;
+}
+
+.lesson-room {
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+/* Стили для пустого расписания */
+.no-schedule {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+}
+
+/* ========== ОСНОВНОЙ КОНТЕНТ ========== */
+.page {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.4s ease;
+    will-change: transform, opacity;
+}
+
+.page.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ========== КОНТЕНТ ========== */
+.content {
+    padding: 20px;
+    padding-bottom: 0 !important;
+    overflow-y: auto !important;
+    height: calc(100vh - 64px - 60px) !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    overflow-x: hidden !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* ========== НИЖНЕЕ МЕНЮ ========== */
+.tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--card-bg);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 999;
+}
+
+.tab-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    top: 8px;
+}
+
+.tab-icon {
+    font-size: 22px;
+    margin-bottom: 2px;
+    transition: transform 0.2s ease, color 0.2s ease;
+    color: #a9a9a9;
+}
+
+.tab-item.active .tab-icon {
+    color: var(--active-color);
+    transform: translateY(-1px) scale(1.1);
+}
+
+.tab-label {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    color: #a9a9a9;
+}
+
+.tab-item.active .tab-label {
+    font-weight: 800;
+    color: var(--active-color);
+}
+
+body.dark-theme .tab-bar {
+    background: #1e1e1e;
+}
+
+body.dark-theme .tab-item,
+body.dark-theme .tab-icon,
+body.dark-theme .tab-label {
+    color: #a9a9a9;
+}
+
+body.dark-theme .tab-item.active .tab-icon,
+body.dark-theme .tab-item.active .tab-label {
+    color: var(--active-color);
+}
+
+@media (max-width: 768px) {
+    .tab-bar { height: 56px; }
+    .tab-item { top: 6px; }
+    .tab-icon { font-size: 20px; margin-bottom: 1px; }
+    .tab-label { font-size: 11px; }
+}
+
+@media (max-width: 480px) {
+    .tab-item { top: 5px; }
+    .tab-icon { font-size: 19px; }
+    .tab-label { font-size: 10px; }
+}
+
+/* ========== СТИЛИ КОМПОНЕНТОВ ========== */
+h1 {
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: var(--card-shadow);
+    color: var(--text-color);
+}
+
+.card:last-child {
+    margin-bottom: 0 !important;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.page-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    padding: 8px 16px;
+    background: var(--active-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.data-table th {
+    background: var(--active-color);
+    color: white;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.data-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.data-table tr:hover {
+    background: rgba(128, 128, 128, 0.05);
+}
+
+.archive-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.archive-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    transition: all 0.2s ease;
+}
+
+.archive-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.file-icon {
+    color: var(--active-color);
+    font-size: 20px;
+}
+
+/* ========== ВЫРАВНИВАНИЕ ПО ЦЕНТРУ ========== */
+.header-container,
+.content,
+.tab-bar {
+    max-width: 500px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+}
+
+.content {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+@media (min-width: 768px) {
+    .tab-bar {
+        left: auto !important;
+        transform: none !important;
+        border-radius: 20px 20px 0 0 !important;
+    }
+}
+
+/* ========== ПРИЖИМАЕМ ВСЁ К HOME BAR ========== */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative;
+    overflow-y: auto !important;
+    height: auto !important;
+}
+
+body {
+    padding-top: 64px !important;
+    padding-bottom: 0 !important;
+}
+
+.content {
+    height: calc(100vh - 64px - 60px) !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.tab-bar {
+    bottom: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    height: 60px !important;
+    background: var(--card-bg) !important;
+}
+
+@supports (padding: max(0px)) {
+    .tab-bar {
+        height: calc(60px + env(safe-area-inset-bottom)) !important;
+        padding-bottom: env(safe-area-inset-bottom) !important;
+    }
+
+    .content {
+        height: calc(100vh - 64px - 60px - env(safe-area-inset-bottom)) !important;
+    }
+}
+
+.content {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    overflow-y: auto !important;
+}
+
+.content::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+    -webkit-appearance: none !important;
+}
+
+.content {
+    opacity: 0;
+    animation: showContent 0.1s ease 0.3s forwards;
+}
+
+@keyframes showContent {
+    to { opacity: 1; }
+}
+
+/* ========== ЦЕНТРАЛЬНЫЙ ПРЯМОУГОЛЬНИК ========== */
+.center-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 64px - 60px - 40px);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    padding: 25px 25px;
+    max-width: 300px;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    animation: cardAppear 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+body.dark-theme .glass-card {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.glass-title {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: var(--glass-text);
+}
+
+.glass-text {
+    font-size: 13px;
+    color: var(--glass-text);
+    opacity: 0.9;
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* ========== СВЕТЛАЯ ТЕМА: МЕНЕЕ ПРОЗРАЧНЫЙ GLASS ========== */
+body.light-theme .glass-card {
+    background: rgba(255, 255, 255, 0.35) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* ========== ТЁМНАЯ ТЕМА: БОЛЕЕ ПРОЗРАЧНЫЙ GLASS ========== */
+body.dark-theme .glass-card {
+    background: rgba(0, 0, 0, 0.25) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ========== УСИЛЕННЫЕ ПЯТНА ДЛЯ СВЕТЛОЙ ТЕМЫ ========== */
+body.light-theme {
+    background: 
+        radial-gradient(circle at 5% 15%, rgba(0,0,0,0.25) 0%, transparent 30%),
+        radial-gradient(circle at 95% 25%, rgba(0,0,0,0.2) 0%, transparent 35%),
+        radial-gradient(circle at 20% 70%, rgba(0,0,0,0.22) 0%, transparent 30%),
+        radial-gradient(circle at 80% 85%, rgba(0,0,0,0.18) 0%, transparent 35%),
+        radial-gradient(circle at 40% 40%, rgba(40,40,40,0.15) 0%, transparent 25%),
+        radial-gradient(circle at 60% 60%, rgba(30,30,30,0.15) 0%, transparent 25%),
+        radial-gradient(circle at 10% 90%, rgba(0,0,0,0.12) 0%, transparent 30%),
+        radial-gradient(circle at 90% 10%, rgba(0,0,0,0.12) 0%, transparent 30%),
+        repeating-radial-gradient(circle at 20% 20%, rgba(0,0,0,0.1) 1px, transparent 1px, transparent 12px),
+        repeating-radial-gradient(circle at 80% 80%, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 16px),
+        repeating-linear-gradient(45deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 2px, transparent 2px, transparent 18px),
+        repeating-linear-gradient(-45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 2px, transparent 2px, transparent 18px),
+        repeating-linear-gradient(90deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 25px),
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 25px),
+        #ecf2f8 !important;
+}
+
+/* Исправление цвета нижней строки в новостях */
+.news-content p:last-child,
+.glass-text p:last-child {
+    color: var(--text-secondary) !important;
+}
+
+/* ========== ИСПРАВЛЕНИЕ ЦВЕТА В НОВОСТЯХ ========== */
+#news .glass-text > p:last-child {
+    color: var(--text-secondary) !important;
+}
+
+#news .glass-text p:not(:last-child) {
+    color: var(--glass-text) !important;
+}
+
+.glass-text p:last-child {
+    color: inherit !important;
+}
+
+/* ========== ДАТА В НОВОСТЯХ ========== */
+.news-date {
+    text-align: right;
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 16px;
+    opacity: 0.8;
+}
+
+/* ========== ФИНАЛЬНЫЕ ИСПРАВЛЕНИЯ ========== */
+
+/* Убираем дублирующийся фон из нижней части */
+html, body:not(.light-theme):not(.dark-theme) {
+    background: transparent !important;
+}
+
+/* Исправляем центрирование в архиве */
+#archive .center-wrapper {
+    min-height: auto;
+    margin-top: 20px;
+}
+
+/* Фикс для клавиатуры */
+input, textarea {
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+
+/* Фикс для поиска в светлой теме */
+.search-input::placeholder {
+    color: white !important;
+    opacity: 0.8;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .lesson-number {
+        font-size: 14px;
+    }
+    .lesson-name {
+        font-size: 16px;
+    }
+    .lesson-teacher {
+        font-size: 13px;
+    }
+    .lesson-details {
+        font-size: 12px;
+    }
+    .day-header {
+        padding: 12px 16px;
+    }
+    .day-header h3 {
+        font-size: 15px;
+    }
+    .lesson-item {
+        padding: 10px 16px;
+    }
+    .header-container {
+        padding: 0 15px;
+        height: 56px;
+    }
+    .app-header { height: 56px; }
+    .app-logo {
+        width: 32px;
+        height: 32px;
+    }
+    #pageTitle { font-size: 16px; }
+    .settings-dropdown {
+        width: 260px;
+        right: -10px;
+    }
+    body { padding-top: 56px; }
+}
+
+/* ========== АНИМАЦИИ ДЛЯ ВКЛАДОК ========== */
+
+/* Анимация для карточек и таблиц */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Анимация для кнопок классов */
+.class-buttons .class-btn {
+    animation: fadeInUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+/* Задержки для кнопок, чтобы они появлялись по очереди */
+.class-buttons .class-btn:nth-child(1) { animation-delay: 0.05s; }
+.class-buttons .class-btn:nth-child(2) { animation-delay: 0.10s; }
+.class-buttons .class-btn:nth-child(3) { animation-delay: 0.15s; }
+.class-buttons .class-btn:nth-child(4) { animation-delay: 0.20s; }
+.class-buttons .class-btn:nth-child(5) { animation-delay: 0.25s; }
+.class-buttons .class-btn:nth-child(6) { animation-delay: 0.30s; }
+.class-buttons .class-btn:nth-child(7) { animation-delay: 0.35s; }
+.class-buttons .class-btn:nth-child(8) { animation-delay: 0.40s; }
+.class-buttons .class-btn:nth-child(9) { animation-delay: 0.45s; }
+.class-buttons .class-btn:nth-child(10) { animation-delay: 0.50s; }
+.class-buttons .class-btn:nth-child(11) { animation-delay: 0.55s; }
+.class-buttons .class-btn:nth-child(12) { animation-delay: 0.60s; }
+.class-buttons .class-btn:nth-child(13) { animation-delay: 0.65s; }
+.class-buttons .class-btn:nth-child(14) { animation-delay: 0.70s; }
+.class-buttons .class-btn:nth-child(15) { animation-delay: 0.75s; }
+
+/* Анимация для заголовков вкладок */
+.class-selector h3 {
+    animation: fadeInUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+    animation-delay: 0s;
+}
+
+.class-section h4 {
+    animation: fadeInUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+    animation-delay: 0.05s;
+}
+
+/* Анимация для таблицы со списками */
+#tableDisplay .table-card {
+    animation: fadeInScale 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+    animation-delay: 0.1s;
+}
+
+/* Анимация для расписания */
+#scheduleDisplay {
+    animation: fadeInScale 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+#scheduleDisplay.visible {
+    animation: fadeInScale 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+/* Анимация для дней расписания */
+.schedule-day {
+    animation: fadeInUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+.schedule-day:nth-child(1) { animation-delay: 0.05s; }
+.schedule-day:nth-child(2) { animation-delay: 0.10s; }
+.schedule-day:nth-child(3) { animation-delay: 0.15s; }
+.schedule-day:nth-child(4) { animation-delay: 0.20s; }
+.schedule-day:nth-child(5) { animation-delay: 0.25s; }
+
+/* Анимация для уроков внутри дня */
+.lesson-item {
+    animation: fadeInUp 0.3s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+.lesson-item:nth-child(1) { animation-delay: 0.02s; }
+.lesson-item:nth-child(2) { animation-delay: 0.04s; }
+.lesson-item:nth-child(3) { animation-delay: 0.06s; }
+.lesson-item:nth-child(4) { animation-delay: 0.08s; }
+.lesson-item:nth-child(5) { animation-delay: 0.10s; }
+.lesson-item:nth-child(6) { animation-delay: 0.12s; }
+.lesson-item:nth-child(7) { animation-delay: 0.14s; }
+.lesson-item:nth-child(8) { animation-delay: 0.16s; }
+
+    </style>
+</head>
+<body class="light-theme">
+    <!-- Анимация загрузки -->
+    <div id="splashScreen" style="background: #000 !important;">
+        <div class="splash-text">GimNet</div>
+        <div class="splash-dots">
+            <div class="splash-dot"></div>
+            <div class="splash-dot"></div>
+            <div class="splash-dot"></div>
+        </div>
+    </div>
+
+    <!-- Верхнее меню -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="app-brand">
+                <div class="app-logo" id="logoBtn">GimNet</div>
+                <!-- Кнопка поиска -->
+                <button class="search-button" id="searchButton">
+                    <i class="fas fa-search"></i>
+                    <span class="search-placeholder"></span>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Поиск в архиве...">
+                </button>
+            </div>
+            <div id="pageTitle">Главная</div>
+            <div class="header-actions" id="headerActions">
+                <!-- Колокольчик переключает на новости -->
+                <div class="notification-btn" onclick="switchToNews()">
+                    <i class="far fa-bell"></i>
+                </div>
+                <div class="settings-container">
+                    <button class="settings-btn" id="settingsBtn">
+                        <i class="fas fa-cog settings-icon"></i>
+                    </button>
+                    <div class="settings-dropdown" id="settingsDropdown">
+                        <div class="dropdown-header">
+                            <h3>Настройки</h3>
+                        </div>
+                        <div class="dropdown-item" id="themeToggleBtn">
+                            <div class="dropdown-item-content">
+                                <i class="fas fa-palette"></i>
+                                <span>Тема оформления</span>
+                            </div>
+                            <i class="fas fa-chevron-right" style="font-size: 14px;"></i>
+                        </div>
+                        <div class="theme-submenu" id="themeSubmenu">
+                            <div class="theme-option" data-theme="light">
+                                <div class="dropdown-item-content">
+                                    <i class="fas fa-sun"></i>
+                                    <span>Светлая</span>
+                                </div>
+                                <i class="fas fa-check theme-check"></i>
+                            </div>
+                            <div class="theme-option" data-theme="dark">
+                                <div class="dropdown-item-content">
+                                    <i class="fas fa-moon"></i>
+                                    <span>Темная</span>
+                                </div>
+                                <i class="fas fa-check theme-check"></i>
+                            </div>
+                        </div>
+                        <div class="dropdown-item" onclick="switchToNews()">
+                            <div class="dropdown-item-content">
+                                <i class="fas fa-bell"></i>
+                                <span>Новости</span>
+                            </div>
+                        </div>
+
+                        <!-- Ссылки с подменю -->
+<div class="dropdown-item" id="linksBtn">
+    <div class="dropdown-item-content">
+        <i class="fas fa-link"></i>
+        <span>Ссылки</span>
+    </div>
+    <i class="fas fa-chevron-right" style="font-size: 14px;"></i>
+</div>
+<div class="links-submenu" id="linksSubmenu">
+    <a href="https://vk.ru/gimnaziapushkin" target="_blank" class="dropdown-item" style="padding-left: 44px;">
+        <div class="dropdown-item-content">
+            <i class="fas fa-school"></i>
+            <span>VK Гимназия</span>
+        </div>
+    </a>
+    <a href="https://gimnaziapushkin.edusite.ru/" target="_blank" class="dropdown-item" style="padding-left: 44px;">
+        <div class="dropdown-item-content">
+            <i class="fas fa-globe"></i>
+            <span>Сайт Гимназии</span>
+        </div>
+    </a>
+</div>
+
+                        <div class="dropdown-divider"></div>
+                        <a href="https://t.me/+ObOQyRCXbWwwMWIy" target="_blank" class="dropdown-item" id="telegramBtn">
+                            <div class="dropdown-item-content">
+                                <i class="fab fa-telegram"></i>
+                                <span>Telegram</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <div class="content">
+        <!-- Главная -->
+        <div id="home" class="page active">
+            <div class="center-wrapper">
+                <div class="glass-card">
+                    <div class="glass-title">Что нового?</div>
+                    <div class="glass-text">
+                        Глобальное обновление 1.0.0<br>
+                        <div class="quote">
+                            - Новый движок приложения.<br>
+                            - Интерфейс был полностью переработан.<br>
+                            - Вкладка «Быстрые ссылки» была перенесена в настройки.<br>
+                            - Новая вкладка «Расписание».<br>
+                            - Верхнее меню было переработано.<br>
+                            - Нижнее меню было переработано.
+                        </div>
+                        Подробнее об обновлении <a href="#" onclick="switchToNews(); return false;" style="color: #007AFF;">тут</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Новости -->
+        <div id="news" class="page">
+            <div class="glass-card" style="max-width: 350px; margin: 0 auto;">
+                <span class="version-badge">Версия 1.0.0</span>
+                <div class="glass-title" style="font-size: 20px; text-align: left;">Глобальное обновление</div>
+                <div class="glass-text">
+                    <p><strong>Полный список изменений</strong></p>
+                    <div class="quote" style="margin: 16px 0;">
+                        <p>- Новый движок приложения</p>
+                        <p>- Интерфейс был полностью переработан</p>
+                        <p>- Вкладка «Быстрые ссылки» была перенесена в настройки</p>
+                        <p>- «Быстрые ссылки» были переименованы в «Ссылки»</p>
+                        <p>- Добавлена вкладка «Расписание»</p>
+                        <p>- Верхнее меню было переработано</p>
+                        <p>- Нижнее меню было переработано</p>
+                        <p>- Была добавлена смена темы оформления</p>
+                        <p>- «База данных» была переименована в «Архив»</p>
+                        <p>- Были добавлены «Новости»</p>
+                        <p>- Были добавлены красивые анимации переходов</p>
+                        <p>- При нажатии на логотип или подпись вкладки в верхнем меню, плавно переносит наверх страницы</p>
+                    </div>
+                    <p style="margin-top: 20px; text-align: center;">Спасибо, что вы с нами ❤️</p>
+                </div>
+                <div class="news-date">13.04.2026, 22:30</div>
+            </div>
+        </div>
+
+        <!-- Архив -->
+        <div id="archive" class="page">
+            <!-- Результаты поиска -->
+            <div class="search-results" id="searchResults">
+                <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
+                    Введите запрос для поиска
+                </div>
+            </div>
+
+            <!-- Пустой архив -->
+            <div class="center-wrapper" style="min-height: auto; margin-top: 20px;">
+                <div class="glass-card">
+                    <div class="glass-text" style="text-align: center; font-size: 14px; opacity: 0.8;">
+                        Здесь пока что пусто...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+          <!-- Таблицы -->  
+<div id="tables" class="page">  
+        <div class="class-selector">  
+            <h3>Выбор класса</h3>  
+
+            <div class="class-section">  
+                <h4>7-9 классы</h4>  
+                <div class="class-buttons" id="tableClassButtonsMiddle"></div>  
+            </div>  
+
+            <div class="class-section">  
+                <h4>10-11 классы</h4>  
+                <div class="class-buttons" id="tableClassButtonsHigh"></div>  
+            </div>  
+        </div>  
+
+        <div id="tableDisplay"></div>  
+    </div>
+
+        <!-- Расписание -->
+        <div id="schedule" class="page">
+            <div class="class-selector">
+                <h3>Выбор класса</h3>
+
+                <!-- 7-9 классы -->
+                <div class="class-section">
+                    <h4>5-9 классы</h4>
+                    <div class="class-buttons" id="classButtonsMiddle">
+                        <!-- Кнопки создаются через JS -->
+                    </div>
+                </div>
+
+                <!-- 10-11 классы -->
+                <div class="class-section">
+                    <h4>10-11 классы</h4>
+                    <div class="class-buttons" id="classButtonsHigh">
+                        <!-- Кнопки создаются через JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Расписание для выбранного класса -->
+            <div id="scheduleDisplay">
+                <div class="schedule-container" id="scheduleContainer">
+                    <!-- Дни недели заполняются через JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Нижнее меню -->
+    <nav class="tab-bar">
+        <div class="tab-item active" data-tab="home">
+            <div class="tab-icon"><i class="fas fa-home"></i></div>
+            <div class="tab-label">Главная</div>
+        </div>
+        <div class="tab-item" data-tab="archive">
+            <div class="tab-icon"><i class="fas fa-database"></i></div>
+            <div class="tab-label">Архив</div>
+        </div>
+        <div class="tab-item" data-tab="tables">
+            <div class="tab-icon"><i class="fas fa-table"></i></div>
+            <div class="tab-label">Списки</div>
+        </div>
+        <div class="tab-item" data-tab="schedule">
+            <div class="tab-icon"><i class="fas fa-book-bookmark"></i></div>
+            <div class="tab-label">Расписание</div>
+        </div>
+    </nav>
+
+    <script>
+window.onerror = function(msg, url, line) {
+    alert("Ошибка: " + msg + " строка: " + line);
+};
+// ========== ТВОЙ ВЕСЬ ОРИГИНАЛЬНЫЙ КОД ==========
+const firebaseConfig = {
+    apiKey: "AIzaSyDVHgEuMdlx7op-cAwwYmt6TO8iW-rXb7o",
+    authDomain: "gimnet.firebaseapp.com",
+    databaseURL: "https://gimnet-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "gimnet",
+    storageBucket: "gimnet.firebasestorage.app",
+    messagingSenderId: "72539286332",
+    appId: "1:72539286332:web:336539dd2a803aa7b88c39"
+};
+
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+function getDeviceType() {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+        return "iPad";
+    }
+    if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+        return "iPhone";
+    }
+    return "ПК";
+}
+
+let userIP = 'не определен';
+fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => {
+        userIP = data.ip;
+        database.ref('users/' + userIP.replace(/\./g, '_')).set({
+            ip: userIP,
+            device: getDeviceType(),
+            page: 'Главная',
+            lastSeen: Date.now(),
+            theme: document.body.classList.contains('dark-theme') ? 'dark' : 'light',
+            firstSeen: Date.now()
+        });
+    });
+
+let currentScheduleClass = null;
+
+window.addEventListener('DOMContentLoaded', function() {
+    const splashScreen = document.getElementById('splashScreen');
+    const splashText = document.querySelector('.splash-text');
+    const splashDots = document.querySelector('.splash-dots');
+    const dots = document.querySelectorAll('.splash-dot');
+
+    const DURATION = {
+        textAppear: 450,
+        textVisible: 1850,
+        textDisappear: 300,
+        fadeOut: 750
+    };
+
+    splashScreen.style.background = '#000';
+
+    setTimeout(() => {
+        splashText.classList.add('show');
+    }, 20);
+
+    setTimeout(() => {
+        splashDots.classList.add('show');
+        dots.forEach(dot => dot.classList.add('active'));
+    }, DURATION.textAppear + 50);
+
+    setTimeout(() => {
+        splashText.classList.add('hide');
+
+        setTimeout(() => {
+            splashScreen.style.opacity = '0';
+            splashScreen.style.visibility = 'hidden';
+
+            setTimeout(() => {
+                if (splashScreen && splashScreen.parentNode) {
+                    splashScreen.remove();
+                }
+            }, DURATION.fadeOut);
+        }, DURATION.textDisappear);
+    }, DURATION.textAppear + DURATION.textVisible);
+});
+
+setTimeout(function() {
+    const logo = document.getElementById('logoBtn');
+    if (logo) {
+        logo.onclick = function(e) {
+            e.preventDefault();
+            const content = document.querySelector('.content');
+            if (content) {
+                content.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => { this.style.transform = ''; }, 150);
+            return false;
+        };
+    }
+}, 500);
+
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsDropdown = document.getElementById('settingsDropdown');
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const themeSubmenu = document.getElementById('themeSubmenu');
+const themeOptions = document.querySelectorAll('.theme-option');
+const tabItems = document.querySelectorAll('.tab-item');
+const pages = document.querySelectorAll('.page');
+const pageTitle = document.getElementById('pageTitle');
+
+function switchToNews() {
+    tabItems.forEach(item => { item.classList.remove('active'); });
+    pages.forEach(page => { page.classList.remove('active'); });
+    document.getElementById('news').classList.add('active');
+    pageTitle.textContent = 'Новости';
+    closeSearch();
+    updateSearchButtonVisibility();
+}
+
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.body.className = savedTheme + '-theme';
+
+function updateActiveTheme(theme) {
+    themeOptions.forEach(option => {
+        option.classList.remove('active');
+        if (option.getAttribute('data-theme') === theme) {
+            option.classList.add('active');
+        }
+    });
+}
+updateActiveTheme(savedTheme);
+
+settingsBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    settingsDropdown.classList.toggle('active');
+});
+
+themeToggleBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    themeSubmenu.classList.toggle('active');
+});
+
+themeOptions.forEach(option => {
+    option.addEventListener('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        const theme = this.getAttribute('data-theme');
+
+        // Запоминаем состояние перед сменой темы
+        const hadSelectedClass = currentClass !== null;
+        const selectedClass = currentClass;
+
+        document.body.className = theme + '-theme';
+        updateActiveTheme(theme);
+        localStorage.setItem('theme', theme);
+
+        if (userIP) {
+            database.ref('users/' + userIP.replace(/\./g, '_') + '/theme').set(theme);
+        }
+
+        // Восстанавливаем состояние после смены темы (с задержкой для плавности)
+        if (hadSelectedClass && selectedClass) {
+            setTimeout(() => {
+                document.body.classList.add('class-selected');
+                if (document.getElementById('scheduleDisplay').classList.contains('visible')) {
+                    document.getElementById('scheduleDisplay').classList.add('visible');
+                }
+            }, 100);
+        }
+    });
+});
+
+document.addEventListener('click', function(e) {
+    if (!settingsDropdown.contains(e.target) && !settingsBtn.contains(e.target)) {
+        settingsDropdown.classList.remove('active');
+        themeSubmenu.classList.remove('active');
+        document.getElementById('linksSubmenu')?.classList.remove('active');
+    }
+});
+
+function updatePageTitle() {
+    const activeTab = document.querySelector('.tab-item.active');
+    if (!activeTab) return;
+
+    const tabId = activeTab.getAttribute('data-tab');
+    const titles = {
+        home: 'Главная',
+        archive: 'Архив',
+        tables: 'Списки',
+        schedule: 'Расписание'
+    };
+
+    if (pageTitle) {
+        pageTitle.textContent = titles[tabId] || 'Главная';
+    }
+}
+
+const titleTabItems = document.querySelectorAll('.tab-item');
+titleTabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+        setTimeout(updatePageTitle, 10);
+    });
+});
+
+updatePageTitle();
+
+pageTitle.addEventListener('click', function() {
+    const content = document.querySelector('.content');
+    if (content) {
+        content.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+});
+
+tabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+        const tabId = this.getAttribute('data-tab');
+
+        tabItems.forEach(item => { item.classList.remove('active'); });
+        this.classList.add('active');
+
+        pages.forEach(page => { page.classList.remove('active'); });
+        document.getElementById(tabId).classList.add('active');
+
+        if (userIP) {
+            database.ref('users/' + userIP.replace(/\./g, '_') + '/page').set(tabId);
+        }
+
+        const content = document.querySelector('.content');
+        if (content) { content.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        if (navigator.vibrate) { navigator.vibrate(10); }
+
+        updateSearchButtonVisibility();
+    });
+});
+
+tabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+        const tabId = this.getAttribute('data-tab');
+
+        tabItems.forEach(item => { item.classList.remove('active'); });
+        this.classList.add('active');
+
+        pages.forEach(page => { page.classList.remove('active'); });
+        document.getElementById(tabId).classList.add('active');
+
+        if (userIP) {
+            database.ref('users/' + userIP.replace(/\./g, '_') + '/page').set(tabId);
+        }
+
+        const content = document.querySelector('.content');
+        if (content) { content.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        if (navigator.vibrate) { navigator.vibrate(10); }
+
+        updateSearchButtonVisibility();
+        
+        // ========== НОВЫЙ КОД: ПЕРЕЗАПУСК АНИМАЦИЙ ==========
+        if (tabId === 'tables' || tabId === 'schedule') {
+            const activePage = document.getElementById(tabId);
+            
+            // Временно убираем анимацию
+            const animatedElements = activePage.querySelectorAll('.class-btn, .table-card');
+            animatedElements.forEach(el => {
+                el.style.animation = 'none';
+                el.offsetHeight; // принудительный пересчет стилей
+                el.style.animation = '';
+            });
+            
+            // Для расписания - перезапуск анимации контейнера
+            if (tabId === 'schedule' && currentScheduleClass) {
+                const scheduleDisplay = document.getElementById('scheduleDisplay');
+                scheduleDisplay.style.animation = 'none';
+                scheduleDisplay.offsetHeight;
+                scheduleDisplay.style.animation = '';
+            }
+        }
+    });
+});
+
+const activeTab = document.querySelector('.tab-item.active');
+if (activeTab) {
+    const tabId = activeTab.getAttribute('data-tab');
+    document.getElementById(tabId).classList.add('active');
+}
+
+setInterval(() => {
+    if (userIP) {
+        database.ref('users/' + userIP.replace(/\./g, '_') + '/lastSeen').set(Date.now());
+    }
+}, 60000);
+
+window.addEventListener('beforeunload', function() {
+    if (userIP) {
+        database.ref('users/' + userIP.replace(/\./g, '_')).remove();
+    }
+});
+
+window.addEventListener('load', function() {
+    if (typeof twemoji !== 'undefined') {
+        twemoji.parse(document.body, {
+            folder: 'svg',
+            ext: '.svg'
+        });
+    }
+});
+
+// ========== ПОДМЕНЮ ССЫЛОК (только Гимназия) ==========
+const linksBtn = document.getElementById('linksBtn');
+const linksSubmenu = document.getElementById('linksSubmenu');
+
+if (linksBtn) {
+    linksBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        linksSubmenu.classList.toggle('active');
+    });
+}
+
+// ========== НОВЫЙ ПОИСК (БЕЗ ДЕМО-ДАННЫХ) ==========
+const searchButton = document.getElementById('searchButton');
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const headerActions = document.getElementById('headerActions');
+
+let isSearchActive = false;
+
+function updateSearchButtonVisibility() {
+    const activePage = document.querySelector('.page.active');
+    const isArchive = activePage && activePage.id === 'archive';
+
+    if (isArchive) {
+        searchButton.classList.add('visible');
+    } else {
+        searchButton.classList.remove('visible');
+        if (isSearchActive) {
+            closeSearch();
+        }
+    }
+}
+
+function closeSearch() {
+    isSearchActive = false;
+    searchButton.classList.remove('expanded');
+    headerActions.classList.remove('search-active');
+    pageTitle.classList.remove('search-hidden');
+    searchResults.classList.remove('active');
+    if (searchInput) {
+        searchInput.value = '';
+        searchInput.blur();
+    }
+}
+
+function openSearch() {
+    isSearchActive = true;
+    searchButton.classList.add('expanded');
+    headerActions.classList.add('search-active');
+    pageTitle.classList.add('search-hidden');
+    setTimeout(() => {
+        searchInput?.focus();
+    }, 50);
+}
+
+searchButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (!isSearchActive) {
+        openSearch();
+    } else {
+        searchInput?.focus();
+    }
+});
+
+searchInput.addEventListener('input', function(e) {
+    e.stopPropagation();
+    const query = this.value.trim();
+
+    if (query.length === 0) {
+        searchResults.classList.remove('active');
+        return;
+    }
+
+    searchResults.classList.add('active');
+    searchResults.innerHTML = `
+        <div class="glass-text" style="text-align: center; color: var(--text-secondary);">
+            Ничего не найдено по запросу "${query}"
+        </div>
+    `;
+});
+
+searchInput.addEventListener('focus', function() {
+    if (!isSearchActive) {
+        openSearch();
+    }
+});
+
+searchInput.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+document.addEventListener('click', function(e) {
+    if (isSearchActive && 
+        !searchButton.contains(e.target) && 
+        !searchResults.contains(e.target)) {
+        closeSearch();
+    }
+});
+
+tabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+        setTimeout(updateSearchButtonVisibility, 50);
+    });
+});
+
+updateSearchButtonVisibility();
+
+
+const table = document.querySelector('.students-table');
+const thead = document.querySelector('.students-table thead');
+
+if(table && thead){
+    table.addEventListener('scroll', () => {
+        if (table.scrollTop > 10) {
+            thead.style.opacity = "0";
+        } else {
+            thead.style.opacity = "1";
+        }
+    });
+}
+
+// ========== ТАБЛИЦЫ (УЧЕНИКИ) ==========
+let studentsData = {};
+let currentTableClass = null;
+
+// ТВОИ РЕАЛЬНЫЕ ДАННЫЕ (замени на свои)
+const realStudentsData = {
+    "7А": {
+        teacher: "Лапшина Ирина Николаевна",
+        students: [
+            "Винокуров Всеволод Николаевич",  
+"Груздев Кирилл Андреевич",  
+"Дёмин Сергей Дмитриевич",  
+"Зародышев Илья Александрович",  
+"Зиновьев Егор Евгеньевич",  
+"Иванова Полина Евгеньевна",  
+"Кисин Дмитрий Евгеньевич",  
+"Конева Серафима Вячеславовна",  
+"Козина Оксана Николаевна",  
+"Кошкин Даниил Антонович",  
+"Куимов Егор Юрьевич",  
+"Лебедева Дарина Владимировна",  
+"Малышев Богдан Алексеевич",  
+"Разумова Мария Леонидовна",  
+"Растопин Андрей Сергеевич",  
+"Растопина Маргарита Алексеевна",  
+"Рыжаков Арсений Александрович",  
+"Сапронова Кристина Сергеевна",  
+"Смирнов Александр Николаевич",  
+"Смирнов Кирилл Александрович",  
+"Смирнов Сергей Алексеевич",  
+"Смирнова Елизавета Дмитриевна",  
+"Спиглазова Полина Денисовна",  
+"Цветкова Елизавета Сергеевна",  
+"Эйвазова Юлия Александровна"
+        ]
+    },
+    "7Б": {
+        teacher: "Зыкова Елена Владимировна",
+        students: [
+"Агаджанян Мери Робертовна",  
+"Бакшаева Юлия Сергеевна",  
+"Баринова Анастасия Павловна",  
+"Безруков Артём Андреевич",  
+"Галямов Кирилл Игоревич",  
+"Горнева Варвара Ильинична",  
+"Гусев Владимир Андреевич",  
+"Ермаков Егор Евгеньевич",  
+"Ершов Константин Николаевич",  
+"Комиссарова Виктория Александровна",  
+"Коновалова Ирина Андреевна",  
+"Корепова Ульяна Александровна",  
+"Крупина Валерия Дмитриевна",  
+"Курашев Степан Алексеевич",  
+"Лебедева Алина Сергеевна",  
+"Некоркин Илья Алексеевич",  
+"Поспелов Николай Михайлович",  
+"Прытов Артур Валерьевич",  
+"Смирнов Николай Олегович",  
+"Смирнов Степан Максимович",  
+"Смирнова Арина Андреевна",  
+"Соколов Сергей Вадимович",  
+"Суслов Артём Ильич",  
+"Сырбу Максим Дмитриевич",  
+"Титоренко Анна Алексеевна",  
+"Уланова Полина Дмитриевна",  
+"Челнокова Арина Александровна"
+        ]
+    },
+    "7В": {
+        teacher: "Шарыгина Надежда Александровна",
+        students: [
+"Бедин Матвей Сергеевич",  
+"Васильев Ярослав Романович",  
+"Великоредчанина Алина Германовна",  
+"Веселов Дмитрий Юрьевич",  
+"Горюнов Роман Александрович",  
+"Гудина Надежда Николаевна",  
+"Зайцев Сергей Иванович",  
+"Зайцева Дарья Владимировна",  
+"Исаченкова Александра Александровна",  
+"Комаров Павел Васильевич",  
+"Кондратов Дмитрий Иванович",  
+"Кошелева Русалина Сергеевна",  
+"Лебедева Елена Витальевна",  
+"Невзорова Александра Сергеевна",  
+"Перова Елизавета Александровна",  
+"Петухова Софья Павловна",  
+"Позолотина Александра Сергеевна",  
+"Ронжина Елизавета Максимовна",  
+"Рыбаков Ярослав Дмитриевич",  
+"Смирнов Марат Сергеевич",  
+"Снегирева Вероника Викторовна",  
+"Суслова Арина Антоновна",  
+"Темергалинова Дарья Руслановна",  
+"Удалова София Дмитриевна",  
+"Ширяев Савелий Иванович",  
+"Ященко Владислав Игоревич"
+        ]
+    },
+    "8А": {
+        teacher: "Смирнова Ирина Николаевна",
+        students: [
+"Байдусь Алёна Александровна",  
+"Болдырев Николай Александрович",  
+"Ветюгова Алина Дмитриевна",  
+"Ветюгова Стефания Вячеславовна",  
+"Виноградов Савелий Сергеевич",  
+"Груздев Всеволод Дмитриевич",  
+"Джалагония Ираклий Зурабович",  
+"Клешнин Илья Максимович",  
+"Комарова Катерина Вадимовна",  
+"Крапивин Ярослав Игоревич",  
+"Крупин Макар Евгеньевич",  
+"Курбет Софья Сергеевна",  
+"Лебедев Максим Сергеевич",  
+"Майбурова Ксения Алексеевна",  
+"Минин Даниил Сергеевич",  
+"Ожиганова Валерия Игоревна",  
+"Осмирко Анна Алексеевна",  
+"Павлов Вадим Сергеевич",  
+"Петросян Шогик Кареновна",  
+"Ронжин Яромир Алексеевич",  
+"Смирнов Артем Владимирович",  
+"Соколова Таисия Александровна",  
+"Сулин Даниил Олегович",  
+"Фричле Александра",  
+"Христолюбова Валентина Андреевна",  
+"Челпанова Мирослава Дмитриевна",  
+"Шарыгина Мария Сергеевна",  
+"Шатохин Николай Юрьевич",  
+"Ширяев Кирилл Иванович"
+        ]
+    },
+    "8Б": {
+        teacher: "Карташова Анна Васильевна",
+        students: [
+"Андриянова Яна Сергеевна",  
+"Бровкина Нина Владимировна",  
+"Горячева Ксения Игоревна",  
+"Груздева Елизавета Алексеевна",  
+"Клешнина Варвара Александровна",  
+"Зуйков Тимур Евгеньевич",  
+"Заруцкая Варвара Дмитриевна",  
+"Иванова Ксения Денисовна",  
+"Кодочигов Александр Александрович",  
+"Копков Савелий Игоревич",  
+"Кузнецов Матвей Алексеевич",  
+"Лебедева Ксения Сергеевна",  
+"Лебедева Мария Александровна",  
+"Лебедева Татьяна Алексеевна",  
+"Мельник Руслан Евгеньевич",  
+"Мосунов Александр Сергеевич",  
+"Новикова Полина Дмитриевна",  
+"Оносов Дмитрий Сергеевич",  
+"Орлова Дарья Алексеевна",  
+"Петров Егор Сергеевич",  
+"Полозова Дарья Сергеевна",  
+"Смирнов Иван Евгеньевич",  
+"Смирнова Мария Сергеевна",  
+"Соколов Платон Романович",  
+"Титова Александра Дмитриевна",  
+"Токтаров Алексей Семенович",  
+"Чешуинов Лев Васильевич",  
+"Юдаков Владислав Дмитриевич",  
+"Юдаков Ярослав Дмитриевич"
+        ]
+    },
+"8В": {
+        teacher: "Смирнова Наталья Николаевна",
+        students: [
+"Андреев Кирилл Алексеевич",  
+"Бурдакова Анастасия Александровна",  
+"Веселова Полина Евгеньевна",  
+"Ветюгова Виктория Андреевна",  
+"Вихарев Андрей Евгеньевич",  
+"Волков Егор Евгеньевич",  
+"Грицай Ангелина Александровна",  
+"Груздева Юлия Владимировна",  
+"Гуляев Виктор Павлович",  
+"Золотарев Артем Максимович",  
+"Миронов Тимур Сергеевич",  
+"Михайлова Мария Дмитриевна",  
+"Савинцев Матвей Данилович",  
+"Смертин Егор Евгеньевич",  
+"Смирнов Александр Алексеевич",  
+"Смирнов Артем Николаевич",  
+"Соколова Анастасия Дмитриевна",  
+"Соколова Дарья Евгеньевна",  
+"Соколова Ольга Михайловна",  
+"Толстухина Стефания Александровна",  
+"Хохряков Егор Степанович",  
+"Шафиулин Даниил Рустамович",  
+"Шишков Вячеслав Константинович",  
+"Юшков Дмитрий Андреевич",  
+"Лаптев Николай Ильич"
+        ]
+    },
+    "9А": {
+        teacher: "Платова Татьяна Александровна",
+        students: [
+"Азарян Артем Артурович",  
+"Ароян Ашот Феликсович",  
+"Бебенин Данил Алексеевич",  
+"Веселова Злата Антоновна",  
+"Гусев Матвей Андреевич",  
+"Демина Елизавета Владимировна",  
+"Долинин Роман Андреевич",  
+"Зайцев Тимофей Дмитриевич",  
+"Лебедев Данил Сергеевич",  
+"Лебедев Ярослав Александрович",  
+"Лебедева Ульяна Дмитриевна",  
+"Медведев Ярослав Алексеевич",  
+"Молоднякова Злата Сергеевна",  
+"Мусаев Захар Алексеевич",  
+"Позолотина Юлия Сергеевна",  
+"Полетаева Анна Владимировна",  
+"Смирнов Александр Михайлович",  
+"Смирнов Константин Николаевич",  
+"Смирнова Анита Максимовна",  
+"Соловьев Савелий Васильевич",  
+"Хлыбова Дарья Андреевна",  
+"Хмелянин Кирилл Дмитриевич",  
+"Храмцов Илья Игоревич",  
+"Чернорусова Анастасия Алексеевна",  
+"Шарапова Елизавета Алексеевна",  
+"Яськов Владимир Русланович"
+        ]
+    },
+"9Б": {
+        teacher: "Челнокова Елена Александровна",
+        students: [
+       "Балыбердин Илья Вячеславович",  
+"Вавилова Анастасия Николаевна",  
+"Воробьев Ильдар Викторович",  
+"Голубев Ярослав Андреевич",  
+"Гусева Анастасия Алексеевна",  
+"Жарков Егор Александрович",  
+"Захарова Маргарита Александровна",  
+"Койкова Анастасия Сергеевна",  
+"Кочкина Виктория Александровна",  
+"Кошкин Андрей Вадимович",  
+"Краева Софья Дмитриевна",  
+"Лебедев Артемий Алексеевич",  
+"Лебедева Анастасия Николаевна",  
+"Лугин Никита Васильевич",  
+"Мелентьев Тимур Александрович",  
+"Наумова София Андреевна",  
+"Осокина Варвара Михайловна",  
+"Полушина Александра Дмитриевна",  
+"Раскатова Диана Сергеевна",  
+"Раскатова Карина Сергеевна",  
+"Русинов Роман Алексеевич",  
+"Смелов Александр Максимович",  
+"Смирнов Артем Вячеславович",  
+"Солнцева Татьяна Васильевна",  
+"Соловьева Александра Алексеевна",  
+"Соловьева Ольга Алексеевна",  
+"Титова Виктория Сергеевна",  
+"Шестакова Кира Александровна"
+        ]
+    },
+
+"9В": {
+        teacher: "Зорина Наталья Николаевна",
+        students: [
+"Багаев Кирилл Андреевич",  
+"Борисова Алеся Станиславовна",  
+"Вихарев Сергей Евгеньевич",  
+"Воинова Валерия Николаевна",  
+"Долинина Анна Алексеевна",  
+"Дубровец Ирина Сергеевна",  
+"Карасева Анастасия Алексеевна",  
+"Кузнецова Виктория Федоровна",  
+"Кузнецова Диана Федоровна",  
+"Кукава Нукри Датунович",  
+"Лаптева Софья Анатольевна",  
+"Лебедева Алина Андреевна",  
+"Лифанова Екатерина Александровна",  
+"Малышева Ульяна Алексеевна",  
+"Мешкова Валерия Вячеславовна",  
+"Миронов Михаил Игоревич",  
+"Потехина Анна Андреевна",  
+"Пушкарев Владимир Алексеевич",  
+"Рахитова Валерия Вадимовна",  
+"Русских Владислав Викторович",  
+"Саморядов Сергей Михайлович",  
+"Смирнова Екатерина Федоровна",  
+"Туманин Егор Сергеевич",  
+"Фомичев Глеб Станиславович"
+        ]
+    }
+};
+
+// Загружаем данные (используем реальные)
+studentsData = realStudentsData;
+console.log('✅ Данные учеников загружены');
+
+// Создание кнопок классов для таблиц
+function createTableClassButtons() {
+    const middleContainer = document.getElementById('tableClassButtonsMiddle');
+    const highContainer = document.getElementById('tableClassButtonsHigh');
+
+    if (!middleContainer || !highContainer) return;
+
+    const middle = [
+    '7А','7Б','7В',
+    '8А','8Б','8В',
+    '9А','9Б','9В'
+];
+    const high = ['10', '11'];
+
+    middle.forEach(c => {
+        const btn = document.createElement("button");
+        btn.className = "class-btn";
+        btn.textContent = c;
+        btn.onclick = (e) => toggleTable(c, e);
+        middleContainer.appendChild(btn);
+    });
+
+    high.forEach(c => {
+        const btn = document.createElement("button");
+        btn.className = "class-btn";
+        btn.textContent = c;
+        btn.onclick = (e) => toggleTable(c, e); // Добавил 'e' для единообразия
+        highContainer.appendChild(btn);
+    });
+}
+
+function animateTableClose(displayElement) {
+    return new Promise(resolve => {
+        displayElement.style.transition = "all .25s ease";
+        displayElement.style.opacity = "0";
+        displayElement.style.transform = "translateY(10px) scale(0.96)";
+
+        setTimeout(() => {
+            displayElement.innerHTML = '';
+            displayElement.style.transition = '';
+            displayElement.style.opacity = '';
+            displayElement.style.transform = '';
+            resolve();
+        }, 250);
+    });
+}
+
+// Переключение отображения таблицы
+async function toggleTable(className, event) {
+    const display = document.getElementById("tableDisplay");
+    const allButtons = document.querySelectorAll('#tables .class-btn');
+
+    // Снимаем активный класс со всех кнопок в таблицах
+    allButtons.forEach(btn => btn.classList.remove('active'));
+
+    if (currentTableClass === className) {
+        // Закрываем с анимацией
+        await animateTableClose(display);
+        currentTableClass = null;
+        return;
+    }
+
+    // Добавляем активный класс нажатой кнопке
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
+
+    currentTableClass = className;
+
+    // Проверяем, есть ли данные
+    if (Object.keys(studentsData).length === 0) {
+        display.innerHTML = `
+        <div class="center-wrapper" style="min-height:auto;margin-top:20px;">
+            <div class="glass-card">
+                <div class="glass-text" style="text-align:center;">
+                    Загрузка данных...
+                </div>
+            </div>
+        </div>
+        `;
+        return;
+    }
+
+    const classInfo = studentsData[className];
+
+    if (!classInfo || !classInfo.students || classInfo.students.length === 0) {
+        display.innerHTML = `
+        <div class="center-wrapper" style="min-height:auto;margin-top:20px;">
+            <div class="glass-card">
+                <div class="glass-text" style="text-align:center;">
+                    Список учащихся пока не добавлен для ${className} класса.
+                </div>
+            </div>
+        </div>
+        `;
+        return;
+    }
+
+    let rows = "";
+    classInfo.students.forEach((name, index) => {
+        rows += `<tr><td>${index + 1}</td><td>${name}</td></tr>`;
+    });
+
+    await animateTableClose(display);
+
+    display.innerHTML = `
+    <div class="table-card">
+        <div class="class-teacher">
+            Классный руководитель: ${classInfo.teacher || 'не указан'}
+        </div>
+        <div class="students-table">
+            <table>
+                <thead>
+                    <tr><th>№</th><th>ФИО</th></tr>
+                </thead>
+                <tbody>
+                    ${rows}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    `;
+
+    const card = display.querySelector(".table-card");
+    if (card) {
+        requestAnimationFrame(() => {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(20px) scale(0.96)";
+            requestAnimationFrame(() => {
+                card.style.transition = "all .35s cubic-bezier(.2,.8,.2,1)";
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0) scale(1)";
+            });
+        });
+    }
+
+    // Установка обработчика скролла для новой таблицы
+    const tableEl = display.querySelector('.students-table');
+    const thead = display.querySelector('thead');
+    if (tableEl && thead) {
+        tableEl.addEventListener('scroll', () => {
+            thead.style.opacity = tableEl.scrollTop > 10 ? "0" : "1";
+        });
+    }
+}
+
+// Инициализация кнопок таблиц (вызывается ПОСЛЕ определения функций)
+createTableClassButtons();
+
+// ========== НОВОЕ РАСПИСАНИЕ ==========
+// Список всех классов
+const classes = {
+    middle: [
+'5А','5Б','5В',
+'6А','6Б','6В', 
+'7А','7Б','7В', 
+'8А','8Б','8В', 
+'9А','9Б','9В'
+            ],
+   
+ high: ['10','11']
+};
+
+// Дни недели
+const days = [
+    'monday', 'tuesday', 'wednesday', 'thursday', 'friday'
+];
+
+const daysRussian = {
+    monday: 'Понедельник',
+    tuesday: 'Вторник',
+    wednesday: 'Среда',
+    thursday: 'Четверг',
+    friday: 'Пятница'
+};
+
+// Время уроков
+const lessonTimes = [
+    '08:00—08:40',
+    '08:50—09:30',
+    '09:50—10:30',
+    '10:50—11:30',
+    '11:50—12:30',
+    '12:50—13:30',
+    '13:40—14:20',
+    '14:30—15:10'
+];
+
+// Данные расписания
+let scheduleData = {};
+
+// Текущий выбранный класс
+let currentClass = null;
+
+// Загружаем сохраненные данные
+function loadScheduleData() {
+    const allClasses = [...classes.middle, ...classes.high];
+    allClasses.forEach(className => {
+        const saved = localStorage.getItem(`schedule_${className}`);
+        if (saved) {
+            try {
+                scheduleData[className] = JSON.parse(saved);
+            } catch(e) {
+                console.log('Ошибка загрузки для', className);
+                createEmptySchedule(className);
+            }
+        } else {
+            createEmptySchedule(className);
+        }
+    });
+}
+
+// Создаем пустое расписание для класса
+function createEmptySchedule(className) {
+    scheduleData[className] = {};
+    days.forEach(day => {
+        scheduleData[className][day] = [];
+        // Создаем 8 пустых уроков
+        for (let i = 1; i <= 8; i++) {
+            scheduleData[className][day].push({
+                number: i,
+                name: '',
+                teacher: '',
+                room: ''
+            });
+        }
+    });
+}
+
+// Создаем кнопки классов для расписания
+function createClassButtons() {
+    const middleContainer = document.getElementById('classButtonsMiddle');
+    const highContainer = document.getElementById('classButtonsHigh');
+
+    middleContainer.innerHTML = '';
+    highContainer.innerHTML = '';
+
+    classes.middle.forEach(className => {
+        const btn = document.createElement('button');
+        btn.className = 'class-btn';
+        btn.textContent = className;
+        btn.dataset.class = className;
+        btn.addEventListener('click', () => toggleClass(className));
+        middleContainer.appendChild(btn);
+    });
+
+    classes.high.forEach(className => {
+        const btn = document.createElement('button');
+        btn.className = 'class-btn';
+        btn.textContent = className;
+        btn.dataset.class = className;
+        btn.addEventListener('click', () => toggleClass(className));
+        highContainer.appendChild(btn);
+    });
+}
+
+// Переключение класса в расписании
+function toggleClass(className) {
+    const scheduleDisplay = document.getElementById('scheduleDisplay');
+    const body = document.body;
+    const allButtons = document.querySelectorAll('#schedule .class-btn');
+
+    if (currentClass === className) {
+        // Если кликнули на тот же класс - плавно скрываем
+        allButtons.forEach(btn => btn.classList.remove('active'));
+
+        scheduleDisplay.classList.remove('visible');
+
+        setTimeout(() => {
+            if (!scheduleDisplay.classList.contains('visible')) {
+                // Ничего не делаем, просто очищаем
+            }
+        }, 300);
+
+        currentClass = null;
+    } else {
+        // Если кликнули на другой класс - показываем новое расписание
+        allButtons.forEach(btn => btn.classList.remove('active'));
+
+        const activeButtons = document.querySelectorAll(`#schedule .class-btn[data-class="${className}"]`);
+        activeButtons.forEach(btn => btn.classList.add('active'));
+
+        // Отображаем расписание для выбранного класса
+        displaySchedule(className);
+
+        scheduleDisplay.classList.add('visible');
+
+        currentClass = className;
+    }
+}
+
+// Функция для переключения дня
+function toggleDay(dayHeader) {
+    const dayLessons = dayHeader.nextElementSibling;
+    dayLessons.classList.toggle('visible');
+    dayHeader.classList.toggle('active');
+}
+
+// Отображаем расписание
+function displaySchedule(className) {
+    const container = document.getElementById('scheduleContainer');
+    container.innerHTML = '';
+
+    const classData = scheduleData[className];
+    if (!classData) return;
+
+    days.forEach(day => {
+        // Создаем день
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'schedule-day';
+
+        // Заголовок дня
+        const dayHeader = document.createElement('div');
+        dayHeader.className = 'day-header';
+        dayHeader.innerHTML = `<h3>${daysRussian[day]}</h3><i class="fas fa-chevron-down"></i>`;
+        dayHeader.addEventListener('click', () => toggleDay(dayHeader));
+
+        // Контейнер для уроков дня
+        const dayLessons = document.createElement('div');
+        dayLessons.className = 'day-lessons';
+
+        // Добавляем уроки
+        const lessons = classData[day];
+        if (lessons && lessons.length > 0) {
+            lessons.forEach(lesson => {
+                if (lesson.name && lesson.name.trim() !== '') {
+                    const lessonDiv = document.createElement('div');
+                    lessonDiv.className = 'lesson-item';
+                    lessonDiv.innerHTML = `
+                        <div class="lesson-number">${lesson.number}</div>
+                        <div class="lesson-name">${lesson.name}</div>
+                        <div class="lesson-teacher">${lesson.teacher || 'Фамилия И.О.'}</div>
+                        <div class="lesson-details">
+                            <span class="lesson-time">${lessonTimes[lesson.number-1] || ''}</span>
+                            <span class="lesson-room">${lesson.room ? 'Каб. ' + lesson.room : ''}</span>
+                        </div>
+                    `;
+                    dayLessons.appendChild(lessonDiv);
+                }
+            });
+        }
+
+        dayDiv.appendChild(dayHeader);
+        dayDiv.appendChild(dayLessons);
+        container.appendChild(dayDiv);
+    });
+}
+
+// ========== ЗАПОЛНЕНИЕ РАСПИСАНИЯ ==========
+function fillAllSchedule() {
+    // Создаем шаблон с твоими данными
+    const scheduleTemplate = {
+        '5А': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Англ. Язык / Информатика', teacher: 'Мухачёва Ю.П. / Лебедева О.А.', room: '221 / 226' },
+                { number: 4, name: 'Англ.Язык / Информатика', teacher: 'Морозова Н.В. / Лебедева О.А.', room: '229 / 226' },
+                { number: 5, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 6, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 7, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ],
+            tuesday: [
+                { number: 1, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 4, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Английский язык', teacher: 'Мухачёва Ю.П / Морозова Н.В.', room: '221 / 229' },
+                { number: 6, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 7, name: 'Физкультура', teacher: ' ', room: '' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 3, name: 'Вероятность и Статистика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 6, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Морозова Н.В.', room: '221 / 229' }
+            ],
+            thursday: [
+                { number: 1, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' },
+                { number: 7, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' }
+            ],
+            friday: [
+                { number: 1, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 2, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 3, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 5, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ]
+        },
+       '5Б': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Англ. Язык / Информатика', teacher: 'Мухачёва Ю.П. / Лебедева О.А.', room: '221 / 226' },
+                { number: 4, name: 'Англ.Язык / Информатика', teacher: 'Морозова Н.В. / Лебедева О.А.', room: '229 / 226' },
+                { number: 5, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 6, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 7, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ],
+            tuesday: [
+                { number: 1, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 4, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Английский язык', teacher: 'Мухачёва Ю.П / Морозова Н.В.', room: '221 / 229' },
+                { number: 6, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 7, name: 'Физкультура', teacher: ' ', room: '' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 3, name: 'Вероятность и Статистика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 6, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Морозова Н.В.', room: '221 / 229' }
+            ],
+            thursday: [
+                { number: 1, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' },
+                { number: 7, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' }
+            ],
+            friday: [
+                { number: 1, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 2, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 3, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 5, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ]
+        },
+        '5В': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Англ. Язык / Информатика', teacher: 'Мухачёва Ю.П. / Лебедева О.А.', room: '221 / 226' },
+                { number: 4, name: 'Англ.Язык / Информатика', teacher: 'Морозова Н.В. / Лебедева О.А.', room: '229 / 226' },
+                { number: 5, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 6, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 7, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ],
+            tuesday: [
+                { number: 1, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 4, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Английский язык', teacher: 'Мухачёва Ю.П / Морозова Н.В.', room: '221 / 229' },
+                { number: 6, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 7, name: 'Физкультура', teacher: ' ', room: '' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 3, name: 'Вероятность и Статистика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 6, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Морозова Н.В.', room: '221 / 229' }
+            ],
+            thursday: [
+                { number: 1, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' },
+                { number: 7, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' }
+            ],
+            friday: [
+                { number: 1, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 2, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 3, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 5, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ]
+        },
+       '6А': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Англ. Язык / Информатика', teacher: 'Мухачёва Ю.П. / Лебедева О.А.', room: '221 / 226' },
+                { number: 4, name: 'Англ.Язык / Информатика', teacher: 'Морозова Н.В. / Лебедева О.А.', room: '229 / 226' },
+                { number: 5, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 6, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 7, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ],
+            tuesday: [
+                { number: 1, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 4, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Английский язык', teacher: 'Мухачёва Ю.П / Морозова Н.В.', room: '221 / 229' },
+                { number: 6, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 7, name: 'Физкультура', teacher: ' ', room: '' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 3, name: 'Вероятность и Статистика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 6, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Морозова Н.В.', room: '221 / 229' }
+            ],
+            thursday: [
+                { number: 1, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' },
+                { number: 7, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' }
+            ],
+            friday: [
+                { number: 1, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 2, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 3, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 5, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ]
+        },
+          '6Б': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Англ. Язык / Информатика', teacher: 'Мухачёва Ю.П. / Лебедева О.А.', room: '221 / 226' },
+                { number: 4, name: 'Англ.Язык / Информатика', teacher: 'Морозова Н.В. / Лебедева О.А.', room: '229 / 226' },
+                { number: 5, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 6, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 7, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ],
+            tuesday: [
+                { number: 1, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 4, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Английский язык', teacher: 'Мухачёва Ю.П / Морозова Н.В.', room: '221 / 229' },
+                { number: 6, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 7, name: 'Физкультура', teacher: ' ', room: '' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 3, name: 'Вероятность и Статистика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 6, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Морозова Н.В.', room: '221 / 229' }
+            ],
+            thursday: [
+                { number: 1, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' },
+                { number: 7, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' }
+            ],
+            friday: [
+                { number: 1, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 2, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 3, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 5, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ]
+        },
+      '6В': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Англ. Язык / Информатика', teacher: 'Мухачёва Ю.П. / Лебедева О.А.', room: '221 / 226' },
+                { number: 4, name: 'Англ.Язык / Информатика', teacher: 'Морозова Н.В. / Лебедева О.А.', room: '229 / 226' },
+                { number: 5, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 6, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 7, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ],
+            tuesday: [
+                { number: 1, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 4, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Английский язык', teacher: 'Мухачёва Ю.П / Морозова Н.В.', room: '221 / 229' },
+                { number: 6, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 7, name: 'Физкультура', teacher: ' ', room: '' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 3, name: 'Вероятность и Статистика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 6, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Морозова Н.В.', room: '221 / 229' }
+            ],
+            thursday: [
+                { number: 1, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' },
+                { number: 7, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' }
+            ],
+            friday: [
+                { number: 1, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 2, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 3, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 5, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ]
+        },
+          '7А': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Англ. Язык / Информатика', teacher: 'Мухачёва Ю.П. / Лебедева О.А.', room: '221 / 226' },
+                { number: 4, name: 'Англ.Язык / Информатика', teacher: 'Морозова Н.В. / Лебедева О.А.', room: '229 / 226' },
+                { number: 5, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 6, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 7, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ],
+            tuesday: [
+                { number: 1, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 4, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Английский язык', teacher: 'Мухачёва Ю.П / Морозова Н.В.', room: '221 / 229' },
+                { number: 6, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 7, name: 'Физкультура', teacher: ' ', room: '' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 3, name: 'Вероятность и Статистика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 6, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Морозова Н.В.', room: '221 / 229' }
+            ],
+            thursday: [
+                { number: 1, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' },
+                { number: 7, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' }
+            ],
+            friday: [
+                { number: 1, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 2, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 3, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 5, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' }
+            ]
+        },
+        '7Б': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Алгебра', teacher: 'Борисова Надежда Петровна', room: '346' },
+                { number: 3, name: 'Русский язык', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 4, name: 'Литература', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 5, name: 'Англ.Язык / Информатика', teacher: 'Зыкова Е.В. / Лебедева О.А.', room: '344/2 / 226' },
+                { number: 6, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' },
+                { number: 7, name: 'Англ.Язык / Информатика', teacher: 'Морозова Н.В. / Лебедева О.А.', room: '229 / 226' }
+            ],
+            tuesday: [
+                { number: 1, name: 'Русский язык', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Геометрия', teacher: 'Борисова Надежда Петровна', room: '346' },
+                { number: 4, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 5, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 6, name: 'Литература', teacher: 'Смирнова Ирина Николаевна', room: '349' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Английский язык', teacher: 'Зыкова Е.В. / Морозова Н.В.', room: '344/2 / 229' },
+                { number: 2, name: 'Русский язык', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'Алгебра', teacher: 'Борисова Надежда Петровна', room: '346' },
+                { number: 5, name: 'География', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 6, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 7, name: 'Русская словесность', teacher: 'Смирнова Ирина Николаевна', room: '349' }
+            ],
+            thursday: [
+                { number: 1, name: 'Русский язык', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 2, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' },
+                { number: 3, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' },
+                { number: 4, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 5, name: 'Англ. Язык', teacher: 'Зыкова Е.В. / Морозова Н.В.', room: '344/2 / 229' },
+                { number: 6, name: 'Русская словестность', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 7, name: 'Геометрия', teacher: 'Борисова Надежда Петровна', room: '346' }
+            ],
+            friday: [
+                { number: 1, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' },
+                { number: 2, name: 'Алгебра', teacher: 'Борисова Надежда Петровна', room: '346' },
+                { number: 3, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 4, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 5, name: 'География', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 6, name: 'Вероятность и Статистика', teacher: 'Борисова Надежда Петровна', room: '346' }
+            ]
+        },
+        '7В': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' },
+                { number: 3, name: 'Английский язык', teacher: 'Челнокова Н.С. / Терехова Н.Е.', room: '108 / 109' },
+                { number: 4, name: 'Алгебра', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 5, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 6, name: 'Русская словестность', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 7, name: 'Вероятность и Статистика', teacher: 'Челнокова Елена Александровна', room: '345' }
+            ],
+            tuesday: [
+                { number: 1, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 2, name: 'Геометрия', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 3, name: 'Англ.язык / Информатика', teacher: 'Терехова Н.Е. / Лебедева О.А.', room: '109 / 226' },
+                { number: 4, name: 'Русская словесность', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 5, name: 'Русский Язык', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 6, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 7, name: 'Англ.язык / Информатика', teacher: 'Челнокова Н.С. / Лебедева О.А.', room: '108 / 226' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 2, name: 'Алгебра', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 3, name: 'Физкультура', teacher: 'Жарков Александр Леонидович', room: '' },
+                { number: 4, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' },
+                { number: 5, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 6, name: 'География', teacher: 'Мальцева Татьяна Григорьевна', room: '225' }
+            ],
+            thursday: [
+                { number: 1, name: 'История', teacher: 'Бармина Светлана Викторовна', room: '350' },
+                { number: 2, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 3, name: 'Литература', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 4, name: 'Геометрия', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 5, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 6, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' }
+            ],
+            friday: [
+                { number: 1, name: 'Английский язык', teacher: 'Челнокова Н.С. / Терехова Н.Е.', room: '108 / 109' },
+                { number: 2, name: 'Алгебра', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 3, name: 'Литература', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 4, name: 'География', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 5, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 6, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 7, name: 'Физкультура', teacher: 'Жарков Александр Леонидович', room: '' } 
+            ]
+        },
+        '8А': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 4, name: 'Английский язык', teacher: 'Челнокова Н.С. / Громина Л.Н.', room: '108 / 341' },
+                { number: 5, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 6, name: 'Русский язык', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 7, name: 'Обществознание', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 8, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' }
+            ],
+            tuesday: [
+                { number: 1, name: 'Англ.Язык / Информатика', teacher: 'Челнокова Н.С. / Лебедева О.А.', room: '108 / 226' },
+                { number: 2, name: 'Англ.Язык / Информатика', teacher: 'Громина Л.Н. / Лебедева О.А.', room: '341 / 226' },
+                { number: 3, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'Русский язык', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 5, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 6, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Литература', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 2, name: 'ОБЗР', teacher: 'Коновалов Андрей Александрович', room: '115' },
+                { number: 3, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 4, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 5, name: 'Английский язык', teacher: 'Челнокова Н.С. / Громина Л.Н.', room: '108 / 341' },
+                { number: 6, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '224' },
+                { number: 7, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' }
+            ],
+            thursday: [
+                { number: 2, name: 'Русская словесность', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 3, name: 'Литература', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 4, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 5, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 6, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 7, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 8, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' }
+            ],
+            friday: [
+                { number: 2, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 3, name: 'Русская словесность', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 4, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 5, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 6, name: 'Русский язык', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 7, name: 'Вероятность и Статистика', teacher: 'Решетова Ольга Владимировна', room: '353' }
+            ]
+        },
+        '8Б': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 3, name: 'Литература', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 4, name: 'Обществознание', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 5, name: 'Алгебра', teacher: 'Борисова Надежда Петровна', room: '346' },
+                { number: 6, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' }          
+            ],
+            tuesday: [
+                { number: 1, name: 'Геометрия', teacher: 'Борисова Надежда Петровна', room: '346' },
+                { number: 2, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344' },
+                { number: 5, name: 'Англ.Язык / Информатика', teacher: 'Челнокова Н.С. /Лебедева О.А.', room: '108 / 226' },
+                { number: 6, name: 'Англ.Язык / Информатика', teacher: 'Зыкова Е.В. / Лебедева О.А.', room: '344/2 / 226' },
+                { number: 7, name: 'Русская словесность', teacher: 'Антакова Татьяна Юрьевна', room: '351' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Алгебра', teacher: 'Борисова Надежда Петровна', room: '346' },
+                { number: 2, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 3, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 4, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '224' },
+                { number: 5, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 6, name: 'Английский язык', teacher: 'Челнокова Н.С. / Зыкова Е.В.', room: '108 / 344/2' },
+                { number: 7, name: 'ОБЗР', teacher: 'Коновалов Андрей Александрович', room: '115' }
+            ],
+            thursday: [
+                { number: 1, name: 'Геометрия', teacher: 'Борисова Надежда Петровна', room: '346' },
+                { number: 2, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 3, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 4, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 5, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' },
+                { number: 6, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 7, name: 'Литература', teacher: 'Антакова Татьяна Юрьевна', room: '351' }
+            ],
+            friday: [
+                { number: 1, name: 'Алгебра', teacher: 'Борисова Надежда Петровна', room: '346' },
+                { number: 2, name: 'Английский язык', teacher: 'Челнокова Н.С. / Зыкова Е.В.', room: '108 / 344/2' },
+                { number: 3, name: 'Вероятность и Статистика', teacher: 'Борисова Надежда Петровна', room: '346' },
+                { number: 4, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 5, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 6, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 7, name: 'Русская словесность', teacher: 'Антакова Татьяна Юрьевна', room: '351' }
+            ]
+        },
+
+'8В': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 5, name: 'Обществознание', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 6, name: 'Алгебра', teacher: ' ', room: '346' },
+                { number: 7, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' }          
+            ],
+            tuesday: [
+                { number: 2, name: 'Английский язык', teacher: 'Челнокова Н.С. / Морозова Н.В.', room: '108 / 229' },
+                { number: 3, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 4, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 5, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 6, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 7, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '224' },
+                { number: 8, name: 'Геометрия', teacher: ' ', room: '226' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 2, name: 'Англ.Язык / Информатика', teacher: 'Челнокова Н.С. / Лебедева О.А.', room: '108 / 226' },
+                { number: 3, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 4, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 5, name: 'Алгебра', teacher: ' ', room: '346' },
+                { number: 6, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' }
+            ],
+            thursday: [
+                { number: 1, name: 'Англ. Язык / Информатика', teacher: 'Морозова Н.В. / Лебедева О.А.', room: '229 / 226' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Геометрия', teacher: ' ', room: '226' },
+                { number: 4, name: 'География', teacher: 'Вихарева Наталья Витальевна', room: '115' },
+                { number: 5, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 6, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 7, name: 'ОБЗР', teacher: 'Коновалов Андрей Александрович', room: '115' },
+            ],
+            friday: [
+                { number: 2, name: 'Русская словесность', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 4, name: 'Английский язык', teacher: 'Челнокова Н.С. / Морозова Н.В.', room: '108 / 229' },
+                { number: 5, name: 'Вероятность и Статистика', teacher: ' ', room: '226' },
+                { number: 6, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' },
+                { number: 7, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 8, name: 'Алгебра', teacher: ' ', room: '346' }
+            ]
+        }, 
+
+'9А': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 3, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 4, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 5, name: 'География', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 6, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 7, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 8, name: 'Вероятность и Статистика', teacher: 'Борисова Надежда Петровна', room: '346' },              
+            ],
+            tuesday: [
+                { number: 1, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 2, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 3, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 4, name: 'Английский язык', teacher: 'Челнокова Н.С. / Зыкова Е.В.', room: '108 / 344/2' },
+                { number: 5, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 6, name: 'Физкультура', teacher: 'Тюлькина Ольга Валерьевна', room: '' },
+                { number: 7, name: 'Геометрия', teacher: 'Борисова Надежда Петровна', room: '346' }
+            ],
+            wednesday: [
+                { number: 2, name: 'Алгебра', teacher: 'Борисова Надежда Петровна', room: '346' },
+                { number: 3, name: 'Физкультура', teacher: 'Тюлькина Ольга Валерьевна', room: '' },
+                { number: 4, name: 'ОБЗР', teacher: 'Коновалов Андрей Александрович', room: '115' },    
+                { number: 5, name: 'Информатика', teacher: 'Лебедева Оксана Александровна', room: '226' },
+                { number: 6, name: 'Английский Язык', teacher: 'Челнокова Н.С. / Зыкова Е.В.', room: '108 / 344/2' }
+            ],
+            thursday: [
+                { number: 1, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 2, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 3, name: 'Алгебра', teacher: 'Борисова Надежда Петровна', room: '346' },
+                { number: 4, name: 'Обществознание', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 5, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 6, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 7, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' }
+            ],
+            friday: [
+                { number: 2, name: 'География', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 3, name: 'Английский язык', teacher: 'Челнокова Н.С. / Зыкова Е.В.', room: '108 / 344/2' },
+                { number: 4, name: 'Алгебра', teacher: 'Борисова Надежда Петровна', room: '346' },
+                { number: 5, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 6, name: 'Литература', teacher: 'Ленская Надежда Андреевна', room: '228' },
+                { number: 7, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' }
+            ]
+        },
+
+'9Б': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Литература', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 3, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 4, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 5, name: 'Алгебра', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 6, name: 'Английский Язык', teacher: 'Громина Л.Н. / Зыковп Е.В.', room: '341 / 344/2' },
+                { number: 7, name: 'Русский язык', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },  
+            ],
+            tuesday: [
+                { number: 1, name: 'Английский Язык', teacher: 'Громина Л.Н. / Зыкова Е.В.', room: '340 / 344/2' },
+                { number: 2, name: 'Геометрия', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 3, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 4, name: 'Труд', teacher: 'Коновалов А.А./ Чиркина С.А.', room: '114 / 117' },
+                { number: 5, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 6, name: 'Русский язык', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 7, name: 'Литература', teacher: 'Тихомирова Ольга Сергеевна', room: '340' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Алгебра', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 2, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '347' },
+                { number: 3, name: 'Англ.Язык / Информатика', teacher: 'Зыкова Е.В. / Лебедева О.А.', room: '344/2 / 226' },    
+                { number: 4, name: 'География', teacher: 'Зорина Наталья Николаевна', room: '347' },
+                { number: 5, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 6, name: 'Русский Язык', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 7, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' }
+            ],
+            thursday: [
+                { number: 2, name: 'Геометрия', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 3, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 4, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 5, name: 'Вероятность и Статистика', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 6, name: 'Англ.Язык / Информатика', teacher: 'Зыкова Е.В. / Лебедева О.А.', room: '341/2 / 226' },
+                { number: 7, name: 'Обществознание', teacher: 'Байдусь Екатерина Сергеевна', room: '227' }
+            ],
+            friday: [
+                { number: 2, name: 'Физкультура', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 3, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 4, name: 'Алгебра', teacher: 'Челнокова Елена Александровна', room: '345' },
+                { number: 5, name: 'История', teacher: 'Байдусь Екатерина Александровна', room: '227' },
+                { number: 6, name: 'Литература', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 7, name: 'ОБЗР', teacher: 'Коновалов Андрей Александрович', room: '115' },
+                { number: 8, name: 'География', teacher: 'Зорина Наталья Николаевна', room: '224' }
+            ]
+        },
+
+'9В': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Литература', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 3, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 4, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 5, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 6, name: 'Обществознание', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 7, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Громина Л.Н.', room: '221 / 341' },
+            ],
+            tuesday: [
+                { number: 2, name: 'Русский Язык', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 3, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 4, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 5, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 6, name: 'География', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 7, name: 'Геометрия', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 8, name: 'Физика', teacher: 'Решетова Ольга Владимировна', room: '353' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '347' },
+                { number: 2, name: 'Английский Язык', teacher: 'Мухачева Ю.П. / Громина Л.Н.', room: '221 / 341' },
+                { number: 3, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },    
+                { number: 4, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 5, name: 'Литература', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 6, name: 'Русский Язык', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 7, name: 'География', teacher: 'Зорина Наталья Николаевна', room: '224' }
+            ],
+            thursday: [
+                { number: 2, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 3, name: 'Геометрия', teacher: 'Решетова Ольга Сергеевна', room: '353' },
+                { number: 4, name: 'Англ.Язык / Информатика', teacher: 'Громина Л.Н. / Лебедева О.А.', room: '341 / 226' },
+                { number: 5, name: 'Англ.Язык / Информатика', teacher: 'Мухачёва Ю.П. / Лебедева О.А.', room: '221 / 226' },
+                { number: 6, name: 'Химия', teacher: 'Мальцева Татьяна Григорьевна', room: '225' },
+                { number: 7, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 8, name: 'ОБЗР', teacher: 'Коновалов Андрей Александрович', room: '115' }
+            ],
+            friday: [
+                { number: 3, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 4, name: 'Русский Язык', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 5, name: 'Литература', teacher: 'Смирнова Ирина Николаевна', room: '349' },
+                { number: 6, name: 'Алгебра', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 7, name: 'Физика', teacher: 'Платова Татьяна Александровна', room: '343' },
+                { number: 8, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' }
+            ]
+        }
+    };
+
+    // Загружаем шаблон
+    for (let className in scheduleTemplate) {
+        if (scheduleTemplate.hasOwnProperty(className)) {
+            // Для каждого дня проверяем наличие массива уроков
+            days.forEach(day => {
+                if (!scheduleTemplate[className][day]) {
+                    scheduleTemplate[className][day] = [];
+                }
+            });
+            scheduleData[className] = scheduleTemplate[className];
+            localStorage.setItem(`schedule_${className}`, JSON.stringify(scheduleTemplate[className]));
+        }
+    }
+
+    console.log('✅ Расписание загружено.');
+}
+
+// Инициализация расписания
+loadScheduleData();
+createClassButtons();
+fillAllSchedule();
+</script>
+</body>
+</html>
