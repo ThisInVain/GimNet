@@ -1068,6 +1068,38 @@ body.dark-theme #scheduleDisplay {
     width: 100%;
 }
 
+/* Существующие стили для #scheduleDisplay оставь как есть */
+#scheduleDisplay {
+    width: 100%;
+    margin-top: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 24px;
+    padding: 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transform-origin: top center;
+}
+
+#scheduleDisplay.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* ===== НОВЫЙ КЛАСС ДЛЯ АНИМАЦИИ ЗАКРЫТИЯ ===== */
+#scheduleDisplay.schedule-display-hide {
+    opacity: 0;
+    transform: translateY(15px) scale(0.96);
+    transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+    pointer-events: none; /* Чтобы блок не мешал кликам во время анимации */
+}
+
 /* Стили для дня */
 .schedule-day {
     width: 100%;
@@ -3058,38 +3090,63 @@ function createClassButtons() {
     });
 }
 
-// Переключение класса в расписании
+// Переключение класса в расписании с плавной анимацией
 function toggleClass(className) {
     const scheduleDisplay = document.getElementById('scheduleDisplay');
-    const body = document.body;
+    const scheduleContainer = document.getElementById('scheduleContainer');
     const allButtons = document.querySelectorAll('#schedule .class-btn');
-
-    if (currentClass === className) {
-        // Если кликнули на тот же класс - плавно скрываем
+    
+    // Случай 1: Класс уже выбран -> нужно закрыть расписание с анимацией
+    if (currentScheduleClass === className) {
+        // Убираем активный класс с кнопки
         allButtons.forEach(btn => btn.classList.remove('active'));
-
+        
+        // Запускаем анимацию закрытия, добавляя новый класс
+        scheduleDisplay.classList.add('schedule-display-hide');
         scheduleDisplay.classList.remove('visible');
-
+        
+        // Очищаем контейнер и сбрасываем состояние после анимации
         setTimeout(() => {
-            if (!scheduleDisplay.classList.contains('visible')) {
-                // Ничего не делаем, просто очищаем
-            }
-        }, 300);
-
-        currentClass = null;
+            scheduleContainer.innerHTML = '';
+            scheduleDisplay.classList.remove('schedule-display-hide');
+            currentScheduleClass = null;
+        }, 300); // Длительность анимации (совпадает с transition в CSS)
+        
+        return;
+    }
+    
+    // Случай 2: Выбран другой класс -> показываем новое расписание
+    // Сначала запускаем анимацию закрытия старого (если оно открыто)
+    if (currentScheduleClass !== null) {
+        scheduleDisplay.classList.add('schedule-display-hide');
+        scheduleDisplay.classList.remove('visible');
+        
+        setTimeout(() => {
+            scheduleDisplay.classList.remove('schedule-display-hide');
+            // После закрытия старого, показываем новое
+            showNewSchedule(className);
+        }, 250);
     } else {
-        // Если кликнули на другой класс - показываем новое расписание
+        // Если никакое расписание не открыто, просто показываем новое
+        showNewSchedule(className);
+    }
+    
+    // Вспомогательная функция для отображения нового расписания
+    function showNewSchedule(className) {
+        // Обновляем активную кнопку
         allButtons.forEach(btn => btn.classList.remove('active'));
-
-        const activeButtons = document.querySelectorAll(`#schedule .class-btn[data-class="${className}"]`);
-        activeButtons.forEach(btn => btn.classList.add('active'));
-
-        // Отображаем расписание для выбранного класса
+        const activeBtn = Array.from(allButtons).find(b => b.textContent === className);
+        if (activeBtn) activeBtn.classList.add('active');
+        
+        // Генерируем новое содержимое
         displaySchedule(className);
-
+        
+        // Показываем блок с анимацией
+        scheduleDisplay.classList.remove('schedule-display-hide');
         scheduleDisplay.classList.add('visible');
-
-        currentClass = className;
+        
+        // Обновляем текущий выбранный класс
+        currentScheduleClass = className;
     }
 }
 
