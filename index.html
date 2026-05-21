@@ -582,7 +582,7 @@ body.dark-theme .theme-option.active {
 .links-submenu {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease;
+    transition: max-height 0.5s ease;
     background: rgba(0, 0, 0, 0.03);
     border-radius: 0 0 12px 12px;
     margin: 0 8px;
@@ -645,7 +645,7 @@ body.dark-theme .links-submenu .dropdown-item:hover {
 }
 
 .news-content p {
-    margin: 8px 0;
+    text-align: left;
 }
 
 /* ========== НОРМАЛЬНЫЙ РАЗМЕР ЭМОДЗИ ========== */
@@ -1066,6 +1066,38 @@ body.dark-theme #scheduleDisplay {
     display: flex;
     flex-direction: column;
     width: 100%;
+}
+
+/* Существующие стили для #scheduleDisplay оставь как есть */
+#scheduleDisplay {
+    width: 100%;
+    margin-top: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 24px;
+    padding: 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transform-origin: top center;
+}
+
+#scheduleDisplay.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* ===== НОВЫЙ КЛАСС ДЛЯ АНИМАЦИИ ЗАКРЫТИЯ ===== */
+#scheduleDisplay.schedule-display-hide {
+    opacity: 0;
+    transform: translateY(15px) scale(0.96);
+    transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+    pointer-events: none; /* Чтобы блок не мешал кликам во время анимации */
 }
 
 /* Стили для дня */
@@ -1690,6 +1722,128 @@ input, textarea {
     }
     body { padding-top: 56px; }
 }
+
+/* ========== АНИМАЦИИ ДЛЯ ВКЛАДОК ========== */
+
+/* Анимация для карточек и таблиц */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Анимация для кнопок классов */
+.class-buttons .class-btn {
+    animation: fadeInUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+/* Задержки для кнопок, чтобы они появлялись по очереди */
+.class-buttons .class-btn:nth-child(1) { animation-delay: 0.05s; }
+.class-buttons .class-btn:nth-child(2) { animation-delay: 0.10s; }
+.class-buttons .class-btn:nth-child(3) { animation-delay: 0.15s; }
+.class-buttons .class-btn:nth-child(4) { animation-delay: 0.20s; }
+.class-buttons .class-btn:nth-child(5) { animation-delay: 0.25s; }
+.class-buttons .class-btn:nth-child(6) { animation-delay: 0.30s; }
+.class-buttons .class-btn:nth-child(7) { animation-delay: 0.35s; }
+.class-buttons .class-btn:nth-child(8) { animation-delay: 0.40s; }
+.class-buttons .class-btn:nth-child(9) { animation-delay: 0.45s; }
+.class-buttons .class-btn:nth-child(10) { animation-delay: 0.50s; }
+.class-buttons .class-btn:nth-child(11) { animation-delay: 0.55s; }
+.class-buttons .class-btn:nth-child(12) { animation-delay: 0.60s; }
+.class-buttons .class-btn:nth-child(13) { animation-delay: 0.65s; }
+.class-buttons .class-btn:nth-child(14) { animation-delay: 0.70s; }
+.class-buttons .class-btn:nth-child(15) { animation-delay: 0.75s; }
+
+/* Анимация для заголовков вкладок */
+.class-selector h3 {
+    animation: fadeInUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+    animation-delay: 0s;
+}
+
+.class-section h4 {
+    animation: fadeInUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+    animation-delay: 0.05s;
+}
+
+/* Анимация для таблицы со списками */
+#tableDisplay .table-card {
+    animation: fadeInScale 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+    animation-delay: 0.1s;
+}
+
+/* Анимация для расписания */
+#scheduleDisplay {
+    animation: fadeInScale 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+#scheduleDisplay.visible {
+    animation: fadeInScale 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+/* Анимация для дней расписания */
+.schedule-day {
+    animation: fadeInUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+.schedule-day:nth-child(1) { animation-delay: 0.05s; }
+.schedule-day:nth-child(2) { animation-delay: 0.10s; }
+.schedule-day:nth-child(3) { animation-delay: 0.15s; }
+.schedule-day:nth-child(4) { animation-delay: 0.20s; }
+.schedule-day:nth-child(5) { animation-delay: 0.25s; }
+
+/* Анимация для уроков внутри дня */
+.lesson-item {
+    animation: fadeInUp 0.3s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+.lesson-item:nth-child(1) { animation-delay: 0.02s; }
+.lesson-item:nth-child(2) { animation-delay: 0.04s; }
+.lesson-item:nth-child(3) { animation-delay: 0.06s; }
+.lesson-item:nth-child(4) { animation-delay: 0.08s; }
+.lesson-item:nth-child(5) { animation-delay: 0.10s; }
+.lesson-item:nth-child(6) { animation-delay: 0.12s; }
+.lesson-item:nth-child(7) { animation-delay: 0.14s; }
+.lesson-item:nth-child(8) { animation-delay: 0.16s; }
+
+/* Синяя точка как в Instagram */
+.news-dot-blue {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #0095f6;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(0, 149, 246, 0.5);
+    animation: pulse-blue 2s infinite;
+}
+
+@keyframes pulse-blue {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 149, 246, 0.5);
+    }
+    70% {
+        box-shadow: 0 0 0 6px rgba(0, 149, 246, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 149, 246, 0);
+    }
+}
+
     </style>
 </head>
 <body class="light-theme">
@@ -1802,15 +1956,11 @@ input, textarea {
             <div class="center-wrapper">
                 <div class="glass-card">
                     <div class="glass-title">Что нового?</div>
-                    <div class="glass-text">
-                        Глобальное обновление 1.0.0<br>
+                    <div class="glass-text"> 
                         <div class="quote">
-                            - Новый движок приложения.<br>
-                            - Интерфейс был полностью переработан.<br>
-                            - Вкладка «Быстрые ссылки» была перенесена в настройки.<br>
-                            - Новая вкладка «Расписание».<br>
-                            - Верхнее меню было переработано.<br>
-                            - Нижнее меню было переработано.
+                            - Добавлены новые классы в «Расписание»<br>
+                            - Были обновлены анимации<br>
+                            - «Таблицы» были переименованы в «Списки»<br>
                         </div>
                         Подробнее об обновлении <a href="#" onclick="switchToNews(); return false;" style="color: #007AFF;">тут</a>
                     </div>
@@ -1818,33 +1968,55 @@ input, textarea {
             </div>
         </div>
 
-        <!-- Новости -->
-        <div id="news" class="page">
-            <div class="glass-card" style="max-width: 350px; margin: 0 auto;">
-                <span class="version-badge">Версия 1.0.0</span>
-                <div class="glass-title" style="font-size: 20px; text-align: left;">Глобальное обновление</div>
-                <div class="glass-text">
-                    <p><strong>Полный список изменений</strong></p>
-                    <div class="quote" style="margin: 16px 0;">
-                        <p>- Новый движок приложения</p>
-                        <p>- Интерфейс был полностью переработан</p>
-                        <p>- Вкладка «Быстрые ссылки» была перенесена в настройки</p>
-                        <p>- «Быстрые ссылки» были переименованы в «Ссылки»</p>
-                        <p>- Добавлена вкладка «Расписание»</p>
-                        <p>- Верхнее меню было переработано</p>
-                        <p>- Нижнее меню было переработано</p>
-                        <p>- Была добавлена смена темы оформления</p>
-                        <p>- «База данных» была переименована в «Архив»</p>
-                        <p>- Были добавлены «Новости»</p>
-                        <p>- Были добавлены красивые анимации переходов</p>
-                        <p>- При нажатии на логотип или подпись вкладки в верхнем меню, плавно переносит наверх страницы</p>
-                    </div>
-                    <p style="margin-top: 20px; text-align: center;">Спасибо, что вы с нами ❤️</p>
-                </div>
-                <div class="news-date">13.04.2026, 22:30</div>
-            </div>
+<!-- Новости -->
+<div id="news" class="page">
+    <!-- Новый пост с пометкой NEW -->
+<div class="glass-card" style="max-width: 350px; margin: 0 auto 20px auto;">
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+        <span class="version-badge">Версия 1.1.0</span>
+        <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="news-dot-blue"></span>
+            <span style="font-size: 10px; color: #0095f6; font-weight: 600;">NEW</span>
         </div>
+    </div>
+    <div class="glass-title" style="font-size: 20px; text-align: left; margin-top: 8px;">Обновление</div>
+    <div class="glass-text">
+        <p><strong>Полный список изменений</strong></p>
+        <div class="quote" style="margin: 16px 0;">
+            <p>- Таблицы переименованы в Списки</p>
+            <p>- Были обновлены анимации</p>
+            <p>- Изменена скорость открытия подменю Ссылок</p>
+            <p>- В раздел «Расписание» были добавлены новые классы (5А, 5Б, 5В, 6А, 6Б, 6В)</p>
+        </div>
+    </div>
+    <div class="news-date">дд.мм.гггг, ХХ:ХХ</div>
+</div>
 
+    <!-- Пост 2: Глобальное обновление -->
+    <div class="glass-card" style="max-width: 350px; margin: 0 auto;">
+    <span class="version-badge" style="display: inline-block;">Версия 1.0.0</span>
+    <div class="glass-title" style="font-size: 20px; text-align: left;">Глобальное обновление</div>
+        <div class="glass-text">
+            <p><strong>Полный список изменений</strong></p>
+            <div class="quote" style="margin: 16px 0;">
+                <p>- Новый движок приложения</p>
+                <p>- Интерфейс был полностью переработан</p>
+                <p>- Вкладка «Быстрые ссылки» была перенесена в настройки</p>
+                <p>- «Быстрые ссылки» были переименованы в «Ссылки»</p>
+                <p>- Добавлена вкладка «Расписание»</p>
+                <p>- Верхнее меню было переработано</p>
+                <p>- Нижнее меню было переработано</p>
+                <p>- Была добавлена смена темы оформления</p>
+                <p>- «База данных» была переименована в «Архив»</p>
+                <p>- Были добавлены «Новости»</p>
+                <p>- Были добавлены красивые анимации переходов</p>
+                <p>- При нажатии на логотип или подпись вкладки в верхнем меню, плавно переносит наверх страницы</p>
+            </div>
+            <p style="margin-top: 20px; text-align: center;">Спасибо, что вы с нами ❤️</p>
+        </div>
+        <div class="news-date">13.04.2026, 22:30</div>
+    </div>
+</div>
         <!-- Архив -->
         <div id="archive" class="page">
             <!-- Результаты поиска -->
@@ -1890,7 +2062,7 @@ input, textarea {
 
                 <!-- 7-9 классы -->
                 <div class="class-section">
-                    <h4>7-9 классы</h4>
+                    <h4>5-9 классы</h4>
                     <div class="class-buttons" id="classButtonsMiddle">
                         <!-- Кнопки создаются через JS -->
                     </div>
@@ -1978,6 +2150,8 @@ fetch('https://api.ipify.org?format=json')
         });
     });
 
+let currentScheduleClass = null;
+
 window.addEventListener('DOMContentLoaded', function() {
     const splashScreen = document.getElementById('splashScreen');
     const splashText = document.querySelector('.splash-text');
@@ -1985,10 +2159,10 @@ window.addEventListener('DOMContentLoaded', function() {
     const dots = document.querySelectorAll('.splash-dot');
 
     const DURATION = {
-        textAppear: 900,
-        textVisible: 4500,
-        textDisappear: 700,
-        fadeOut: 1000
+        textAppear: 450,
+        textVisible: 1850,
+        textDisappear: 300,
+        fadeOut: 750
     };
 
     splashScreen.style.background = '#000';
@@ -2168,6 +2342,50 @@ tabItems.forEach(tab => {
         if (navigator.vibrate) { navigator.vibrate(10); }
 
         updateSearchButtonVisibility();
+    });
+});
+
+tabItems.forEach(tab => {
+    tab.addEventListener('click', function() {
+        const tabId = this.getAttribute('data-tab');
+
+        tabItems.forEach(item => { item.classList.remove('active'); });
+        this.classList.add('active');
+
+        pages.forEach(page => { page.classList.remove('active'); });
+        document.getElementById(tabId).classList.add('active');
+
+        if (userIP) {
+            database.ref('users/' + userIP.replace(/\./g, '_') + '/page').set(tabId);
+        }
+
+        const content = document.querySelector('.content');
+        if (content) { content.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        if (navigator.vibrate) { navigator.vibrate(10); }
+
+        updateSearchButtonVisibility();
+        
+        // ========== НОВЫЙ КОД: ПЕРЕЗАПУСК АНИМАЦИЙ ==========
+        if (tabId === 'tables' || tabId === 'schedule') {
+            const activePage = document.getElementById(tabId);
+            
+            // Временно убираем анимацию
+            const animatedElements = activePage.querySelectorAll('.class-btn, .table-card');
+            animatedElements.forEach(el => {
+                el.style.animation = 'none';
+                el.offsetHeight; // принудительный пересчет стилей
+                el.style.animation = '';
+            });
+            
+            // Для расписания - перезапуск анимации контейнера
+            if (tabId === 'schedule' && currentScheduleClass) {
+                const scheduleDisplay = document.getElementById('scheduleDisplay');
+                scheduleDisplay.style.animation = 'none';
+                scheduleDisplay.offsetHeight;
+                scheduleDisplay.style.animation = '';
+            }
+        }
     });
 });
 
@@ -2623,7 +2841,11 @@ function createTableClassButtons() {
 
     if (!middleContainer || !highContainer) return;
 
-    const middle = ['7А', '7Б', '7В', '8А', '8Б', '8В', '9А', '9Б', '9В'];
+    const middle = [
+    '7А','7Б','7В',
+    '8А','8Б','8В',
+    '9А','9Б','9В'
+];
     const high = ['10', '11'];
 
     middle.forEach(c => {
@@ -2764,8 +2986,15 @@ createTableClassButtons();
 // ========== НОВОЕ РАСПИСАНИЕ ==========
 // Список всех классов
 const classes = {
-    middle: ['7А', '7Б', '7В', '8А', '8Б', '8В', '9А', '9Б', '9В'],
-    high: ['10', '11']
+    middle: [
+'5А','5Б','5В',
+'6А','6Б','6В', 
+'7А','7Б','7В', 
+'8А','8Б','8В', 
+'9А','9Б','9В'
+            ],
+   
+ high: ['10','11']
 };
 
 // Дни недели
@@ -2861,38 +3090,63 @@ function createClassButtons() {
     });
 }
 
-// Переключение класса в расписании
+// Переключение класса в расписании с плавной анимацией
 function toggleClass(className) {
     const scheduleDisplay = document.getElementById('scheduleDisplay');
-    const body = document.body;
+    const scheduleContainer = document.getElementById('scheduleContainer');
     const allButtons = document.querySelectorAll('#schedule .class-btn');
-
-    if (currentClass === className) {
-        // Если кликнули на тот же класс - плавно скрываем
+    
+    // Случай 1: Класс уже выбран -> нужно закрыть расписание с анимацией
+    if (currentScheduleClass === className) {
+        // Убираем активный класс с кнопки
         allButtons.forEach(btn => btn.classList.remove('active'));
-
+        
+        // Запускаем анимацию закрытия, добавляя новый класс
+        scheduleDisplay.classList.add('schedule-display-hide');
         scheduleDisplay.classList.remove('visible');
-
+        
+        // Очищаем контейнер и сбрасываем состояние после анимации
         setTimeout(() => {
-            if (!scheduleDisplay.classList.contains('visible')) {
-                // Ничего не делаем, просто очищаем
-            }
-        }, 300);
-
-        currentClass = null;
+            scheduleContainer.innerHTML = '';
+            scheduleDisplay.classList.remove('schedule-display-hide');
+            currentScheduleClass = null;
+        }, 300); // Длительность анимации (совпадает с transition в CSS)
+        
+        return;
+    }
+    
+    // Случай 2: Выбран другой класс -> показываем новое расписание
+    // Сначала запускаем анимацию закрытия старого (если оно открыто)
+    if (currentScheduleClass !== null) {
+        scheduleDisplay.classList.add('schedule-display-hide');
+        scheduleDisplay.classList.remove('visible');
+        
+        setTimeout(() => {
+            scheduleDisplay.classList.remove('schedule-display-hide');
+            // После закрытия старого, показываем новое
+            showNewSchedule(className);
+        }, 250);
     } else {
-        // Если кликнули на другой класс - показываем новое расписание
+        // Если никакое расписание не открыто, просто показываем новое
+        showNewSchedule(className);
+    }
+    
+    // Вспомогательная функция для отображения нового расписания
+    function showNewSchedule(className) {
+        // Обновляем активную кнопку
         allButtons.forEach(btn => btn.classList.remove('active'));
-
-        const activeButtons = document.querySelectorAll(`#schedule .class-btn[data-class="${className}"]`);
-        activeButtons.forEach(btn => btn.classList.add('active'));
-
-        // Отображаем расписание для выбранного класса
+        const activeBtn = Array.from(allButtons).find(b => b.textContent === className);
+        if (activeBtn) activeBtn.classList.add('active');
+        
+        // Генерируем новое содержимое
         displaySchedule(className);
-
+        
+        // Показываем блок с анимацией
+        scheduleDisplay.classList.remove('schedule-display-hide');
         scheduleDisplay.classList.add('visible');
-
-        currentClass = className;
+        
+        // Обновляем текущий выбранный класс
+        currentScheduleClass = className;
     }
 }
 
@@ -2957,7 +3211,264 @@ function displaySchedule(className) {
 function fillAllSchedule() {
     // Создаем шаблон с твоими данными
     const scheduleTemplate = {
-        '7А': {
+        '5А': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 3, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 4, name: 'Английский Язык', teacher: 'Мухачёва Ю.П. / Зыкова Е.В.', room: '221 / 344/2' },
+                { number: 5, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '104' },
+                { number: 6, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 7, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' }
+            ],
+            tuesday: [
+                { number: 1, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 2, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 3, name: 'География', teacher: 'Зимина Ирина Васильевна', room: '347' },
+                { number: 4, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '104' },
+                { number: 5, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 6, name: 'Русская словесность', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 7, name: 'Физкультура', teacher: ' ', room: '' }
+            ],
+            wednesday: [
+                { number: 1, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 2, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 3, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 4, name: 'Литература', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 5, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '104' },
+                { number: 6, name: 'Физкультура', teacher: ' ', room: '' }
+            ],
+            thursday: [
+                { number: 1, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 2, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 3, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Зыкова Е.В.', room: '221 / 344/2' },
+                { number: 4, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '104' },
+                { number: 5, name: 'Литература', teacher: 'Антакова Татьяна Юрьевна', room: '351' }
+            ],
+            friday: [
+                { number: 1, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 2, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 3, name: 'Русская словесность', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 4, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Зыкова Е.В.', room: '221 / 344/2' },
+                { number: 5, name: 'Математика', teacher: 'Половинкира Галина Петровна', room: '104' },
+                { number: 6, name: 'Литература', teacher: 'Антакова Татьяна Юрьевна', room: '351' }
+            ]
+        },
+       '5Б': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 3, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '104' },
+                { number: 4, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 5, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 6, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Терехова Н.Е.', room: '221 / 109' },
+                { number: 7, name: 'Физкультура', teacher: ' ', room: '' }
+            ],
+            tuesday: [
+                { number: 1, name: 'Русская словеность', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 2, name: 'География', teacher: 'Зимина Ирина Васильевна', room: '347' },
+                { number: 3, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 4, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Терехова Н.Е.', room: '221 / 109' },
+                { number: 5, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '109' },
+                { number: 6, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Литература', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 2, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 3, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '104' },
+                { number: 4, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 5, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' },
+                { number: 6, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' }
+            ],
+            thursday: [
+                { number: 1, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 2, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 3, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '104' },
+                { number: 4, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 5, name: 'Литература', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 6, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Терехова Н.Е.', room: '221 / 109' }
+            ],
+            friday: [
+                { number: 1, name: 'Русская словесность', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 2, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '104' },
+                { number: 3, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 4, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 5, name: 'Литература', teacher: 'Шарыгина Надежда Александровна', room: '352' }
+            ]
+        },
+        '5В': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 3, name: 'Русский язык', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 4, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' },
+                { number: 5, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Морозова Н.В.', room: '221 / 229' },
+                { number: 6, name: 'Труд', teacher: 'Коновалов А.А. / Сирена С.А.', room: '114 / 117' },
+                { number: 7, name: 'Труд', teacher: 'Коновалов А.А. / Страна С.А.', room: '114 / 117' }
+            ],
+            tuesday: [
+                { number: 1, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Русский язык', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 3, name: 'Литература', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 4, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 5, name: 'География', teacher: 'Зимина Ирина Васильевна', room: '347' },
+                { number: 6, name: 'Физкультура', teacher: ' ', room: '' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Биология', teacher: 'Зорина Наталья Николаевна', room: '224' },
+                { number: 2, name: 'Русский язык', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 3, name: 'Литература', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 4, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 5, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Морозова Н.В.', room: '221 / 229' },
+                { number: 6, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' }
+            ],
+            thursday: [
+                { number: 1, name: 'Литература', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 2, name: 'Русский язык', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 3, name: 'История', teacher: 'Байдусь Екатерина Сергеевна', room: '227' },
+                { number: 4, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 5, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 6, name: 'Русская словесность', teacher: 'Тихомирова Ольга Сергеевна', room: '340' }
+                ],
+            friday: [
+                { number: 1, name: 'Русская словесность', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 2, name: 'Русский язык', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 3, name: 'Английский язык', teacher: 'Мухачёва Ю.П. / Морозова Н.В.', room: '221 / 229' },
+                { number: 4, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 5, name: 'Физкультура', teacher: ' ', room: '' }
+            ]
+        },
+       '6А': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 3, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 4, name: 'Русский язык', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 5, name: 'Английский язык', teacher: 'Челнокова Н.С. / Громина Л.Н.', room: '108 / 341' },
+                { number: 6, name: 'Русский язык', teacher: 'Решетова Ольга Сергеевна', room: '340' },
+                { number: 7, name: 'Физкультура', teacher: 'Тюлькина Ольга Валерьевна', room: '' }
+            ],
+            tuesday: [
+                { number: 1, name: 'Русский язык', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 2, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 3, name: 'Биология', teacher: ' ', room: '115' },
+                { number: 4, name: 'Литература', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 5, name: 'Русская словесность', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 6, name: 'Английский язык', teacher: 'Челнокова Н.С. / Громина Л.Н.', room: '108 / 341' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Русский язык', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 2, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 3, name: 'Английский язык', teacher: 'Челнокова Н.С. / Громина Л.Н.', room: '108 / 341' },
+                { number: 4, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 5, name: 'Литература', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 6, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '356' }
+            ],
+            thursday: [
+                { number: 1, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 2, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 3, name: 'Русский язык', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 4, name: 'География', teacher: 'Зимина Ирина Васильевна', room: '347' },
+                { number: 5, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 6, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' }
+            ],
+            friday: [
+                { number: 1, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 2, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' },
+                { number: 3, name: 'Русский язык', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 4, name: 'Русская словесность', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 5, name: 'Литература', teacher: 'Тихомирова Ольга Сергеевна', room: '340' },
+                { number: 6, name: 'Физкультура', teacher: 'Тюлькина Ольга Валерьевна', room: '' }
+            ]
+        },
+          '6Б': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '104' },
+                { number: 3, name: 'Литература', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 4, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 5, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 6, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 7, name: 'Русская словесность', teacher: 'Шарыгина Надежда Александровна', room: '352' }
+            ],
+            tuesday: [
+                { number: 1, name: 'Английский язык', teacher: 'Терехова Наталья Евгеньевна', room: '109' },
+                { number: 2, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 3, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '104' },
+                { number: 4, name: 'Биология', teacher: ' ', room: '115' },
+                { number: 5, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 6, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' }
+            ],
+            wednesday: [
+                { number: 1, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344' },
+                { number: 2, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 3, name: 'Литература', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 4, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '104' },
+                { number: 5, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' },
+                { number: 6, name: 'Русская словесность', teacher: 'Шарыгина Надежда Александровна', room: '352' }
+            ],
+            thursday: [
+                { number: 1, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '104' },
+                { number: 2, name: 'География', teacher: 'Зимина Ирина Васильевна', room: '347' },
+                { number: 3, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 4, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 5, name: 'Английский язык', teacher: 'Терехова Наталья Евгеньевна', room: '109' },
+                { number: 6, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' }
+                
+            ],
+            friday: [
+                { number: 1, name: 'Математика', teacher: 'Половинкина Галина Петровна', room: '104' },
+                { number: 2, name: 'Русский язык', teacher: 'Шарыгина Надежда Александровна', room: '352' },
+                { number: 3, name: 'Английский язык', teacher: 'Терехова Наталья Евгеньевна', room: '109' },
+                { number: 4, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' },
+                { number: 5, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 6, name: 'Литература', teacher: 'Шарыгина Надежда Александровна', room: '352' }
+            ]
+        },
+      '6В': {
+            monday: [
+                { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
+                { number: 2, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 3, name: 'Музыка', teacher: 'Карташова Анна Васильевна', room: '356' },
+                { number: 4, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 5, name: 'Английский язык', teacher: 'Терехова Наталья Евгеньевна', room: '109' },
+                { number: 6, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 7, name: 'Литература', teacher: 'Антакова Татьяна Юрьевна', room: '351' }
+            ],
+            tuesday: [
+                { number: 1, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 2, name: 'Литература', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 3, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 4, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 5, name: 'Английский язык', teacher: 'Терехова Наталья Евгеньевна', room: '109' },
+                { number: 6, name: 'Биология', teacher: ' ', room: '115' }
+            ],
+            wednesday: [
+                { number: 1, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 2, name: 'Английский язык', teacher: 'Терехова Наталья Евгеньевна', room: '109' },
+                { number: 3, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 4, name: 'Физкультура', teacher: ' ', room: '' },
+                { number: 5, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 6, name: 'Русская словесность', teacher: 'Антакова Татьяна Юрьевна', room: '351' }
+            ],
+            thursday: [
+                { number: 1, name: 'Русская словесность', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 2, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 3, name: 'География', teacher: 'Зимина Ирина Васильевна', room: '347' },
+                { number: 4, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '353' },
+                { number: 5, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' },
+                { number: 6, name: 'Труд', teacher: 'Коновалов А.А. / Чиркина С.А.', room: '114 / 117' }
+            ],
+            friday: [
+                { number: 1, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 2, name: 'Математика', teacher: 'Решетова Ольга Владимировна', room: '353' },
+                { number: 3, name: 'История', teacher: 'Торопова Алёна Петровна', room: '344/1' },
+                { number: 4, name: 'Литература', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 5, name: 'Русский язык', teacher: 'Антакова Татьяна Юрьевна', room: '351' },
+                { number: 6, name: 'ИЗО', teacher: 'Лапшина Ирина Николаевна', room: '354' }
+            ]
+        },
+          '7А': {
             monday: [
                 { number: 1, name: 'Разговоры о Важном', teacher: ' ', room: '' },
                 { number: 2, name: 'Русский язык', teacher: 'Ленская Надежда Андреевна', room: '228' },
